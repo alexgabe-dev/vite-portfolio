@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optional: Improve animation performance */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.primary-button {
+  @apply px-6 py-3 bg-[#ff5c35] text-white rounded-lg transition-all duration-200 hover:bg-[#ff5c35]/90;
+}
+
+.secondary-button {
+  @apply px-6 py-3 border border-gray-600 text-white rounded-lg transition-all duration-200 hover:border-[#ff5c35]/50;
+}
+
+.primary-button-mobile {
+  @apply px-6 py-3 bg-[#ff5c35] text-white rounded-lg transition-all duration-200 hover:bg-[#ff5c35]/90 text-center;
+}
