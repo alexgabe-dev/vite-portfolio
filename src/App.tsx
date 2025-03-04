@@ -1,15 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronRight, Code, BarChart, Settings, Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Twitter, 
   Globe, Box, Palette, FileCode, Layout, CircuitBoard, Blocks, Laptop, Braces, Workflow, FileJson } from 'lucide-react';
 import { motion, AnimatePresence, useInView, useSpring, useTransform } from 'framer-motion';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import './App.css';
 import Packages from './components/Packages';
+import About from './components/About';
+import Contact from './components/Contact';
+import Services from './components/Services';
+import Navbar from './components/Navbar';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [selectedTechs, setSelectedTechs] = React.useState<string[]>([]);
   const [currentPackage, setCurrentPackage] = React.useState(0);
+  const [clickCount, setClickCount] = React.useState(0);
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      // Reset to popular package when switching to mobile
+      if (window.innerWidth < 768) {
+        setCurrentPackage(1);
+      } else {
+        setCurrentPackage(0);
+      }
+    };
+
+    // Set initial package based on screen size
+    if (window.innerWidth < 768) {
+      setCurrentPackage(1);
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -93,124 +120,17 @@ function App() {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white">
-      {/* Navigation */}
-      <motion.nav 
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ type: "spring", stiffness: 100 }}
-        className="fixed w-full z-50 bg-[#0a0a0f]/90 backdrop-blur-md border-b border-gray-800/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <motion.div 
-              className="flex items-center"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}>
-              <Link to="/" className="text-xl font-bold flex items-center">
-                <motion.span 
-                  className="text-white mr-1"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}>
-                  vizitor
-                </motion.span>
-                <motion.span 
-                  className="text-gray-400"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4 }}>
-                  .hu
-                </motion.span>
-              </Link>
-            </motion.div>
-            <motion.div 
-              className="hidden md:flex items-center space-x-8"
-              variants={staggerChildren}
-              initial="initial"
-              animate="animate">
-              {[
-                { name: 'Szolgáltatások', path: '/#szolgaltatasok' },
-                { name: 'Csomagok', path: '/csomagok' },
-                { name: 'Rólunk', path: '/#rolunk' },
-                { name: 'Kapcsolat', path: '/#kapcsolat' },
-                { name: 'Bejelentkezés', path: '/login' }
-              ].map((item) => (
-                <motion.div
-                  key={item.name}
-                  variants={fadeInUp}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}>
-                  <Link
-                    to={item.path}
-                    className="text-gray-300 hover:text-white transition-colors text-sm">
-                    {item.name}
-                  </Link>
-                </motion.div>
-              ))}
-              <motion.button 
-                className="primary-button"
-                whileHover={{ scale: 1.05, boxShadow: "0 0 8px rgb(255, 92, 53)" }}
-                whileTap={{ scale: 0.95 }}>
-                Ajánlatkérés
-              </motion.button>
-            </motion.div>
-            
-            {/* Mobile menu button */}
-            <motion.div 
-              className="md:hidden"
-              whileTap={{ scale: 0.9 }}>
-              <button onClick={toggleMobileMenu}>
-                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </motion.div>
-          </div>
-        </div>
-        
-        {/* Mobile menu */}
-        <AnimatePresence>
-        {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden bg-[#0a0a0f] border-b border-gray-800/30">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                {[
-                  { name: 'Szolgáltatások', path: '/#szolgaltatasok' },
-                  { name: 'Csomagok', path: '/csomagok' },
-                  { name: 'Rólunk', path: '/#rolunk' },
-                  { name: 'Kapcsolat', path: '/#kapcsolat' },
-                  { name: 'Bejelentkezés', path: '/login' }
-                ].map((item) => (
-                  <motion.div
-                    key={item.name}
-                    variants={fadeInUp}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit">
-                    <Link
-                      to={item.path}
-                      className="block px-3 py-2 text-gray-300 hover:text-white"
-                      onClick={() => setMobileMenuOpen(false)}>
-                      {item.name}
-                    </Link>
-                  </motion.div>
-                ))}
-                <motion.button 
-                  className="primary-button-mobile w-full mt-4"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}>
-                  Ajánlatkérés
-                </motion.button>
-            </div>
-            </motion.div>
-        )}
-        </AnimatePresence>
-      </motion.nav>
+  const navigation = [
+    { name: 'Főoldal', path: '/' },
+    { name: 'Szolgáltatások', path: '/szolgaltatasok' },
+    { name: 'Rólunk', path: '/rolunk' },
+    { name: 'Kapcsolat', path: '/kapcsolat' }
+  ];
 
-      {/* Main content */}
+  return (
+    <>
+      <Navbar />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={
           <main>
@@ -266,19 +186,79 @@ function App() {
                   transition={{ duration: 0.6, delay: 0.3 }}>
                 <div className="relative w-full h-[400px]">
                     <motion.div 
-                      className="absolute right-0 top-0 w-64 h-64 bg-gradient-to-br from-[#1a1a2e] to-[#16213e] rounded-lg transform rotate-12 shadow-xl"
-                      animate={{ rotate: 12 }}
-                      transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
+                      className="absolute right-0 top-0 w-64 h-64 bg-gradient-to-br from-[#1a1a2e] to-[#16213e] rounded-lg transform"
+                      animate={{ 
+                        rotate: [12, 0, 12],
+                        scale: [1, 1.05, 1]
+                      }}
+                      transition={{ 
+                        duration: 20, 
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        ease: "easeInOut"
+                      }}
                     />
                     <motion.div 
-                      className="absolute right-20 top-40 w-48 h-48 bg-gradient-to-br from-[#16213e] to-[#1a1a2e] rounded-lg transform -rotate-12 shadow-xl"
-                      animate={{ rotate: -12 }}
-                      transition={{ duration: 15, repeat: Infinity, repeatType: "reverse" }}
+                      className="absolute right-20 top-40 w-48 h-48 bg-gradient-to-br from-[#16213e] to-[#1a1a2e] rounded-lg transform"
+                      animate={{ 
+                        rotate: [-12, 0, -12],
+                        scale: [1, 1.05, 1]
+                      }}
+                      transition={{ 
+                        duration: 15, 
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        ease: "easeInOut"
+                      }}
                     />
                     <motion.div 
-                      className="absolute right-40 top-20 w-32 h-32 bg-[#ff5c35] rounded-full shadow-lg shadow-[#ff5c35]/20"
-                      animate={{ y: [0, -20, 0] }}
-                      transition={{ duration: 5, repeat: Infinity }}
+                      className="absolute right-40 top-20 w-32 h-32 bg-[#ff5c35] rounded-full shadow-lg shadow-[#ff5c35]/20 cursor-pointer"
+                      animate={
+                        clickCount === 4
+                          ? {
+                              scale: [1.5, 2, 0.5, 1],
+                              opacity: [1, 1, 0.8, 1],
+                              rotate: [0, 180, 360, 0],
+                              boxShadow: [
+                                "0 0 20px rgba(255, 92, 53, 0.4)",
+                                "0 0 40px rgba(255, 92, 53, 0.6)",
+                                "0 0 60px rgba(255, 92, 53, 0.2)",
+                                "0 0 20px rgba(255, 92, 53, 0.2)"
+                              ]
+                            }
+                          : {
+                              scale: 1 + (clickCount * 0.2),
+                              y: [0, -20, 0],
+                              boxShadow: `0 0 ${20 + (clickCount * 10)}px rgba(255, 92, 53, ${0.2 + (clickCount * 0.1)})`
+                            }
+                      }
+                      transition={
+                        clickCount === 4
+                          ? {
+                              duration: 0.8,
+                              ease: "easeInOut",
+                              times: [0, 0.4, 0.7, 1],
+                              onComplete: () => setClickCount(0)
+                            }
+                          : {
+                              y: {
+                                duration: 5,
+                                repeat: Infinity,
+                                ease: "easeInOut"
+                              },
+                              scale: {
+                                duration: 0.3,
+                                ease: "easeOut"
+                              }
+                            }
+                      }
+                      onClick={() => {
+                        setClickCount(prev => (prev + 1) % 5);
+                      }}
+                      whileHover={{
+                        scale: 1 + (clickCount * 0.2) + 0.05,
+                        boxShadow: `0 0 ${25 + (clickCount * 10)}px rgba(255, 92, 53, ${0.3 + (clickCount * 0.1)})`
+                      }}
                     />
                 </div>
                 </motion.div>
@@ -622,7 +602,7 @@ function App() {
                 {/* Mobile View - Carousel */}
                 <div className="md:hidden relative">
                   <motion.div 
-                    className="overflow-hidden"
+                    className="overflow-visible"
                     initial={false}>
                     <AnimatePresence initial={false} mode="wait">
                       <motion.div
@@ -639,7 +619,8 @@ function App() {
                         }}>
                         <div className="w-full px-4">
                           <motion.div
-                            className={`bg-[#0a0a0f] p-8 rounded-lg ${
+                            className={`bg-[#0a0a0f] p-8 rounded-lg mt-6 ${
+                              currentPackage === 3 ? 'border border-gray-800/50' :
                               packages[currentPackage].isPopular 
                                 ? 'border-2 border-[#ff5c35]/50 shadow-lg shadow-[#ff5c35]/10'
                                 : 'border border-gray-800/50'
@@ -650,44 +631,62 @@ function App() {
                             dragElastic={0.1}
                             onDragEnd={(e, { offset, velocity }) => {
                               const swipe = offset.x + velocity.x * 50;
-                              if (swipe < -50 && currentPackage < packages.length - 1) {
+                              if (swipe < -50 && currentPackage < (isMobile ? 3 : packages.length - 1)) {
                                 setCurrentPackage(currentPackage + 1);
                               } else if (swipe > 50 && currentPackage > 0) {
                                 setCurrentPackage(currentPackage - 1);
                               }
                             }}>
-                            {packages[currentPackage].isPopular && (
-                              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#ff5c35] text-white px-4 py-1 rounded-full text-sm font-bold">
-                                Legnépszerűbb
+                            {currentPackage < packages.length && packages[currentPackage].isPopular && (
+                              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10 w-full flex justify-center">
+                                <div className="bg-[#ff5c35] text-white px-4 py-1 rounded-full text-sm font-bold whitespace-nowrap">
+                                  Legnépszerűbb
+                                </div>
                               </div>
                             )}
-                            
-                            <div className="mb-6">
-                              <h3 className="text-xl font-bold mb-2">{packages[currentPackage].title}</h3>
-                              <div className="text-3xl font-bold text-white">{packages[currentPackage].price}</div>
-                              <p className="text-gray-500 mt-2">{packages[currentPackage].type}</p>
-                            </div>
-                            
-                            <ul className="space-y-3 text-gray-400 mb-8">
-                              {packages[currentPackage].features.map((feature, idx) => (
-                                <motion.li 
-                                  key={idx} 
-                                  className="flex items-start"
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: idx * 0.1 }}>
-                                  <ChevronRight size={18} className="text-[#ff5c35] mt-1 mr-2 flex-shrink-0" />
-                                  <span>{feature}</span>
-                                </motion.li>
-                              ))}
-                            </ul>
-                            
-                            <motion.button 
-                              className={packages[currentPackage].isPopular ? "primary-button w-full" : "secondary-button w-full"}
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}>
-                              Részletek
-                            </motion.button>
+                            {currentPackage === 3 ? (
+                              <div className="text-center py-8">
+                                <h3 className="text-xl font-bold mb-4">További Csomagok</h3>
+                                <p className="text-gray-400 mb-6">Fedezze fel személyre szabott megoldásainkat</p>
+                                <Link to="/csomagok">
+                                  <motion.button 
+                                    className="primary-button"
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}>
+                                    Összes csomag megtekintése
+                                  </motion.button>
+                                </Link>
+                              </div>
+                            ) : (
+                              <>
+                                <div className="mb-6">
+                                  <h3 className="text-xl font-bold mb-2">{packages[currentPackage].title}</h3>
+                                  <div className="text-3xl font-bold text-white">{packages[currentPackage].price}</div>
+                                  <p className="text-gray-500 mt-2">{packages[currentPackage].type}</p>
+                                </div>
+                                
+                                <ul className="space-y-3 text-gray-400 mb-8">
+                                  {packages[currentPackage].features.map((feature, idx) => (
+                                    <motion.li 
+                                      key={idx} 
+                                      className="flex items-start"
+                                      initial={{ opacity: 0, x: -20 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: idx * 0.1 }}>
+                                      <ChevronRight size={18} className="text-[#ff5c35] mt-1 mr-2 flex-shrink-0" />
+                                      <span>{feature}</span>
+                                    </motion.li>
+                                  ))}
+                                </ul>
+                                
+                                <motion.button 
+                                  className={packages[currentPackage].isPopular ? "primary-button w-full" : "secondary-button w-full"}
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}>
+                                  Részletek
+                                </motion.button>
+                              </>
+                            )}
                           </motion.div>
                         </div>
                       </motion.div>
@@ -696,7 +695,7 @@ function App() {
 
                   {/* Dots Navigation */}
                   <div className="flex justify-center mt-8 space-x-2">
-                    {packages.map((_, index) => (
+                    {[...Array(4)].map((_, index) => (
                       <motion.button
                         key={index}
                         onClick={() => setCurrentPackage(index)}
@@ -725,7 +724,7 @@ function App() {
                         <ChevronRight size={20} className="transform rotate-180" />
                       </motion.button>
                     )}
-                    {currentPackage < packages.length - 1 && (
+                    {currentPackage < 3 && (
                       <motion.button
                         className="w-8 h-8 flex items-center justify-center rounded-full bg-[#ff5c35]/10 text-[#ff5c35] pointer-events-auto ml-auto"
                         onClick={() => setCurrentPackage(currentPackage + 1)}
@@ -736,6 +735,23 @@ function App() {
                     )}
                   </div>
                 </div>
+
+                {/* Additional packages button for both mobile and desktop */}
+                <motion.div 
+                  className="mt-12 text-center"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}>
+                  <Link to="/csomagok">
+                    <motion.button 
+                      className="secondary-button inline-flex items-center"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}>
+                      További csomagjaink
+                      <ChevronRight size={20} className="ml-2" />
+                    </motion.button>
+                  </Link>
+                </motion.div>
               </div>
             </section>
 
@@ -1043,6 +1059,9 @@ function App() {
           </main>
         } />
         <Route path="/csomagok" element={<Packages />} />
+        <Route path="/rolunk" element={<About />} />
+        <Route path="/kapcsolat" element={<Contact />} />
+        <Route path="/szolgaltatasok" element={<Services />} />
       </Routes>
 
       {/* Footer */}
@@ -1054,7 +1073,15 @@ function App() {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8">
             <motion.div variants={fadeInUp}>
-              <h3 className="text-xl font-bold mb-4">Vizitor.hu</h3>
+              <div className="mb-4">
+                <motion.img 
+                  src="/vizitor-logo.png" 
+                  alt="Vizitor Logo" 
+                  className="h-8 w-auto" 
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                />
+              </div>
               <p className="text-gray-400">Modern megoldások az Ön vállalkozása számára</p>
             </motion.div>
             <motion.div variants={fadeInUp}>
@@ -1122,7 +1149,7 @@ function App() {
           </motion.div>
         </div>
       </motion.footer>
-    </div>
+    </>
   );
 }
 
