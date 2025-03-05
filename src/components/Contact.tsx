@@ -36,7 +36,22 @@ const Contact = () => {
     setError('');
 
     try {
-      // A form automatikusan elküldi az adatokat a Formspree-nek
+      // Let Formspree handle the submission
+      const form = e.target as HTMLFormElement;
+      const formData = new FormData(form);
+      
+      const response = await fetch('https://formspree.io/f/mldjrdnq', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Form submission failed');
+      }
+
       setIsSubmitted(true);
       setFormState({
         name: '',
@@ -168,8 +183,6 @@ const Contact = () => {
             initial="initial"
             animate="animate">
             <form 
-              action="https://formspree.io/f/mldjrdnq"
-              method="POST"
               onSubmit={handleSubmit} 
               className="space-y-4 md:space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
