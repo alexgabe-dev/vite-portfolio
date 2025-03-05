@@ -46,6 +46,21 @@ const isRateLimited = (ip: string) => {
 };
 
 export default async function handler(req: any, res: any) {
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
+
+  // Handle OPTIONS request
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -91,10 +106,14 @@ export default async function handler(req: any, res: any) {
     });
 
     console.log('Email sikeresen elküldve');
-    res.status(200).json({ success: true });
+    return res.status(200).json({ 
+      success: true,
+      message: 'Email sikeresen elküldve'
+    });
   } catch (error: any) {
     console.error('Email küldési hiba:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
+      success: false,
       error: 'Hiba történt az üzenet küldése közben. Kérjük próbálja újra később.'
     });
   }

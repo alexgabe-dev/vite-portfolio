@@ -53,7 +53,7 @@ const Contact = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Hiba történt az üzenet küldése közben');
+        throw new Error(data.error || 'Hiba történt az üzenet küldése közben');
       }
 
       setIsSubmitted(true);
@@ -69,7 +69,8 @@ const Contact = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(() => setIsSubmitted(false), 3000);
     } catch (err: any) {
-      setError(err.message || 'Hiba történt az üzenet küldése közben. Kérjük próbálja újra!');
+      console.error('Form submission error:', err);
+      setError(err.message || 'Hiba történt az üzenet küldése közben. Kérjük próbálja újra később.');
       setTimeout(() => setError(''), 5000);
     } finally {
       setIsLoading(false);
