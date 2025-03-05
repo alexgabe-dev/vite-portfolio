@@ -1,4 +1,15 @@
+import express from 'express';
 import nodemailer from 'nodemailer';
+import cors from 'cors';
+
+const router = express.Router();
+
+// CORS beállítások
+router.use(cors({
+  origin: ['https://www.vizitor.hu', 'https://vizitor.hu', 'http://localhost:5173'],
+  methods: ['POST', 'OPTIONS'],
+  credentials: true,
+}));
 
 // Input validáció
 const validateInput = (data: any) => {
@@ -13,58 +24,7 @@ const validateInput = (data: any) => {
   return true;
 };
 
-// Rate limiting - egyszerű memória alapú megoldás
-const rateLimit = {
-  windowMs: 15 * 60 * 1000, // 15 perc
-  max: 5, // maximum 5 kérés / IP
-  store: new Map(),
-};
-
-const isRateLimited = (ip: string) => {
-  const now = Date.now();
-  const windowStart = now - rateLimit.windowMs;
-  
-  // Régi rekordok törlése
-  for (const [key, timestamp] of rateLimit.store.entries()) {
-    if (timestamp < windowStart) {
-      rateLimit.store.delete(key);
-    }
-  }
-  
-  // IP kéréseinek számolása
-  const requests = Array.from(rateLimit.store.entries())
-    .filter(([key, _]) => key.startsWith(ip))
-    .length;
-    
-  if (requests >= rateLimit.max) {
-    return true;
-  }
-  
-  // Új kérés rögzítése
-  rateLimit.store.set(`${ip}_${now}`, now);
-  return false;
-};
-
-export default async function handler(req: any, res: any) {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
-
-  // Handle OPTIONS request
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
+router.post('/send-email', async (req, res) => {
   try {
     // Input validáció
     const { name, email, phone, subject, message } = req.body;
@@ -90,7 +50,7 @@ export default async function handler(req: any, res: any) {
     const transporter = nodemailer.createTransport({
       host: 'smtp.mailersend.net',
       port: 587,
-      secure: false, // TLS
+      secure: false,
       auth: {
         user: 'MS_pmVEtl@vizitor.hu',
         pass: process.env.SMTP_PASSWORD
@@ -105,24 +65,17 @@ export default async function handler(req: any, res: any) {
       html: emailContent,
     });
 
-    console.log('Email sikeresen elküldve');
-    return res.status(200).json({ 
+    res.json({ 
       success: true,
       message: 'Email sikeresen elküldve'
     });
   } catch (error: any) {
     console.error('Email küldési hiba:', error);
-    return res.status(500).json({ 
+    res.status(500).json({ 
       success: false,
-      error: 'Hiba történt az üzenet küldése közben. Kérjük próbálja újra később.'
+      error: error.message || 'Hiba történt az üzenet küldése közben. Kérjük próbálja újra később.'
     });
   }
-}
+});
 
-// CORS beállítások
-export const config = {
-  api: {
-    bodyParser: true,
-    externalResolver: true,
-  },
-}; 
+export default router; 

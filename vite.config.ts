@@ -27,6 +27,11 @@ export default defineConfig({
           'X-Content-Type-Options': 'nosniff',
           'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://safeframe.googlesyndication.com; frame-src 'self' https://safeframe.googlesyndication.com;"
         }
+      },
+      '/api': {
+        target: 'https://vizitor.hu',
+        changeOrigin: true,
+        secure: false,
       }
     }
   },
