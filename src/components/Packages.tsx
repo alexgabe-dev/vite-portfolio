@@ -24,63 +24,58 @@ const Packages = () => {
   const packages: PackageCategories = {
     web: [
       {
-        title: "Alap Weboldal Csomag",
-        price: "1.250.000 Ft",
-        type: "egyszeri díj",
+        title: "Starter Csomag",
+        price: "150.000 Ft",
+        type: "-tól",
         category: "ALAP CSOMAG",
         features: [
-          "Reszponzív weboldal kialakítás",
-          "5 egyedi aloldal",
+          "Egyedi, modern dizájn",
+          "Egy oldalas felépítés",
+          "Reszponzív felület",
+          "Alap CMS integráció",
+          "Gyors oldalbetöltés & cache optimalizáció",
+          "Alap SEO optimalizáció",
           "Kapcsolati űrlap",
-          "Google Térkép integráció",
-          "Közösségi média integráció",
-          "Alapszintű SEO beállítások",
-          "SSL tanúsítvány",
-          "Webhosting (első év)",
-          "Domain név (első év)",
-          "Email cím létrehozása"
+          "Ingyenes domain (1 év)",
+          "Ingyenes SSL tanúsítvány",
+          "GDPR Consent Mode 2.0 megfelelés",
+          "1 hónap ingyenes karbantartás"
         ]
       },
       {
-        title: "Közép Weboldal Csomag",
-        price: "2.250.000 Ft",
-        type: "egyszeri díj",
+        title: "Business Csomag",
+        price: "200.000 Ft",
+        type: "-tól",
         category: "LEGNÉPSZERŰBB",
         popular: true,
         features: [
-          "Az Alap csomag minden eleme",
-          "10 egyedi aloldal",
-          "Blog funkció",
-          "Többnyelvű tartalom kezelés",
-          "Galéria modul",
-          "Hírlevél feliratkozás",
+          "Minden a Starterből, plusz:",
+          "Többoldalas felépítés (max 15 oldal)",
+          "Blog és híroldal integráció",
+          "Kiterjesztett SEO & kulcsszó kutatás",
+          "Social media integráció",
+          "Email hírlevél és automata feliratkozás",
           "Google Analytics integráció",
-          "Keresőoptimalizálás (SEO)",
-          "Weboldal sebesség optimalizálás",
-          "Admin felület testreszabás",
-          "Online időpontfoglaló rendszer",
-          "Chat widget integráció"
+          "Galéria, portfólió és videó szekció",
+          "Prémium design elemek & grafikai illusztrációk",
+          "Egyedi süti banner"
         ]
       },
       {
-        title: "Prémium Weboldal Csomag",
-        price: "3.750.000 Ft",
-        type: "egyszeri díj",
+        title: "Premium Csomag",
+        price: "350.000 Ft",
+        type: "-tól",
         category: "PRÉMIUM CSOMAG",
         features: [
-          "A Közép csomag minden eleme",
-          "Korlátlan aloldal",
-          "Egyedi design tervezés",
-          "E-commerce funkciók",
-          "Fizetési gateway integráció",
-          "Raktárkészlet kezelés",
-          "Egyedi modulok fejlesztése",
-          "Automatizált marketing eszközök",
-          "CRM integráció",
-          "Részletes látogatói analitika",
-          "Teljes körű SEO optimalizálás",
-          "Prémium hosting szolgáltatás",
-          "24/7 technikai támogatás"
+          "Minden a Businessből, plusz:",
+          "Teljes e-commerce rendszer",
+          "Haladó SEO stratégiák & marketing támogatás",
+          "Többnyelvű weboldal kialakítása",
+          "Egyedi plugin és modul fejlesztés",
+          "Fejlett biztonsági megoldások",
+          "Haladó teljesítmény optimalizáció",
+          "CRM integráció & automatizált ügyfélkezelés",
+          "2 hónap ingyenes karbantartás"
         ]
       }
     ],
@@ -235,21 +230,27 @@ const Packages = () => {
             animate="animate">
             <div className="bg-[#1a1a2e]/80 backdrop-blur-sm p-1 rounded-xl inline-flex">
               <button
+                type="button"
                 onClick={() => setBillingCycle('monthly')}
                 className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                   billingCycle === 'monthly'
                     ? 'bg-[#ff5c35] text-white'
                     : 'text-gray-400 hover:text-white'
-                }`}>
+                }`}
+                aria-label="Switch to monthly billing"
+                aria-pressed={billingCycle === 'monthly'}>
                 Havi
               </button>
               <button
+                type="button"
                 onClick={() => setBillingCycle('annually')}
                 className={`px-6 py-3 rounded-lg font-semibold transition-all flex items-center ${
                   billingCycle === 'annually'
                     ? 'bg-[#ff5c35] text-white'
                     : 'text-gray-400 hover:text-white'
-                }`}>
+                }`}
+                aria-label="Switch to annual billing"
+                aria-pressed={billingCycle === 'annually'}>
                 Éves
                 <span className="ml-2 text-xs bg-white/10 text-white px-2 py-1 rounded-full">
                   -10%
@@ -271,6 +272,7 @@ const Packages = () => {
             { id: 'maintenance', name: 'Karbantartás' }
           ].map((category) => (
             <motion.button
+              type="button"
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
               className={`px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold transition-all text-sm md:text-base ${
@@ -279,7 +281,9 @@ const Packages = () => {
                   : 'bg-[#1a1a2e] text-gray-400 hover:text-white'
               }`}
               whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}>
+              whileTap={{ scale: 0.95 }}
+              aria-label={`Switch to ${category.name} category`}
+              aria-pressed={activeCategory === category.id}>
               {category.name}
             </motion.button>
           ))}
@@ -364,7 +368,8 @@ const Packages = () => {
               <motion.button
                 className="inline-flex items-center px-6 py-3 bg-transparent border-2 border-[#ff5c35] text-[#ff5c35] rounded-lg font-semibold hover:bg-[#ff5c35] hover:text-white transition-colors group"
                 whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}>
+                whileTap={{ scale: 0.98 }}
+                aria-label="Contact us for custom solutions">
                 Kapcsolatfelvétel
                 <ChevronRight className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
               </motion.button>

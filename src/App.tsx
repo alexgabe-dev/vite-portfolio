@@ -13,6 +13,8 @@ import ScrollToTop from './components/ScrollToTop';
 import Privacy from './components/Privacy';
 import AnimatedText from './components/AnimatedText';
 import PromotionPopup from './components/PromotionPopup';
+import Error from './components/Error';
+import AdFrame from './components/AdFrame';
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -21,6 +23,7 @@ function App() {
   const [clickCount, setClickCount] = React.useState(0);
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
   const [showPromotion, setShowPromotion] = React.useState(false);
+  const location = useLocation();
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -46,14 +49,17 @@ function App() {
   React.useEffect(() => {
     const hasSeenPopup = localStorage.getItem('hasSeenPopup');
     
-    if (!hasSeenPopup) {
+    // Ne jelenítse meg a popupot a hibaoldalakon
+    const isErrorPage = ['/404', '/403', '/500'].includes(location.pathname) || location.pathname.match(/^\/\w+/);
+    
+    if (!hasSeenPopup && !isErrorPage) {
       const timer = setTimeout(() => {
         setShowPromotion(true);
       }, 10000);
 
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [location]);
 
   const handleClosePromotion = () => {
     setShowPromotion(false);
@@ -89,42 +95,54 @@ function App() {
 
   const packages = [
     {
-      title: "Alap Weboldal Csomag",
-      price: "125.000 Ft",
+      title: "Starter Csomag",
+      price: "150.000 Ft",
       type: "Egyszeri díj",
       features: [
-        "Egyedi dizájn",
-        "WordPress testreszabás",
-        "Interaktív űrlapok",
-        "SEO-barát tartalom",
-        "Reszponzív megjelenés"
+        "Egyedi, modern dizájn",
+        "Reszponzív felület",
+        "Alap CMS integráció",
+        "Gyors oldalbetöltés & cache optimalizáció",
+        "Alap SEO optimalizáció",
+        "Kapcsolati űrlap",
+        "Ingyenes domain (1 év)",
+        "Ingyenes SSL tanúsítvány",
+        "1 hónap ingyenes karbantartás"
       ],
       isPopular: false
     },
     {
-      title: "Közép Csomag",
-      price: "225.000 Ft",
+      title: "Business Csomag",
+      price: "200.000 Ft",
       type: "Egyszeri díj",
       features: [
-        "Az Alap csomag minden eleme",
-        "E-commerce integráció",
-        "Kiterjesztett oldalstruktúra",
-        "Fejlettebb animációk",
-        "Haladó SEO optimalizálás",
-        "Részletes analitikai eszközök"
+        "Minden a Starterből, plusz:",
+        "Többoldalas felépítés (10+ oldal)",
+        "Blog és híroldal integráció",
+        "Kiterjesztett SEO & kulcsszó kutatás",
+        "Social media integráció",
+        "Email hírlevél és automata feliratkozás",
+        "Google Analytics integráció",
+        "Galéria, portfólió és videó szekció",
+        "Prémium design elemek & grafikai illusztrációk",
+        "Egyedi süti banner"
       ],
       isPopular: true
     },
     {
-      title: "Prémium Csomag",
-      price: "375.000 Ft-tól",
-      type: "Egyedi árazás",
+      title: "Premium Csomag",
+      price: "350.000 Ft",
+      type: "Egyszeri díj",
       features: [
-        "Teljes körű fejlesztések",
-        "Komplex modulok, CRM",
-        "Dedikált technikai támogatás",
-        "Marketing tanácsadás",
-        "Egyedi kampányok"
+        "Minden a Businessből, plusz:",
+        "Teljes e-commerce rendszer",
+        "Haladó SEO stratégiák & marketing támogatás",
+        "Többnyelvű weboldal kialakítása",
+        "Egyedi plugin és modul fejlesztés",
+        "Fejlett biztonsági megoldások",
+        "Haladó teljesítmény optimalizáció",
+        "CRM integráció & automatizált ügyfélkezelés",
+        "2 hónap ingyenes karbantartás"
       ],
       isPopular: false
     }
@@ -151,8 +169,9 @@ function App() {
 
   return (
     <>
-      <Navbar />
       <ScrollToTop />
+      <Navbar />
+      <AdFrame src="https://safeframe.googlesyndication.com/safeframe/1-0-40/html" />
       <PromotionPopup 
         isOpen={showPromotion} 
         onClose={handleClosePromotion} 
@@ -179,14 +198,14 @@ function App() {
                   initial="initial"
                   animate="animate">
                   <motion.h1 
-                    className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6 leading-tight md:leading-tight"
+                    className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6"
                     variants={fadeInUp}>
-                    <span className="md:block">Növekedés</span>{' '}
-                    <span className="md:block">minden</span>{' '}
+                    <span className="md:block leading-[1.2] inline-block py-1">Növekedés</span>{' '}
+                    <span className="md:block leading-[1.2] inline-block py-1">minden</span>{' '}
                     <AnimatedText />
                   </motion.h1>
                   <motion.p 
-                    className="text-lg sm:text-xl mb-6 md:mb-8 text-gray-400 max-w-lg"
+                    className="text-lg sm:text-xl mb-6 md:mb-8 text-gray-400 max-w-lg leading-[1.8]"
                     variants={fadeInUp}>
                     Weboldalak, digitális marketing és automatizált megoldások, amelyek lenyűgözik a látogatókat és növelik a bevételt.
                   </motion.p>
@@ -194,12 +213,14 @@ function App() {
                     className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8 md:mt-0"
                     variants={fadeInUp}>
                     <motion.button 
+                      type="button"
                       className="primary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4"
                       whileHover={{ scale: 1.05, boxShadow: "0 0 8px rgb(255, 92, 53)" }}
                       whileTap={{ scale: 0.95 }}>
                       Ajánlatkérés
                     </motion.button>
                     <motion.button 
+                      type="button"
                       className="secondary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}>
@@ -401,6 +422,7 @@ function App() {
                           ))}
                 </ul>
                         <motion.button 
+                          type="button"
                           className="mt-8 px-6 py-2 bg-[#1a1a2e] border border-[#ff5c35]/30 text-[#ff5c35] rounded-lg hover:bg-[#ff5c35] hover:text-white transition-all duration-300 w-full"
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}>
@@ -462,7 +484,7 @@ function App() {
                     {
                       name: "Wix",
                       description: "Weboldalépítő platform",
-                      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wix/wix-original.svg",
+                      icon: "https://cdn.worldvectorlogo.com/logos/wix-1.svg",
                       color: "from-[#000000]/20 to-[#000000]/5"
                     },
                     {
@@ -620,7 +642,9 @@ function App() {
                         ))}
                       </ul>
                       
-                      <button className={pkg.isPopular ? "primary-button w-full" : "secondary-button w-full"}>
+                      <button 
+                        type="button"
+                        className={pkg.isPopular ? "primary-button w-full" : "secondary-button w-full"}>
                         Részletek
                       </button>
                     </div>
@@ -708,6 +732,7 @@ function App() {
                                 </ul>
                                 
                                 <motion.button 
+                                  type="button"
                                   className={packages[currentPackage].isPopular ? "primary-button w-full" : "secondary-button w-full"}
                                   whileHover={{ scale: 1.02 }}
                                   whileTap={{ scale: 0.98 }}>
@@ -725,13 +750,15 @@ function App() {
                   <div className="flex justify-center mt-8 space-x-2">
                     {[...Array(4)].map((_, index) => (
                       <motion.button
+                        type="button"
                         key={index}
                         onClick={() => setCurrentPackage(index)}
                         className="relative h-2 rounded-full overflow-hidden"
                         style={{ width: currentPackage === index ? 24 : 8 }}
                         whileHover={{ scale: 1.2 }}
                         whileTap={{ scale: 0.9 }}
-                        transition={{ duration: 0.2 }}>
+                        transition={{ duration: 0.2 }}
+                        aria-label={`Go to package ${index + 1}`}>
                         <div className={`absolute inset-0 ${
                           currentPackage === index 
                             ? 'bg-[#ff5c35]' 
@@ -745,19 +772,23 @@ function App() {
                   <div className="absolute top-1/2 left-0 right-0 -mt-4 flex justify-between px-4 pointer-events-none">
                     {currentPackage > 0 && (
                       <motion.button
+                        type="button"
                         className="w-8 h-8 flex items-center justify-center rounded-full bg-[#ff5c35]/10 text-[#ff5c35] pointer-events-auto"
                         onClick={() => setCurrentPackage(currentPackage - 1)}
                         whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}>
+                        whileTap={{ scale: 0.9 }}
+                        aria-label="Previous package">
                         <ChevronRight size={20} className="transform rotate-180" />
                       </motion.button>
                     )}
                     {currentPackage < 3 && (
                       <motion.button
+                        type="button"
                         className="w-8 h-8 flex items-center justify-center rounded-full bg-[#ff5c35]/10 text-[#ff5c35] pointer-events-auto ml-auto"
                         onClick={() => setCurrentPackage(currentPackage + 1)}
                         whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}>
+                        whileTap={{ scale: 0.9 }}
+                        aria-label="Next package">
                         <ChevronRight size={20} />
                       </motion.button>
                     )}
@@ -772,6 +803,7 @@ function App() {
                   viewport={{ once: true }}>
                   <Link to="/csomagok">
                     <motion.button 
+                      type="button"
                       className="secondary-button inline-flex items-center"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}>
@@ -1048,25 +1080,29 @@ function App() {
                           <motion.a 
                             href="#"
                             className="w-10 h-10 bg-[#1a1a2e] rounded-lg flex items-center justify-center text-[#ff5c35] hover:text-white transition-colors"
-                            whileHover={{ y: -5 }}>
+                            whileHover={{ y: -5 }}
+                            aria-label="Kövessen minket Facebookon">
                             <Facebook size={20} />
                           </motion.a>
                           <motion.a 
                             href="#"
                             className="w-10 h-10 bg-[#1a1a2e] rounded-lg flex items-center justify-center text-[#ff5c35] hover:text-white transition-colors"
-                            whileHover={{ y: -5 }}>
+                            whileHover={{ y: -5 }}
+                            aria-label="Kövessen minket Instagramon">
                             <Instagram size={20} />
                           </motion.a>
                           <motion.a 
                             href="#"
                             className="w-10 h-10 bg-[#1a1a2e] rounded-lg flex items-center justify-center text-[#ff5c35] hover:text-white transition-colors"
-                            whileHover={{ y: -5 }}>
+                            whileHover={{ y: -5 }}
+                            aria-label="Kövessen minket LinkedInen">
                             <Linkedin size={20} />
                           </motion.a>
                           <motion.a 
                             href="#"
                             className="w-10 h-10 bg-[#1a1a2e] rounded-lg flex items-center justify-center text-[#ff5c35] hover:text-white transition-colors"
-                            whileHover={{ y: -5 }}>
+                            whileHover={{ y: -5 }}
+                            aria-label="Kövessen minket Twitteren">
                             <Twitter size={20} />
                           </motion.a>
                     </div>
@@ -1091,6 +1127,10 @@ function App() {
         <Route path="/kapcsolat" element={<Contact />} />
         <Route path="/szolgaltatasok" element={<Services />} />
         <Route path="/adatvedelem" element={<Privacy />} />
+        <Route path="/404" element={<Error code={404} />} />
+        <Route path="/403" element={<Error code={403} />} />
+        <Route path="/500" element={<Error code={500} />} />
+        <Route path="*" element={<Error code={404} />} />
       </Routes>
 
       {/* Footer */}
@@ -1117,13 +1157,13 @@ function App() {
               <h4 className="font-semibold mb-4">Szolgáltatások</h4>
               <ul className="space-y-2">
                 <motion.li whileHover={{ x: 5 }}>
-                  <a href="#" className="text-gray-400 hover:text-white">Webfejlesztés</a>
+                  <Link to="/szolgaltatasok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Webfejlesztés</Link>
                 </motion.li>
                 <motion.li whileHover={{ x: 5 }}>
-                  <a href="#" className="text-gray-400 hover:text-white">Marketing</a>
+                  <Link to="/szolgaltatasok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Marketing</Link>
                 </motion.li>
                 <motion.li whileHover={{ x: 5 }}>
-                  <a href="#" className="text-gray-400 hover:text-white">Automatizálás</a>
+                  <Link to="/szolgaltatasok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Automatizálás</Link>
                 </motion.li>
               </ul>
             </motion.div>
@@ -1131,13 +1171,13 @@ function App() {
               <h4 className="font-semibold mb-4">Vállalat</h4>
               <ul className="space-y-2">
                 <motion.li whileHover={{ x: 5 }}>
-                  <a href="#" className="text-gray-400 hover:text-white">Rólunk</a>
+                  <Link to="/rolunk" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Rólunk</Link>
                 </motion.li>
                 <motion.li whileHover={{ x: 5 }}>
-                  <a href="#" className="text-gray-400 hover:text-white">Karrier</a>
+                  <Link to="/rolunk" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Karrier</Link>
                 </motion.li>
                 <motion.li whileHover={{ x: 5 }}>
-                  <a href="#" className="text-gray-400 hover:text-white">Kapcsolat</a>
+                  <Link to="/kapcsolat" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Kapcsolat</Link>
                 </motion.li>
               </ul>
             </motion.div>
@@ -1145,13 +1185,13 @@ function App() {
               <h4 className="font-semibold mb-4">Jogi</h4>
               <ul className="space-y-2">
                 <motion.li whileHover={{ x: 5 }}>
-                  <Link to="/adatvedelem" className="text-gray-400 hover:text-white">Adatvédelmi Tájékoztató</Link>
+                  <Link to="/adatvedelem" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Adatvédelmi Tájékoztató</Link>
                 </motion.li>
                 <motion.li whileHover={{ x: 5 }}>
-                  <a href="#" className="text-gray-400 hover:text-white">ÁSZF</a>
+                  <Link to="/adatvedelem" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">ÁSZF</Link>
                 </motion.li>
                 <motion.li whileHover={{ x: 5 }}>
-                  <a href="#" className="text-gray-400 hover:text-white">Cookie tájékoztató</a>
+                  <Link to="/adatvedelem" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Cookie tájékoztató</Link>
                 </motion.li>
               </ul>
             </motion.div>

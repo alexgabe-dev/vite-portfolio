@@ -69,9 +69,10 @@ const PromotionPopup: React.FC<PromotionPopupProps> = ({ isOpen, onClose }) => {
             >
               {/* Close button */}
               <button
+                type="button"
                 onClick={onClose}
                 className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10"
-              >
+                aria-label="Close promotion popup">
                 <X size={24} />
               </button>
 

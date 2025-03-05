@@ -1,13 +1,133 @@
 <!doctype html>
-<html lang="en">
+<html lang="hu">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://safeframe.googlesyndication.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https: ws: wss:; worker-src 'self' blob:; frame-src 'self' https://safeframe.googlesyndication.com;">
+    <link rel="icon" type="image/png" href="/src/vizitor-logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <meta name="description" content="Viztor - Professzionális webfejlesztés és marketing szolgáltatások. Modern weboldalak, egyedi fejlesztések és hatékony marketing megoldások vállalkozásoknak." />
+    <meta name="keywords" content="webfejlesztés, weboldalkészítés, marketing szolgáltatások, SEO, webtervezés, webdesign, digitális marketing, online marketing, honlapkészítés" />
+    <meta name="author" content="Viztor" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- OpenGraph Meta Tags -->
+    <meta property="og:title" content="Viztor - Webfejlesztés és Marketing Szolgáltatások" />
+    <meta property="og:description" content="Professzionális webfejlesztés és marketing szolgáltatások. Modern weboldalak, egyedi fejlesztések és hatékony marketing megoldások vállalkozásoknak." />
+    <meta property="og:image" content="https://viztor.hu/src/vizitor-logo.png" />
+    <meta property="og:url" content="https://viztor.hu" />
+    <meta property="og:type" content="website" />
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Viztor - Webfejlesztés és Marketing Szolgáltatások" />
+    <meta name="twitter:description" content="Professzionális webfejlesztés és marketing szolgáltatások. Modern weboldalak, egyedi fejlesztések és hatékony marketing megoldások." />
+    <meta name="twitter:image" content="https://viztor.hu/src/vizitor-logo.png" />
+    
+    <!-- Theme Color for Mobile Browsers -->
+    <meta name="theme-color" content="#ff5c35" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0a0a0f" media="(prefers-color-scheme: dark)">
+    
+    <title>vizitor.hu - Webfejlesztés és Marketing Szolgáltatások</title>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- Skip to main content link for keyboard users -->
+    <a href="#main-content" class="skip-link" style="position: absolute; left: -9999px; z-index: 999; padding: 1em; background: white; text-decoration: none;" tabindex="0">
+      Ugrás a fő tartalomhoz
+    </a>
+
+    <div id="root" role="application" aria-label="Viztor webfejlesztés és marketing">
+      <!-- A React alkalmazás ide fog betöltődni -->
+      <main id="main-content" role="main" tabindex="-1">
+        <!-- A fő tartalom ide kerül -->
+      </main>
+    </div>
+
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Accessibility announcement for screen readers -->
+    <div role="status" aria-live="polite" id="screen-reader-announcements" class="sr-only"></div>
+
+    <script>
+      // Keyboard navigation enhancement
+      document.addEventListener('keydown', function(e) {
+        // ESC key handler for modals and popups
+        if (e.key === 'Escape') {
+          // Close any open modal/popup
+          const modals = document.querySelectorAll('[role="dialog"]');
+          modals.forEach(modal => {
+            if (modal.getAttribute('aria-hidden') === 'false') {
+              modal.setAttribute('aria-hidden', 'true');
+            }
+          });
+        }
+
+        // Tab trap for modals
+        if (e.key === 'Tab') {
+          const modals = document.querySelectorAll('[role="dialog"][aria-hidden="false"]');
+          if (modals.length > 0) {
+            const modal = modals[0];
+            const focusableElements = modal.querySelectorAll(
+              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            const firstFocusable = focusableElements[0];
+            const lastFocusable = focusableElements[focusableElements.length - 1];
+
+            if (e.shiftKey && document.activeElement === firstFocusable) {
+              e.preventDefault();
+              lastFocusable.focus();
+            } else if (!e.shiftKey && document.activeElement === lastFocusable) {
+              e.preventDefault();
+              firstFocusable.focus();
+            }
+          }
+        }
+      });
+
+      // Focus visible utility
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Tab') {
+          document.body.classList.add('user-is-tabbing');
+        }
+      });
+
+      document.addEventListener('mousedown', function() {
+        document.body.classList.remove('user-is-tabbing');
+      });
+    </script>
+
+    <style>
+      /* Accessibility styles */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* Focus styles for keyboard navigation */
+      .user-is-tabbing *:focus {
+        outline: 2px solid #4A90E2 !important;
+        outline-offset: 2px !important;
+      }
+
+      /* Skip link styles */
+      .skip-link:focus {
+        left: 0;
+        top: 0;
+      }
+
+      /* High contrast mode support */
+      @media (forced-colors: active) {
+        * {
+          forced-color-adjust: auto;
+        }
+      }
+    </style>
   </body>
 </html>

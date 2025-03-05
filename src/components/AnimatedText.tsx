@@ -12,7 +12,17 @@ const words = [
   "megoldással",
   "kihívással",
   "üzenettel",
-  "emaillel"
+  "emaillel",
+  "regisztrációval",
+  "vásárlással",
+  "megrendeléssel",
+  "visszajelzéssel",
+  "referenciával",
+  "érdeklődéssel",
+  "konzultációval",
+  "támogatással",
+  "követőkkel",
+  "aktivitással"
 ];
 
 const AnimatedText = () => {

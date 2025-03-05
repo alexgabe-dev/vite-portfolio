@@ -34,6 +34,7 @@ const ScrollToTop: React.FC = () => {
     <AnimatePresence>
       {isVisible && (
         <motion.button
+          type="button"
           onClick={scrollToTop}
           className="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-[#ff5c35] text-white shadow-lg hover:bg-[#ff5c35]/90 focus:outline-none"
           initial={{ opacity: 0, scale: 0.5 }}
@@ -48,6 +49,7 @@ const ScrollToTop: React.FC = () => {
             duration: 0.2,
             ease: "easeInOut"
           }}
+          aria-label="Scroll to top of page"
         >
           <ArrowUp size={24} />
         </motion.button>

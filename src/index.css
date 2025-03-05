@@ -56,3 +56,39 @@ html {
 .glass-effect {
   @apply bg-white/10 backdrop-blur-lg border border-white/20;
 }
+
+/* High Contrast Mode Support */
+@media (forced-colors: active) {
+  * {
+    /* Remove forced-color-adjust */
+    -webkit-text-fill-color: currentColor;
+    color-scheme: light dark;
+  }
+}
+
+/* Fallback for Safari and other browsers */
+@media screen and (-ms-high-contrast: active),
+       screen and (-webkit-high-contrast: active) {
+  * {
+    color-scheme: light dark;
+    border-color: currentColor;
+  }
+
+  /* Ensure buttons and interactive elements maintain visibility */
+  button,
+  [role="button"],
+  a {
+    border: 1px solid currentColor;
+  }
+
+  /* Ensure images remain visible */
+  img,
+  svg {
+    background-color: ButtonFace;
+  }
+}
+
+/* Additional color scheme support for modern browsers */
+:root {
+  color-scheme: light dark;
+}

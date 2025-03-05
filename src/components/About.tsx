@@ -182,7 +182,8 @@ const About = () => {
           <motion.button
             className="inline-flex items-center px-8 py-4 bg-[#ff5c35] text-white rounded-lg font-semibold hover:bg-[#ff5c35]/90 transition-colors group"
             whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}>
+            whileTap={{ scale: 0.98 }}
+            aria-label="Contact us to discuss your project">
             Kapcsolatfelvétel
             <ChevronRight className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
           </motion.button>

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://viztor.hu/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 10 
