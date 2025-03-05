@@ -212,20 +212,24 @@ function App() {
                   <motion.div 
                     className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8 md:mt-0"
                     variants={fadeInUp}>
-                    <motion.button 
-                      type="button"
-                      className="primary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4"
-                      whileHover={{ scale: 1.05, boxShadow: "0 0 8px rgb(255, 92, 53)" }}
-                      whileTap={{ scale: 0.95 }}>
-                      Ajánlatkérés
-                    </motion.button>
-                    <motion.button 
-                      type="button"
-                      className="secondary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}>
-                      Beszéljen szakértőnkkel
-                    </motion.button>
+                    <Link to="/kapcsolat">
+                      <motion.button 
+                        type="button"
+                        className="primary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4"
+                        whileHover={{ scale: 1.05, boxShadow: "0 0 8px rgb(255, 92, 53)" }}
+                        whileTap={{ scale: 0.95 }}>
+                        Ajánlatkérés
+                      </motion.button>
+                    </Link>
+                    <Link to="/szolgaltatasok">
+                      <motion.button 
+                        type="button"
+                        className="secondary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}>
+                        Szolgáltatásaink
+                      </motion.button>
+                    </Link>
                   </motion.div>
                 </motion.div>
                 <motion.div 
