@@ -13,7 +13,7 @@ A modern, responsive portfolio and business website built with React, Vite, Type
 
 🎨 **Live Demo**: [vizitor.vercel.app](https://vizitor.vercel.app)
 
-Created by [Alex Gabe](https://github.com/yourusername) 👨‍💻
+Created by [Alex Gabe](https://github.com/alexgabe-dev) 👨‍💻
 
 ## ✨ Features
 
@@ -144,7 +144,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Contact
 
 Alex Gabe
-- 🌐 Website: [alexgabe.dev](https://alexgabe.dev)
+- 🌐 Website: [alexgabe.dev](https://vizitor.hu)
 - 📧 Email: contact@alexgabe.dev
 - 💼 LinkedIn: [Alex Gabe](https://linkedin.com/in/alexgabe)
 - 🐦 Twitter: [@alexgabedev](https://twitter.com/alexgabedev)
