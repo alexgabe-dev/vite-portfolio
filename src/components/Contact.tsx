@@ -36,10 +36,11 @@ const Contact = () => {
     setError('');
 
     try {
-      const response = await fetch('/api/send-email', {
+      const response = await fetch('https://vizitor.hu/api/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify({
           name: formState.name,
