@@ -72,7 +72,7 @@ const Contact = () => {
       setTimeout(() => setIsSubmitted(false), 3000);
     } catch (err: any) {
       console.error('Form submission error:', err);
-      setError(err.message || 'Hiba történt az üzenet küldése közben. Kérjük próbálja újra később.');
+      setError(typeof err.message === 'object' ? 'Hiba történt az üzenet küldése közben' : err.message);
       setTimeout(() => setError(''), 5000);
     } finally {
       setIsLoading(false);

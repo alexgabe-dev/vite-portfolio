@@ -5,23 +5,39 @@ import cors from 'cors';
 const router = express.Router();
 
 // CORS beállítások
-router.use(cors({
-  origin: ['https://www.vizitor.hu', 'https://vizitor.hu', 'http://localhost:5173'],
+const corsOptions = {
+  origin: function(origin: any, callback: any) {
+    const allowedOrigins = ['https://www.vizitor.hu', 'https://vizitor.hu', 'http://localhost:5173'];
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS policy violation'));
+    }
+  },
   methods: ['POST', 'OPTIONS'],
   credentials: true,
-}));
+  optionsSuccessStatus: 200
+};
+
+router.use(cors(corsOptions));
+router.use(express.json());
 
 // Input validáció
 const validateInput = (data: any) => {
-  if (!data.email || !data.name || !data.subject || !data.message) {
-    throw new Error('Minden kötelező mezőt ki kell tölteni');
+  const errors: string[] = [];
+  
+  if (!data.name?.trim()) errors.push('A név megadása kötelező');
+  if (!data.email?.trim()) errors.push('Az email cím megadása kötelező');
+  if (!data.subject?.trim()) errors.push('A tárgy megadása kötelező');
+  if (!data.message?.trim()) errors.push('Az üzenet megadása kötelező');
+  
+  if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+    errors.push('Érvénytelen email cím formátum');
   }
   
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-    throw new Error('Érvénytelen email cím');
+  if (errors.length > 0) {
+    throw new Error(errors.join(', '));
   }
-  
-  return true;
 };
 
 router.post('/send-email', async (req, res) => {
@@ -29,6 +45,10 @@ router.post('/send-email', async (req, res) => {
     // Input validáció
     const { name, email, phone, subject, message } = req.body;
     validateInput({ name, email, subject, message });
+
+    if (!process.env.SMTP_PASSWORD) {
+      throw new Error('SMTP konfiguráció hiányzik');
+    }
 
     // Email tartalom összeállítása
     const emailContent = `
@@ -54,16 +74,20 @@ router.post('/send-email', async (req, res) => {
       auth: {
         user: 'MS_pmVEtl@vizitor.hu',
         pass: process.env.SMTP_PASSWORD
-      }
+      },
+      logger: true,
+      debug: true
     });
 
     // Email küldése
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: 'info@vizitor.hu',
       to: 'info@vizitor.hu',
       subject: `Új kapcsolatfelvétel: ${subject}`,
       html: emailContent,
     });
+
+    console.log('Email sent:', info.messageId);
 
     res.json({ 
       success: true,
@@ -73,7 +97,7 @@ router.post('/send-email', async (req, res) => {
     console.error('Email küldési hiba:', error);
     res.status(500).json({ 
       success: false,
-      error: error.message || 'Hiba történt az üzenet küldése közben. Kérjük próbálja újra később.'
+      error: error.message || 'Hiba történt az üzenet küldése közben'
     });
   }
 });
