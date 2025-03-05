@@ -1,4 +1,4 @@
-import sgMail from '@sendgrid/mail';
+import nodemailer from 'nodemailer';
 
 // Input validáció
 const validateInput = (data: any) => {
@@ -71,19 +71,29 @@ export default async function handler(req: any, res: any) {
       </div>
     `;
 
-    // SendGrid beállítása és email küldése
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
-    
-    await sgMail.send({
+    // SMTP Transporter létrehozása
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.mailersend.net',
+      port: 587,
+      secure: false, // TLS
+      auth: {
+        user: 'MS_pmVEtl@vizitor.hu',
+        pass: process.env.SMTP_PASSWORD
+      }
+    });
+
+    // Email küldése
+    await transporter.sendMail({
+      from: 'info@vizitor.hu',
       to: 'info@vizitor.hu',
-      from: 'info@vizitor.hu', // A weboldal nevében küldjük
       subject: `Új kapcsolatfelvétel: ${subject}`,
       html: emailContent,
     });
 
+    console.log('Email sikeresen elküldve');
     res.status(200).json({ success: true });
   } catch (error: any) {
-    console.error('Email sending error:', error);
+    console.error('Email küldési hiba:', error);
     res.status(500).json({ 
       error: 'Hiba történt az üzenet küldése közben. Kérjük próbálja újra később.'
     });
