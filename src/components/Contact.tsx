@@ -42,7 +42,6 @@ const Contact = () => {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        credentials: 'include',
         body: JSON.stringify({
           name: formState.name,
           email: formState.email,
@@ -72,7 +71,10 @@ const Contact = () => {
       setTimeout(() => setIsSubmitted(false), 3000);
     } catch (err: any) {
       console.error('Form submission error:', err);
-      setError(typeof err.message === 'object' ? 'Hiba történt az üzenet küldése közben' : err.message);
+      const errorMessage = err.message && typeof err.message === 'string' 
+        ? err.message 
+        : 'Hiba történt az üzenet küldése közben. Kérjük próbálja újra később.';
+      setError(errorMessage);
       setTimeout(() => setError(''), 5000);
     } finally {
       setIsLoading(false);

@@ -42,11 +42,19 @@ const validateInput = (data: any) => {
 
 router.post('/send-email', async (req, res) => {
   try {
+    console.log('Received request body:', req.body);
+
     // Input validáció
     const { name, email, phone, subject, message } = req.body;
+    
+    if (!req.body || Object.keys(req.body).length === 0) {
+      throw new Error('Hiányzó adatok a kérésből');
+    }
+
     validateInput({ name, email, subject, message });
 
     if (!process.env.SMTP_PASSWORD) {
+      console.error('SMTP_PASSWORD environment variable is not set');
       throw new Error('SMTP konfiguráció hiányzik');
     }
 
@@ -66,6 +74,8 @@ router.post('/send-email', async (req, res) => {
       </div>
     `;
 
+    console.log('Creating SMTP transport...');
+
     // SMTP Transporter létrehozása
     const transporter = nodemailer.createTransport({
       host: 'smtp.mailersend.net',
@@ -79,6 +89,13 @@ router.post('/send-email', async (req, res) => {
       debug: true
     });
 
+    console.log('Verifying SMTP connection...');
+    
+    // Ellenőrizzük a kapcsolatot
+    await transporter.verify();
+
+    console.log('Sending email...');
+
     // Email küldése
     const info = await transporter.sendMail({
       from: 'info@vizitor.hu',
@@ -87,17 +104,26 @@ router.post('/send-email', async (req, res) => {
       html: emailContent,
     });
 
-    console.log('Email sent:', info.messageId);
+    console.log('Email sent successfully:', info.messageId);
 
     res.json({ 
       success: true,
       message: 'Email sikeresen elküldve'
     });
   } catch (error: any) {
-    console.error('Email küldési hiba:', error);
+    console.error('Email sending error:', error);
+    
+    // Részletes hibaüzenet naplózása
+    if (error.response) {
+      console.error('SMTP Response:', error.response);
+    }
+    
+    // Biztonságos hibaüzenet küldése a kliensnek
+    const clientError = error.message || 'Hiba történt az üzenet küldése közben';
+    
     res.status(500).json({ 
       success: false,
-      error: error.message || 'Hiba történt az üzenet küldése közben'
+      error: clientError
     });
   }
 });
