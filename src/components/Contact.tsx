@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle, ArrowRight, MessageSquare } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, ArrowRight, MessageSquare, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Contact = () => {
   const [formState, setFormState] = useState({
@@ -8,9 +9,12 @@ const Contact = () => {
     email: '',
     subject: '',
     message: '',
-    phone: ''  // Új mező
+    phone: '',
+    privacyAccepted: false
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const [activeSection, setActiveSection] = useState<'form' | 'map'>('form');
 
   const fadeInUp = {
@@ -19,12 +23,57 @@ const Contact = () => {
     exit: { y: -20, opacity: 0 }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    // Görgetés az oldal tetejére a visszajelzés jobb láthatósága érdekében
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setTimeout(() => setIsSubmitted(false), 3000);
+    
+    if (!formState.privacyAccepted) {
+      setError('Kérjük fogadja el az adatvédelmi tájékoztatót!');
+      setTimeout(() => setError(''), 3000);
+      return;
+    }
+
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formState.name,
+          email: formState.email,
+          phone: formState.phone,
+          subject: formState.subject,
+          message: formState.message
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Hiba történt az üzenet küldése közben');
+      }
+
+      setIsSubmitted(true);
+      setFormState({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+        phone: '',
+        privacyAccepted: false
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => setIsSubmitted(false), 3000);
+    } catch (err: any) {
+      setError(err.message || 'Hiba történt az üzenet küldése közben. Kérjük próbálja újra!');
+      setTimeout(() => setError(''), 5000);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -95,6 +144,20 @@ const Contact = () => {
               className="fixed top-24 md:top-4 left-4 right-4 z-[9999] bg-green-500 text-white p-4 rounded-lg shadow-lg flex items-center justify-center space-x-2 mx-auto max-w-lg">
               <CheckCircle className="w-5 h-5 flex-shrink-0" />
               <span className="text-sm md:text-base text-center">Köszönjük megkeresését! Hamarosan felvesszük Önnel a kapcsolatot.</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Error Message */}
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="fixed top-32 md:top-24 left-4 right-4 z-[9999] bg-red-500 text-white p-4 rounded-lg shadow-lg flex items-center justify-center space-x-2 mx-auto max-w-lg">
+              <X className="w-5 h-5 flex-shrink-0" />
+              <span className="text-sm md:text-base text-center">{error}</span>
             </motion.div>
           )}
         </AnimatePresence>
@@ -204,12 +267,42 @@ const Contact = () => {
                   placeholder="Írja le részletesen, miben segíthetünk..."
                 ></motion.textarea>
               </div>
+
+              {/* Privacy Policy Checkbox */}
+              <div className="flex items-center space-x-2">
+                <motion.input
+                  type="checkbox"
+                  id="privacy"
+                  checked={formState.privacyAccepted}
+                  onChange={(e) => setFormState(prev => ({
+                    ...prev,
+                    privacyAccepted: e.target.checked
+                  }))}
+                  className="h-4 w-4 rounded border-gray-800 bg-[#0a0a0f] text-[#ff5c35] focus:ring-[#ff5c35] focus:ring-opacity-25"
+                />
+                <label htmlFor="privacy" className="text-sm text-gray-400">
+                  Elolvastam és elfogadom az <Link to="/adatvedelem" className="text-[#ff5c35] hover:underline">adatvédelmi tájékoztatót</Link>
+                </label>
+              </div>
+
               <motion.button
                 type="submit"
-                className="w-full inline-flex items-center justify-center px-6 py-4 bg-[#ff5c35] text-white rounded-lg font-semibold hover:bg-[#ff5c35]/90 transition-colors group text-sm md:text-base"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}>
-                {isSubmitted ? (
+                disabled={isLoading}
+                className={`w-full inline-flex items-center justify-center px-6 py-4 bg-[#ff5c35] text-white rounded-lg font-semibold transition-colors group text-sm md:text-base ${
+                  isLoading ? 'opacity-75 cursor-not-allowed' : 'hover:bg-[#ff5c35]/90'
+                }`}
+                whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                whileTap={{ scale: isLoading ? 1 : 0.98 }}>
+                {isLoading ? (
+                  <>
+                    <motion.div
+                      className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    />
+                    Küldés folyamatban...
+                  </>
+                ) : isSubmitted ? (
                   <>
                     <CheckCircle className="w-5 h-5 mr-2" />
                     Üzenet elküldve!
@@ -221,9 +314,6 @@ const Contact = () => {
                   </>
                 )}
               </motion.button>
-              <p className="text-center text-gray-400 text-xs mt-4">
-                A gombra kattintva elfogadja az <a href="#" className="text-[#ff5c35] hover:underline">adatkezelési tájékoztatót</a>
-              </p>
             </form>
           </motion.div>
 
@@ -236,6 +326,7 @@ const Contact = () => {
             {/* Quick Contact Buttons */}
             <motion.a
               href="tel:+36301234567"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="block w-full bg-[#1a1a2e]/80 backdrop-blur-sm p-6 rounded-2xl border border-gray-800/50 hover:border-[#ff5c35] transition-all group"
               whileHover={{ y: -5 }}>
               <div className="flex items-center space-x-4">
@@ -252,6 +343,7 @@ const Contact = () => {
 
             <motion.a
               href="mailto:info@weboldal.hu"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="block w-full bg-[#1a1a2e]/80 backdrop-blur-sm p-6 rounded-2xl border border-gray-800/50 hover:border-[#ff5c35] transition-all group"
               whileHover={{ y: -5 }}>
               <div className="flex items-center space-x-4">

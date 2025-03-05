@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Users, Target, Award, Rocket, ChevronRight, Code, Palette, Globe } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const About = () => {
   const fadeInUp = {
@@ -179,14 +180,16 @@ const About = () => {
           <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
             Vedd fel velünk a kapcsolatot és beszéljük meg, hogyan tudunk segíteni a projektedben
           </p>
-          <motion.button
-            className="inline-flex items-center px-8 py-4 bg-[#ff5c35] text-white rounded-lg font-semibold hover:bg-[#ff5c35]/90 transition-colors group"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            aria-label="Contact us to discuss your project">
-            Kapcsolatfelvétel
-            <ChevronRight className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
-          </motion.button>
+          <Link to="/kapcsolat" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <motion.button
+              className="inline-flex items-center px-8 py-4 bg-[#ff5c35] text-white rounded-lg font-semibold hover:bg-[#ff5c35]/90 transition-colors group"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              aria-label="Contact us to discuss your project">
+              Kapcsolatfelvétel
+              <ChevronRight className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
+            </motion.button>
+          </Link>
         </motion.div>
       </div>
     </div>

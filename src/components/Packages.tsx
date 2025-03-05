@@ -212,8 +212,8 @@ const Packages = () => {
           initial="initial"
           animate="animate">
           <h1 className="text-5xl font-bold mb-4">
-            Tervek az Ön
-            <span className="bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"> igényeire </span>
+            Tervek az
+            <span className="bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"> Ön igényeire </span>
             szabva
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">

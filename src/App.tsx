@@ -414,24 +414,37 @@ function App() {
                         </p>
                         <ul className="space-y-3">
                           {service.features.map((feature, idx) => (
-                            <motion.li 
+                            <Link 
                               key={idx}
-                              className="flex items-center text-gray-400 group-hover:text-gray-300"
-                              initial={{ opacity: 0, x: -10 }}
-                              whileInView={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 0.1 * idx }}>
-                              <ChevronRight size={16} className="text-[#ff5c35] mr-2" />
-                              {feature}
-                            </motion.li>
+                              to="/szolgaltatasok"
+                              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                              className="block"
+                            >
+                              <motion.li 
+                                className="flex items-center text-gray-400 group-hover:text-gray-300 cursor-pointer"
+                                initial={{ opacity: 0, x: -10 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.1 * idx }}
+                                whileHover={{ x: 5 }}>
+                                <ChevronRight size={16} className="text-[#ff5c35] mr-2" />
+                                {feature}
+                              </motion.li>
+                            </Link>
                           ))}
                 </ul>
-                        <motion.button 
-                          type="button"
-                          className="mt-8 px-6 py-2 bg-[#1a1a2e] border border-[#ff5c35]/30 text-[#ff5c35] rounded-lg hover:bg-[#ff5c35] hover:text-white transition-all duration-300 w-full"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}>
-                          Részletek
-                        </motion.button>
+                        <Link 
+                          to="/szolgaltatasok" 
+                          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                          className="block w-full"
+                        >
+                          <motion.button 
+                            type="button"
+                            className="mt-8 px-6 py-2 bg-[#1a1a2e] border border-[#ff5c35]/30 text-[#ff5c35] rounded-lg hover:bg-[#ff5c35] hover:text-white transition-all duration-300 w-full"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}>
+                            Részletek
+                          </motion.button>
+                        </Link>
                       </div>
                     </motion.div>
                   ))}
@@ -646,11 +659,15 @@ function App() {
                         ))}
                       </ul>
                       
-                      <button 
-                        type="button"
-                        className={pkg.isPopular ? "primary-button w-full" : "secondary-button w-full"}>
-                        Részletek
-                      </button>
+                      <Link to="/csomagok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                        <motion.button 
+                          type="button"
+                          className={pkg.isPopular ? "primary-button w-full" : "secondary-button w-full"}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}>
+                          Részletek
+                        </motion.button>
+                      </Link>
                     </div>
                   ))}
                 </div>
@@ -735,13 +752,15 @@ function App() {
                                   ))}
                                 </ul>
                                 
-                                <motion.button 
-                                  type="button"
-                                  className={packages[currentPackage].isPopular ? "primary-button w-full" : "secondary-button w-full"}
-                                  whileHover={{ scale: 1.02 }}
-                                  whileTap={{ scale: 0.98 }}>
-                                  Részletek
-                                </motion.button>
+                                <Link to="/csomagok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                                  <motion.button 
+                                    type="button"
+                                    className={packages[currentPackage].isPopular ? "primary-button w-full" : "secondary-button w-full"}
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}>
+                                    Részletek
+                                  </motion.button>
+                                </Link>
                               </>
                             )}
                           </motion.div>
@@ -805,7 +824,7 @@ function App() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}>
-                  <Link to="/csomagok">
+                  <Link to="/csomagok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                     <motion.button 
                       type="button"
                       className="secondary-button inline-flex items-center"
@@ -951,22 +970,22 @@ function App() {
                         key={index}
                         className="group relative"
                         variants={fadeInUp}>
-                        <motion.div 
-                          className="relative h-[300px] rounded-lg overflow-hidden mb-4"
-                          whileHover={{ scale: 1.05 }}>
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] to-transparent z-10"></div>
-                          <img 
-                            src={member.image} 
-                            alt={member.name}
-                            className="w-full h-full object-cover"
-                          />
-                          <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
-                            <h3 className="text-xl font-bold">{member.name}</h3>
-                            <p className="text-[#ff5c35]">{member.role}</p>
-                          </div>
+                          <motion.div 
+                            className="relative h-[300px] rounded-lg overflow-hidden mb-4"
+                            whileHover={{ scale: 1.05 }}>
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] to-transparent z-10"></div>
+                            <img 
+                              src={member.image} 
+                              alt={member.name}
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
+                              <h3 className="text-xl font-bold">{member.name}</h3>
+                              <p className="text-[#ff5c35]">{member.role}</p>
+                            </div>
+                          </motion.div>
                         </motion.div>
-                      </motion.div>
-                    ))}
+                      ))}
                 </div>
                 </motion.div>
               </div>
@@ -1033,6 +1052,10 @@ function App() {
                       </div>
                       <motion.button 
                         type="submit"
+                        onClick={() => {
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                          // Itt később hozzáadhatjuk az űrlap beküldés logikáját
+                        }}
                         className="w-full primary-button"
                         whileHover={{ scale: 1.02, boxShadow: "0 0 8px rgb(255, 92, 53)" }}
                         whileTap={{ scale: 0.98 }}>
@@ -1050,6 +1073,7 @@ function App() {
                         <h3 className="text-lg font-semibold mb-4">Email</h3>
                         <motion.a 
                           href="mailto:info@vizitor.hu"
+                          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           className="text-gray-400 hover:text-white flex items-center"
                           whileHover={{ x: 5 }}>
                           <Mail className="mr-2 text-[#ff5c35]" size={20} />
@@ -1061,6 +1085,7 @@ function App() {
                         <h3 className="text-lg font-semibold mb-4">Telefon</h3>
                         <motion.a 
                           href="tel:+36301234567"
+                          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           className="text-gray-400 hover:text-white flex items-center"
                           whileHover={{ x: 5 }}>
                           <Phone className="mr-2 text-[#ff5c35]" size={20} />
@@ -1082,7 +1107,10 @@ function App() {
                         <h3 className="text-lg font-semibold mb-4">Kövessen minket</h3>
                     <div className="flex space-x-4">
                           <motion.a 
-                            href="#"
+                            href="https://facebook.com/vizitor"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                             className="w-10 h-10 bg-[#1a1a2e] rounded-lg flex items-center justify-center text-[#ff5c35] hover:text-white transition-colors"
                             whileHover={{ y: -5 }}
                             aria-label="Kövessen minket Facebookon">
