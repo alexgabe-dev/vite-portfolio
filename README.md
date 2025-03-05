@@ -5,13 +5,13 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-38B2AC)](https://tailwindcss.com/)
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-10.x-ff69b4)](https://www.framer.com/motion/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 ## 📖 About
 
 A modern, responsive portfolio and business website built with React, Vite, TypeScript, and Tailwind CSS. Features smooth animations, dark theme, and a professional design.
 
-🎨 **Live Demo**: [vizitor.vercel.app](https://vizitor.vercel.app)
+🎨 **Live Demo**: [vizitor.hu](https://vizitor.hu)
 
 Created by [Alex Gabe](https://github.com/alexgabe-dev) 👨‍💻
 
@@ -35,8 +35,8 @@ Created by [Alex Gabe](https://github.com/alexgabe-dev) 👨‍💻
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/vite-portfolio.git
-cd vite-portfolio
+git clone https://github.com/alexgabe-dev/vizitor.git
+cd vizitor
 ```
 
 2. **Install dependencies**
@@ -73,11 +73,11 @@ yarn build
 ## 📁 Project Structure
 
 ```
-vite-portfolio/
+vizitor/
 ├── src/
 │   ├── components/     # React components
 │   ├── assets/        # Static assets
-│   ├── styles/        # Global styles
+│   ├── App.css        # Global styles
 │   ├── App.tsx        # Main application
 │   └── main.tsx       # Entry point
 ├── public/            # Public assets
@@ -110,7 +110,6 @@ Create a `.env` file in the root directory:
 
 ```env
 VITE_APP_TITLE=Vizitor
-VITE_API_URL=your_api_url
 ```
 
 ## 🚀 Deployment
@@ -139,15 +138,15 @@ npm run build
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [MIT License](https://opensource.org/licenses/MIT) for details.
 
 ## 📞 Contact
 
 Alex Gabe
-- 🌐 Website: [alexgabe.dev](https://vizitor.hu)
-- 📧 Email: contact@alexgabe.dev
-- 💼 LinkedIn: [Alex Gabe](https://linkedin.com/in/alexgabe)
-- 🐦 Twitter: [@alexgabedev](https://twitter.com/alexgabedev)
+- 🌐 Website: [vizitor.hu](https://vizitor.hu)
+- 📧 Email: info@vizitor.hu
+- 💼 LinkedIn: [Alex Gabe](https://linkedin.com/company/vizitor)
+- 🐦 Twitter: [@vizitorhu](https://twitter.com/vizitorhu)
 
 ## 🙏 Acknowledgments
 
