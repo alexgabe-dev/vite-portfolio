@@ -10,6 +10,9 @@ import Contact from './components/Contact';
 import Services from './components/Services';
 import Navbar from './components/Navbar';
 import ScrollToTop from './components/ScrollToTop';
+import Privacy from './components/Privacy';
+import AnimatedText from './components/AnimatedText';
+import PromotionPopup from './components/PromotionPopup';
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -17,6 +20,7 @@ function App() {
   const [currentPackage, setCurrentPackage] = React.useState(0);
   const [clickCount, setClickCount] = React.useState(0);
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+  const [showPromotion, setShowPromotion] = React.useState(false);
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -37,6 +41,24 @@ function App() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Popup state management
+  React.useEffect(() => {
+    const hasSeenPopup = localStorage.getItem('hasSeenPopup');
+    
+    if (!hasSeenPopup) {
+      const timer = setTimeout(() => {
+        setShowPromotion(true);
+      }, 10000);
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleClosePromotion = () => {
+    setShowPromotion(false);
+    localStorage.setItem('hasSeenPopup', 'true');
+  };
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -131,6 +153,10 @@ function App() {
     <>
       <Navbar />
       <ScrollToTop />
+      <PromotionPopup 
+        isOpen={showPromotion} 
+        onClose={handleClosePromotion} 
+      />
       <Routes>
         <Route path="/" element={
           <main>
@@ -153,29 +179,31 @@ function App() {
                   initial="initial"
                   animate="animate">
                   <motion.h1 
-                    className="text-5xl md:text-6xl font-bold mb-6 leading-tight"
+                    className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6 leading-tight md:leading-tight"
                     variants={fadeInUp}>
-                    Növekedés <br />minden <br /><span className="text-[#ff5c35]">kattintással</span>
+                    <span className="md:block">Növekedés</span>{' '}
+                    <span className="md:block">minden</span>{' '}
+                    <AnimatedText />
                   </motion.h1>
                   <motion.p 
-                    className="text-xl mb-8 text-gray-400 max-w-lg"
+                    className="text-lg sm:text-xl mb-6 md:mb-8 text-gray-400 max-w-lg"
                     variants={fadeInUp}>
-                  Weboldalak, digitális marketing és automatizált megoldások, amelyek lenyűgözik a látogatókat és növelik a bevételt.
+                    Weboldalak, digitális marketing és automatizált megoldások, amelyek lenyűgözik a látogatókat és növelik a bevételt.
                   </motion.p>
                   <motion.div 
-                    className="flex flex-col sm:flex-row gap-4"
+                    className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8 md:mt-0"
                     variants={fadeInUp}>
                     <motion.button 
-                      className="primary-button"
+                      className="primary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4"
                       whileHover={{ scale: 1.05, boxShadow: "0 0 8px rgb(255, 92, 53)" }}
                       whileTap={{ scale: 0.95 }}>
                       Ajánlatkérés
                     </motion.button>
                     <motion.button 
-                      className="secondary-button"
+                      className="secondary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}>
-                    Beszéljen szakértőnkkel
+                      Beszéljen szakértőnkkel
                     </motion.button>
                   </motion.div>
                 </motion.div>
@@ -1062,6 +1090,7 @@ function App() {
         <Route path="/rolunk" element={<About />} />
         <Route path="/kapcsolat" element={<Contact />} />
         <Route path="/szolgaltatasok" element={<Services />} />
+        <Route path="/adatvedelem" element={<Privacy />} />
       </Routes>
 
       {/* Footer */}
@@ -1113,33 +1142,18 @@ function App() {
               </ul>
             </motion.div>
             <motion.div variants={fadeInUp}>
-              <h4 className="font-semibold mb-4">Kövessen minket</h4>
-              <div className="flex space-x-4">
-                <motion.a 
-                  href="#" 
-                  className="text-gray-400 hover:text-white"
-                  whileHover={{ y: -5 }}>
-                  <Facebook size={20} />
-                </motion.a>
-                <motion.a 
-                  href="#" 
-                  className="text-gray-400 hover:text-white"
-                  whileHover={{ y: -5 }}>
-                  <Twitter size={20} />
-                </motion.a>
-                <motion.a 
-                  href="#" 
-                  className="text-gray-400 hover:text-white"
-                  whileHover={{ y: -5 }}>
-                  <Instagram size={20} />
-                </motion.a>
-                <motion.a 
-                  href="#" 
-                  className="text-gray-400 hover:text-white"
-                  whileHover={{ y: -5 }}>
-                  <Linkedin size={20} />
-                </motion.a>
-            </div>
+              <h4 className="font-semibold mb-4">Jogi</h4>
+              <ul className="space-y-2">
+                <motion.li whileHover={{ x: 5 }}>
+                  <Link to="/adatvedelem" className="text-gray-400 hover:text-white">Adatvédelmi Tájékoztató</Link>
+                </motion.li>
+                <motion.li whileHover={{ x: 5 }}>
+                  <a href="#" className="text-gray-400 hover:text-white">ÁSZF</a>
+                </motion.li>
+                <motion.li whileHover={{ x: 5 }}>
+                  <a href="#" className="text-gray-400 hover:text-white">Cookie tájékoztató</a>
+                </motion.li>
+              </ul>
             </motion.div>
           </div>
           <motion.div 
