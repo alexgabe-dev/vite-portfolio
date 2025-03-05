@@ -46,24 +46,17 @@ const isRateLimited = (ip: string) => {
 };
 
 export default async function handler(req: any, res: any) {
-  // Csak POST kérések engedélyezése
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    // Rate limiting ellenőrzés
-    const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    if (isRateLimited(clientIp)) {
-      return res.status(429).json({ error: 'Túl sok kérés. Kérjük próbálja újra később.' });
-    }
-
     // Input validáció
     const { name, email, phone, subject, message } = req.body;
     validateInput({ name, email, subject, message });
 
-    // HTML email sablon
-    const htmlContent = `
+    // Email tartalom összeállítása
+    const emailContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #ff5c35;">Új üzenet érkezett a weboldalról</h2>
         <div style="background-color: #f8f8f8; padding: 20px; border-radius: 5px;">
@@ -75,55 +68,24 @@ export default async function handler(req: any, res: any) {
           <p><strong>Üzenet:</strong></p>
           <p style="white-space: pre-wrap;">${message}</p>
         </div>
-        <p style="color: #666; font-size: 12px; margin-top: 20px;">
-          Ez egy automatikusan generált üzenet a weboldalról.
-        </p>
       </div>
     `;
 
-    // SendGrid konfiguráció és email küldés
-    if (!process.env.SENDGRID_API_KEY) {
-      throw new Error('SendGrid API kulcs nincs beállítva');
-    }
-
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    // SendGrid beállítása és email küldése
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
     
     await sgMail.send({
       to: 'info@vizitor.hu',
-      from: process.env.VERIFIED_SENDER || 'info@vizitor.hu',
+      from: 'info@vizitor.hu', // A weboldal nevében küldjük
       subject: `Új kapcsolatfelvétel: ${subject}`,
-      html: htmlContent,
-      replyTo: email, // A válasz email a feladónak megy
+      html: emailContent,
     });
 
-    res.status(200).json({ 
-      success: true,
-      message: 'Email sikeresen elküldve!'
-    });
+    res.status(200).json({ success: true });
   } catch (error: any) {
     console.error('Email sending error:', error);
-    
-    // Felhasználóbarát hibaüzenet
-    let errorMessage = 'Hiba történt az email küldése közben.';
-    
-    if (error.response) {
-      console.error(error.response.body);
-      // SendGrid specifikus hibák kezelése
-      switch (error.code) {
-        case 401:
-          errorMessage = 'Hitelesítési hiba történt.';
-          break;
-        case 429:
-          errorMessage = 'Túl sok kérés. Kérjük próbálja újra később.';
-          break;
-        default:
-          errorMessage = 'Hiba történt az email küldése közben. Kérjük próbálja újra később.';
-      }
-    }
-
     res.status(500).json({ 
-      error: 'Failed to send email',
-      message: errorMessage
+      error: 'Hiba történt az üzenet küldése közben. Kérjük próbálja újra később.'
     });
   }
 }
