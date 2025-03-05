@@ -36,38 +36,19 @@ const Contact = () => {
     setError('');
 
     try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formState.name,
-          email: formState.email,
-          phone: formState.phone || 'Nem megadott',
-          subject: formState.subject,
-          message: formState.message
-        })
+      // A form automatikusan elküldi az adatokat a Formspree-nek
+      setIsSubmitted(true);
+      setFormState({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+        phone: '',
+        privacyAccepted: false
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setIsSubmitted(true);
-        setFormState({
-          name: '',
-          email: '',
-          subject: '',
-          message: '',
-          phone: '',
-          privacyAccepted: false
-        });
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        setTimeout(() => setIsSubmitted(false), 3000);
-      } else {
-        throw new Error(data.error || 'Hiba történt az üzenet küldése közben');
-      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => setIsSubmitted(false), 3000);
     } catch (err: any) {
       console.error('Form submission error:', err);
       setError('Hiba történt az üzenet küldése közben. Kérjük próbálja újra később.');
@@ -186,7 +167,11 @@ const Contact = () => {
             variants={fadeInUp}
             initial="initial"
             animate="animate">
-            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+            <form 
+              action="https://formspree.io/f/mldjrdnq"
+              method="POST"
+              onSubmit={handleSubmit} 
+              className="space-y-4 md:space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-1">
