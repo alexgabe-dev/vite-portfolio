@@ -40,12 +40,11 @@ const Contact = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
         },
         body: JSON.stringify({
           name: formState.name,
           email: formState.email,
-          phone: formState.phone,
+          phone: formState.phone || 'Nem megadott',
           subject: formState.subject,
           message: formState.message
         })
@@ -53,28 +52,25 @@ const Contact = () => {
 
       const data = await response.json();
 
-      if (!response.ok) {
+      if (response.ok) {
+        setIsSubmitted(true);
+        setFormState({
+          name: '',
+          email: '',
+          subject: '',
+          message: '',
+          phone: '',
+          privacyAccepted: false
+        });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => setIsSubmitted(false), 3000);
+      } else {
         throw new Error(data.error || 'Hiba történt az üzenet küldése közben');
       }
-
-      setIsSubmitted(true);
-      setFormState({
-        name: '',
-        email: '',
-        subject: '',
-        message: '',
-        phone: '',
-        privacyAccepted: false
-      });
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setTimeout(() => setIsSubmitted(false), 3000);
     } catch (err: any) {
       console.error('Form submission error:', err);
-      const errorMessage = err.message && typeof err.message === 'string' 
-        ? err.message 
-        : 'Hiba történt az üzenet küldése közben. Kérjük próbálja újra később.';
-      setError(errorMessage);
+      setError('Hiba történt az üzenet küldése közben. Kérjük próbálja újra később.');
       setTimeout(() => setError(''), 5000);
     } finally {
       setIsLoading(false);
