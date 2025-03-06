@@ -4,15 +4,27 @@
       "handle": "filesystem"
     },
     {
+      "src": "/404",
+      "dest": "/404"
+    },
+    {
+      "src": "/403",
+      "dest": "/403"
+    },
+    {
+      "src": "/500",
+      "dest": "/500"
+    },
+    {
       "src": "/[^.]+",
       "dest": "/"
+    },
+    {
+      "src": "/(.*)",
+      "status": 404,
+      "dest": "/404"
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": false,
-  "errorResponses": {
-    "404": {
-      "path": "/404"
-    }
-  }
+  "trailingSlash": false
 } 
