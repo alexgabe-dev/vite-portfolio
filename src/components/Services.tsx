@@ -88,7 +88,10 @@ const Services = () => {
         'Tartalom SEO',
         'Linképítési stratégiák',
         'Teljesítmény monitoring',
-        'Backlink elemzés'
+        'Backlink elemzés',
+        'On-site SEO',
+        'Off-site SEO',
+        'Technical SEO'
       ],
       benefits: [
         'Jobb keresési pozíciók',
