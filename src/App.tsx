@@ -461,22 +461,20 @@ function App() {
                         </p>
                         <ul className="space-y-3">
                           {service.features.map((feature, idx) => (
-                            <Link 
+                            <motion.li 
                               key={idx}
-                              to="/szolgaltatasok"
-                              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                              className="block"
-                            >
-                              <motion.li 
-                                className="flex items-center text-gray-400 group-hover:text-gray-300 cursor-pointer"
-                                initial={{ opacity: 0, x: -10 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.1 * idx }}
-                                whileHover={{ x: 5 }}>
-                                <ChevronRight size={16} className="text-[#ff5c35] mr-2" />
-                                {feature}
-                              </motion.li>
-                            </Link>
+                              className="flex items-center text-gray-400 group-hover:text-gray-300 cursor-pointer"
+                              initial={{ opacity: 0, x: -10 }}
+                              whileInView={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.1 * idx }}
+                              whileHover={{ x: 5 }}
+                              onClick={() => {
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                // Itt hozzáadhatsz további navigációs logikát
+                              }}>
+                              <ChevronRight size={16} className="text-[#ff5c35] mr-2" />
+                              {feature}
+                            </motion.li>
                           ))}
                 </ul>
                         <Link 
