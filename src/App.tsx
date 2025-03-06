@@ -1412,18 +1412,21 @@ function App() {
           <div className="grid md:grid-cols-4 gap-8">
             <motion.div variants={fadeInUp}>
               <div className="mb-4">
-                <motion.img 
-                  src="/vizitor-logo.png" 
-                  alt="Vizitor Logo" 
-                  width={32}
-                  height={32}
-                  className="h-8 w-8 object-contain" 
-                  loading="eager"
-                  decoding="async"
-                  fetchPriority="high"
+                <motion.picture
                   whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                />
+                  transition={{ type: "spring", stiffness: 300 }}>
+                  <source type="image/svg+xml" srcSet="/vizitor-logo.min.svg" />
+                  <source type="image/webp" srcSet="/vizitor-logo.webp" />
+                  <img 
+                    src="/vizitor-logo.png" 
+                    alt="Vizitor Logo" 
+                    width={32}
+                    height={32}
+                    className="h-8 w-8 object-contain" 
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </motion.picture>
               </div>
               <p className="text-gray-400">Modern megoldások az Ön vállalkozása számára</p>
             </motion.div>
