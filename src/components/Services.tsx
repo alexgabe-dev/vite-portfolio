@@ -71,7 +71,8 @@ const Services = () => {
         'Célzott ügyfélszerzés',
         'Mérhető eredmények',
         'Magasabb konverziós ráta',
-        'Erősebb márkaismertség'
+        'Erősebb márkaismertség',
+
       ],
       technologies: ['Google Ads', 'Facebook Ads', 'Instagram', 'LinkedIn', 'Google Analytics', 'Meta Business Suite']
     },
@@ -86,7 +87,8 @@ const Services = () => {
         'Kulcsszókutatás és optimalizálás',
         'Tartalom SEO',
         'Linképítési stratégiák',
-        'Teljesítmény monitoring'
+        'Teljesítmény monitoring',
+        'Backlink elemzés'
       ],
       benefits: [
         'Jobb keresési pozíciók',
