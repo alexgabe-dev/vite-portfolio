@@ -40,7 +40,11 @@ const Contact = () => {
       const form = e.target as HTMLFormElement;
       const formData = new FormData(form);
       
-      const response = await fetch('https://formspree.io/f/mldjrdnq', {
+      // Add additional fields to the form data
+      formData.append('_subject', 'Új kapcsolatfelvételi űrlap - Vizitor');
+      formData.append('_replyto', formState.email);
+      
+      const response = await fetch('https://formspree.io/f/xvgkpzen', {
         method: 'POST',
         body: formData,
         headers: {
