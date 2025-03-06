@@ -268,7 +268,8 @@ function App() {
       });
 
       if (!response.ok) {
-        throw new Error('Form submission failed');
+        setError('Form submission failed');
+        return;
       }
 
       setIsSubmitted(true);
