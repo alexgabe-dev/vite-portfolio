@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronRight, Code, BarChart, Settings, Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Twitter, 
-  Globe, Box, Palette, FileCode, Layout, CircuitBoard, Blocks, Laptop, Braces, Workflow, FileJson, Lightbulb, Handshake, Target } from 'lucide-react';
+  Globe, Box, Palette, FileCode, Layout, CircuitBoard, Blocks, Laptop, Braces, Workflow, FileJson, Lightbulb, Handshake, Target, CheckCircle, Send } from 'lucide-react';
 import { motion, AnimatePresence, useInView, useSpring, useTransform } from 'framer-motion';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import './App.css';
@@ -27,6 +27,22 @@ function App() {
   const [showPromotion, setShowPromotion] = React.useState(false);
   const [showCookieConsent, setShowCookieConsent] = React.useState(false);
   const location = useLocation();
+  const [formState, setFormState] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+    phone: '',
+    privacyAccepted: false
+  });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [userInfo, setUserInfo] = useState({
+    ip: '',
+    device: '',
+    browser: ''
+  });
 
   // Cookie consent initialization
   useEffect(() => {
@@ -196,6 +212,94 @@ function App() {
     { name: 'Kapcsolat', path: '/kapcsolat' }
   ];
 
+  useEffect(() => {
+    // Collect device and browser information
+    const deviceInfo = {
+      device: `${navigator.platform} - ${navigator.userAgent.match(/\((.*?)\)/)?.[1] || 'Unknown'}`,
+      browser: `${navigator.userAgent.match(/(Chrome|Safari|Firefox|Edge|MSIE|Trident)\/[\d.]+/)?.[0] || 'Unknown'}`
+    };
+    setUserInfo(prev => ({ ...prev, ...deviceInfo }));
+
+    // Get IP address
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        setUserInfo(prev => ({ ...prev, ip: data.ip }));
+      })
+      .catch(error => {
+        console.error('Error fetching IP:', error);
+      });
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formState.privacyAccepted) {
+      setError('Kérjük fogadja el az adatvédelmi tájékoztatót!');
+      setTimeout(() => setError(''), 3000);
+      return;
+    }
+
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const form = e.target as HTMLFormElement;
+      const formData = new FormData(form);
+      
+      // Add additional fields to the form data
+      formData.append('_subject', 'Új érdeklődő - vizitor.hu');
+      formData.append('_replyto', formState.email);
+      
+      // Add user information
+      formData.append('ip_address', userInfo.ip);
+      formData.append('device_info', userInfo.device);
+      formData.append('browser_info', userInfo.browser);
+      
+      // Add source information
+      formData.append('source', 'footer_form');
+      
+      const response = await fetch('https://formspree.io/f/xvgkpzen', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Form submission failed');
+      }
+
+      setIsSubmitted(true);
+      setFormState({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+        phone: '',
+        privacyAccepted: false
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => setIsSubmitted(false), 3000);
+    } catch (err: any) {
+      console.error('Form submission error:', err);
+      setError('Hiba történt az üzenet küldése közben. Kérjük próbálja újra később.');
+      setTimeout(() => setError(''), 5000);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormState(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   return (
     <>
       <ScrollToTop />
@@ -249,7 +353,7 @@ function App() {
                   <motion.div 
                     className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8 md:mt-0"
                     variants={fadeInUp}>
-                    <Link to="/kapcsolat">
+                    <Link to="/kapcsolat" state={{ fromFooter: true }}>
                       <motion.button 
                         type="button"
                         className="primary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4"
@@ -1017,53 +1121,104 @@ function App() {
                     variants={fadeInUp}
                     className="bg-[#0f0f17] p-8 rounded-lg">
                     <h2 className="text-2xl font-bold mb-6">Küldjön üzenetet</h2>
-                    <motion.form className="space-y-6">
+                    <motion.form 
+                      onSubmit={handleSubmit}
+                      className="space-y-4">
                       <div>
                         <label className="block text-gray-400 mb-2 text-sm">Név</label>
                         <motion.input 
-                        type="text" 
-                        placeholder="Az Ön neve"
+                          type="text" 
+                          name="name"
+                          value={formState.name}
+                          onChange={handleInputChange}
+                          placeholder="Az Ön neve"
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
                           whileFocus={{ scale: 1.01 }}
+                          required
                         />
                       </div>
                       <div>
                         <label className="block text-gray-400 mb-2 text-sm">Email</label>
                         <motion.input 
-                        type="email" 
-                        placeholder="pelda@email.hu"
+                          type="email" 
+                          name="email"
+                          value={formState.email}
+                          onChange={handleInputChange}
+                          placeholder="pelda@email.hu"
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
                           whileFocus={{ scale: 1.01 }}
+                          required
                         />
                       </div>
                       <div>
                         <label className="block text-gray-400 mb-2 text-sm">Tárgy</label>
                         <motion.input 
-                        type="text" 
-                        placeholder="Üzenet tárgya"
+                          type="text" 
+                          name="subject"
+                          value={formState.subject}
+                          onChange={handleInputChange}
+                          placeholder="Üzenet tárgya"
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
                           whileFocus={{ scale: 1.01 }}
+                          required
                         />
                       </div>
                       <div>
                         <label className="block text-gray-400 mb-2 text-sm">Üzenet</label>
                         <motion.textarea 
+                          name="message"
+                          value={formState.message}
+                          onChange={handleInputChange}
                           placeholder="Írja le kérdését vagy projektjét..."
                           rows={5}
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors resize-none"
                           whileFocus={{ scale: 1.01 }}
+                          required
                         />
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <motion.input
+                          type="checkbox"
+                          id="privacy"
+                          checked={formState.privacyAccepted}
+                          onChange={(e) => setFormState(prev => ({
+                            ...prev,
+                            privacyAccepted: e.target.checked
+                          }))}
+                          className="h-4 w-4 rounded border-gray-800 bg-[#0a0a0f] text-[#ff5c35] focus:ring-[#ff5c35] focus:ring-opacity-25"
+                        />
+                        <label htmlFor="privacy" className="text-sm text-gray-400">
+                          Elolvastam és elfogadom az <Link to="/adatvedelem" className="text-[#ff5c35] hover:underline">adatvédelmi tájékoztatót</Link>
+                        </label>
                       </div>
                       <motion.button 
                         type="submit"
-                        onClick={() => {
-                          window.scrollTo({ top: 0, behavior: 'smooth' });
-                          // Itt később hozzáadhatjuk az űrlap beküldés logikáját
-                        }}
-                        className="w-full primary-button"
-                        whileHover={{ scale: 1.02, boxShadow: "0 0 8px rgb(255, 92, 53)" }}
-                        whileTap={{ scale: 0.98 }}>
-                        Üzenet küldése
+                        disabled={isLoading}
+                        className={`w-full inline-flex items-center justify-center px-6 py-4 bg-[#ff5c35] text-white rounded-lg font-semibold transition-colors group text-sm md:text-base ${
+                          isLoading ? 'opacity-75 cursor-not-allowed' : 'hover:bg-[#ff5c35]/90'
+                        }`}
+                        whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                        whileTap={{ scale: isLoading ? 1 : 0.98 }}>
+                        {isLoading ? (
+                          <>
+                            <motion.div
+                              className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"
+                              animate={{ rotate: 360 }}
+                              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                            />
+                            Küldés folyamatban...
+                          </>
+                        ) : isSubmitted ? (
+                          <>
+                            <CheckCircle className="w-5 h-5 mr-2" />
+                            Üzenet elküldve!
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-5 h-5 mr-2" />
+                            Ingyenes ajánlatkérés
+                          </>
+                        )}
                       </motion.button>
                     </motion.form>
                   </motion.div>

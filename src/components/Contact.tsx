@@ -6,13 +6,14 @@ import { Link, useLocation } from 'react-router-dom';
 const Contact = () => {
   const location = useLocation();
   const isFromPromotion = location.state?.fromPromotion || false;
+  const isFromFooter = location.state?.fromFooter || false;
   
-  // Add effect to scroll to form when coming from promotion
+  // Add effect to scroll to form when coming from promotion or footer
   useEffect(() => {
-    if (isFromPromotion) {
+    if (isFromPromotion || isFromFooter) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, [isFromPromotion]);
+  }, [isFromPromotion, isFromFooter]);
 
   const [formState, setFormState] = useState({
     name: '',
@@ -82,10 +83,15 @@ const Contact = () => {
       formData.append('device_info', userInfo.device);
       formData.append('browser_info', userInfo.browser);
       
-      // Add promotion information if coming from popup
+      // Add source information
       if (isFromPromotion) {
+        formData.append('source', 'promotion_popup');
         formData.append('promotion_request', 'true');
         formData.append('discount_applied', '20%');
+      } else if (isFromFooter) {
+        formData.append('source', 'footer_form');
+      } else {
+        formData.append('source', 'contact_page');
       }
       
       const response = await fetch('https://formspree.io/f/xvgkpzen', {
