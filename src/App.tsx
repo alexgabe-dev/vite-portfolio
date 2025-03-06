@@ -15,6 +15,7 @@ import AnimatedText from './components/AnimatedText';
 import PromotionPopup from './components/PromotionPopup';
 import Error from './components/Error';
 import AdFrame from './components/AdFrame';
+import CookieConsent from './components/CookieConsent';
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -23,7 +24,21 @@ function App() {
   const [clickCount, setClickCount] = React.useState(0);
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
   const [showPromotion, setShowPromotion] = React.useState(false);
+  const [showCookieConsent, setShowCookieConsent] = React.useState(false);
   const location = useLocation();
+
+  // Cookie consent initialization
+  useEffect(() => {
+    const hasConsent = localStorage.getItem('cookieConsent');
+    if (!hasConsent) {
+      setShowCookieConsent(true);
+    }
+  }, []);
+
+  const handleCookieConsent = () => {
+    localStorage.setItem('cookieConsent', 'true');
+    setShowCookieConsent(false);
+  };
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -176,6 +191,14 @@ function App() {
         isOpen={showPromotion} 
         onClose={handleClosePromotion} 
       />
+      
+      {/* Cookie Consent Banner */}
+      <AnimatePresence>
+        {showCookieConsent && (
+          <CookieConsent onAccept={handleCookieConsent} />
+        )}
+      </AnimatePresence>
+
       <Routes>
         <Route path="/" element={
           <main>
