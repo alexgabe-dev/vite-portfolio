@@ -1,0 +1,7 @@
+RewriteEngine On
+# Ha a kért tartalom nem egy létező fájl, könyvtár vagy szimbolikus link
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+# Átirányítás az index.html-re
+RewriteRule ^ index.html [QSA,L] 

@@ -1,0 +1,18 @@
+{
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/[^.]+",
+      "dest": "/"
+    }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "errorResponses": {
+    "404": {
+      "path": "/404"
+    }
+  }
+} 
