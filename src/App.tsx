@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { Menu, X, ChevronRight, Code, BarChart, Settings, Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Twitter, 
   Globe, Box, Palette, FileCode, Layout, CircuitBoard, Blocks, Laptop, Braces, Workflow, FileJson, Lightbulb, Handshake, Target, CheckCircle, Send } from 'lucide-react';
 import { motion, AnimatePresence, useInView, useSpring, useTransform } from 'framer-motion';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 import type { Container, Engine } from "tsparticles-engine";
@@ -309,22 +309,20 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen">
-        <Suspense fallback={<Loading />}>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Services />} />
-            <Route path="/szolgaltatasok" element={<Services />} />
-            <Route path="/rolunk" element={<About />} />
-            <Route path="/kapcsolat" element={<Contact />} />
-            <Route path="/csomagok" element={<Packages />} />
-            <Route path="/adatvedelem" element={<Privacy />} />
-            <Route path="*" element={<Error code={404} />} />
-          </Routes>
-        </Suspense>
-      </div>
-    </Router>
+    <div className="flex flex-col min-h-screen">
+      <Suspense fallback={<Loading />}>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Services />} />
+          <Route path="/szolgaltatasok" element={<Services />} />
+          <Route path="/rolunk" element={<About />} />
+          <Route path="/kapcsolat" element={<Contact />} />
+          <Route path="/csomagok" element={<Packages />} />
+          <Route path="/adatvedelem" element={<Privacy />} />
+          <Route path="*" element={<Error code={404} />} />
+        </Routes>
+      </Suspense>
+    </div>
   );
 }
 
