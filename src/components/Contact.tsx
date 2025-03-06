@@ -289,36 +289,30 @@ const Contact = () => {
                 />
               </div>
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-400 mb-1">
-                  Tárgy *
-                </label>
-                <motion.input
-                  whileFocus={{ scale: 1.01 }}
-                  type="text"
-                  id="subject"
+                <label className="block text-gray-400 mb-2 text-sm">Tárgy *</label>
+                <motion.input 
+                  type="text" 
                   name="subject"
                   value={formState.subject}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-lg focus:outline-none focus:border-[#ff5c35] transition-colors text-white text-sm md:text-base"
+                  placeholder="Üzenet tárgya"
+                  className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
+                  whileFocus={{ scale: 1.01 }}
                   required
-                  placeholder="Miben segíthetünk?"
                 />
               </div>
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-1">
-                  Üzenet *
-                </label>
-                <motion.textarea
-                  whileFocus={{ scale: 1.01 }}
-                  id="message"
+                <label className="block text-gray-400 mb-2 text-sm">Üzenet *</label>
+                <motion.textarea 
                   name="message"
                   value={formState.message}
                   onChange={handleInputChange}
-                  rows={4}
-                  className="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-lg focus:outline-none focus:border-[#ff5c35] transition-colors text-white resize-none text-sm md:text-base"
+                  placeholder="Írja le kérdését vagy projektjét..."
+                  rows={5}
+                  className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors resize-none"
+                  whileFocus={{ scale: 1.01 }}
                   required
-                  placeholder="Írja le részletesen, miben segíthetünk..."
-                ></motion.textarea>
+                />
               </div>
 
               {/* Privacy Policy Checkbox */}

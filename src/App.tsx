@@ -1126,7 +1126,7 @@ function App() {
                       onSubmit={handleSubmit}
                       className="space-y-4">
                       <div>
-                        <label className="block text-gray-400 mb-2 text-sm">Név</label>
+                        <label className="block text-gray-400 mb-2 text-sm">Név *</label>
                         <motion.input 
                           type="text" 
                           name="name"
@@ -1139,7 +1139,7 @@ function App() {
                         />
                       </div>
                       <div>
-                        <label className="block text-gray-400 mb-2 text-sm">Email</label>
+                        <label className="block text-gray-400 mb-2 text-sm">Email *</label>
                         <motion.input 
                           type="email" 
                           name="email"
@@ -1152,6 +1152,18 @@ function App() {
                         />
                       </div>
                       <div>
+                        <label className="block text-gray-400 mb-2 text-sm">Telefon</label>
+                        <motion.input 
+                          type="tel" 
+                          name="phone"
+                          value={formState.phone}
+                          onChange={handleInputChange}
+                          placeholder="+36 30 123 4567"
+                          className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
+                          whileFocus={{ scale: 1.01 }}
+                        />
+                      </div>
+                      <div>
                         <label className="block text-gray-400 mb-2 text-sm">Tárgy</label>
                         <motion.input 
                           type="text" 
@@ -1161,7 +1173,6 @@ function App() {
                           placeholder="Üzenet tárgya"
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
                           whileFocus={{ scale: 1.01 }}
-                          required
                         />
                       </div>
                       <div>
@@ -1174,7 +1185,6 @@ function App() {
                           rows={5}
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors resize-none"
                           whileFocus={{ scale: 1.01 }}
-                          required
                         />
                       </div>
                       <div className="flex items-center space-x-2">
@@ -1192,6 +1202,15 @@ function App() {
                           Elolvastam és elfogadom az <Link to="/adatvedelem" className="text-[#ff5c35] hover:underline">adatvédelmi tájékoztatót</Link>
                         </label>
                       </div>
+                      {error && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="bg-red-500/10 border border-red-500/20 text-red-500 px-4 py-3 rounded-lg text-sm">
+                          {error}
+                        </motion.div>
+                      )}
                       <motion.button 
                         type="submit"
                         disabled={isLoading}
