@@ -997,22 +997,21 @@ function App() {
                   </motion.div>
 
                   {/* Dots Navigation */}
-                  <div className="flex justify-center mt-8 space-x-2">
+                  <div className="flex justify-center mt-8 space-x-4 py-2">
                     {[...Array(4)].map((_, index) => (
                       <motion.button
                         type="button"
                         key={index}
                         onClick={() => setCurrentPackage(index)}
-                        className="relative h-2 rounded-full overflow-hidden"
-                        style={{ width: currentPackage === index ? 24 : 8 }}
+                        className="relative h-12 w-12 flex items-center justify-center"
                         whileHover={{ scale: 1.2 }}
                         whileTap={{ scale: 0.9 }}
                         transition={{ duration: 0.2 }}
                         aria-label={`Go to package ${index + 1}`}>
-                        <div className={`absolute inset-0 ${
+                        <div className={`h-3 rounded-full transition-all duration-300 ${
                           currentPackage === index 
-                            ? 'bg-[#ff5c35]' 
-                            : 'bg-gray-600 hover:bg-gray-500'
+                            ? 'w-6 bg-[#ff5c35]' 
+                            : 'w-3 bg-gray-600 hover:bg-gray-500'
                         }`} />
                       </motion.button>
                     ))}
