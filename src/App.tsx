@@ -31,6 +31,21 @@ function App() {
   useEffect(() => {
     const hasConsent = localStorage.getItem('cookieConsent');
     if (!hasConsent) {
+      // Wait for external cookie control to load
+      const checkExternalCookieControl = () => {
+        if (window.CookieControl && window.CookieControl.Dialog) {
+          try {
+            window.CookieControl.Dialog.init();
+          } catch (error) {
+            console.warn('External cookie control initialization failed:', error);
+          }
+        } else {
+          // Retry after a short delay if not loaded yet
+          setTimeout(checkExternalCookieControl, 100);
+        }
+      };
+      
+      checkExternalCookieControl();
       setShowCookieConsent(true);
     }
   }, []);
@@ -38,6 +53,15 @@ function App() {
   const handleCookieConsent = () => {
     localStorage.setItem('cookieConsent', 'true');
     setShowCookieConsent(false);
+    
+    // Handle external cookie control if it exists
+    if (window.CookieControl && window.CookieControl.Dialog) {
+      try {
+        window.CookieControl.Dialog.accept();
+      } catch (error) {
+        console.warn('External cookie control accept failed:', error);
+      }
+    }
   };
 
   React.useEffect(() => {

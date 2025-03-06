@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -7,6 +7,29 @@ interface CookieConsentProps {
 }
 
 const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept }) => {
+  useEffect(() => {
+    // Initialize external cookie control if it exists
+    if (window.CookieControl && window.CookieControl.Dialog) {
+      try {
+        window.CookieControl.Dialog.init();
+      } catch (error) {
+        console.warn('External cookie control initialization failed:', error);
+      }
+    }
+  }, []);
+
+  const handleAccept = () => {
+    // Handle external cookie control if it exists
+    if (window.CookieControl && window.CookieControl.Dialog) {
+      try {
+        window.CookieControl.Dialog.accept();
+      } catch (error) {
+        console.warn('External cookie control accept failed:', error);
+      }
+    }
+    onAccept();
+  };
+
   return (
     <motion.div
       initial={{ y: 100, opacity: 0 }}
@@ -21,7 +44,7 @@ const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept }) => {
           </Link>
         </div>
         <motion.button
-          onClick={onAccept}
+          onClick={handleAccept}
           className="primary-button px-6 py-2 text-sm"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}>
