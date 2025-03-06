@@ -90,8 +90,7 @@ const Services = () => {
         'Teljesítmény monitoring',
         'Backlink elemzés',
         'On-site SEO',
-        'Off-site SEO',
-        'Technical SEO'
+        'Off-site SEO'
       ],
       benefits: [
         'Jobb keresési pozíciók',
