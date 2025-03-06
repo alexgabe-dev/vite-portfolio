@@ -1,13 +1,8 @@
 {
-  "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/[^.]+",
-      "dest": "/"
-    }
-  ],
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ],
+  "framework": "create-react-app"
 } 
