@@ -41,7 +41,7 @@ const Contact = () => {
       const formData = new FormData(form);
       
       // Add additional fields to the form data
-      formData.append('_subject', 'Új kapcsolatfelvételi űrlap - Vizitor');
+      formData.append('_subject', 'Új érdeklődő - vizitor.hu');
       formData.append('_replyto', formState.email);
       
       const response = await fetch('https://formspree.io/f/xvgkpzen', {
@@ -142,7 +142,7 @@ const Contact = () => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="fixed top-24 md:top-4 left-4 right-4 z-[9999] bg-green-500 text-white p-4 rounded-lg shadow-lg flex items-center justify-center space-x-2 mx-auto max-w-lg">
+              className="fixed top-32 md:top-24 left-4 right-4 z-[9999] bg-green-500 text-white p-4 rounded-lg shadow-lg flex items-center justify-center space-x-2 mx-auto max-w-lg">
               <CheckCircle className="w-5 h-5 flex-shrink-0" />
               <span className="text-sm md:text-base text-center">Köszönjük megkeresését! Hamarosan felvesszük Önnel a kapcsolatot.</span>
             </motion.div>
