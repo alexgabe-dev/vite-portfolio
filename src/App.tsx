@@ -282,7 +282,6 @@ function App() {
         privacyAccepted: false
       });
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(() => setIsSubmitted(false), 3000);
     } catch (err: any) {
       console.error('Form submission error:', err);
@@ -1164,7 +1163,7 @@ function App() {
                         />
                       </div>
                       <div>
-                        <label className="block text-gray-400 mb-2 text-sm">Tárgy</label>
+                        <label className="block text-gray-400 mb-2 text-sm">Tárgy *</label>
                         <motion.input 
                           type="text" 
                           name="subject"
@@ -1173,10 +1172,11 @@ function App() {
                           placeholder="Üzenet tárgya"
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
                           whileFocus={{ scale: 1.01 }}
+                          required
                         />
                       </div>
                       <div>
-                        <label className="block text-gray-400 mb-2 text-sm">Üzenet</label>
+                        <label className="block text-gray-400 mb-2 text-sm">Üzenet *</label>
                         <motion.textarea 
                           name="message"
                           value={formState.message}
@@ -1185,6 +1185,7 @@ function App() {
                           rows={5}
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors resize-none"
                           whileFocus={{ scale: 1.01 }}
+                          required
                         />
                       </div>
                       <div className="flex items-center space-x-2">
@@ -1209,6 +1210,15 @@ function App() {
                           exit={{ opacity: 0, y: -10 }}
                           className="bg-red-500/10 border border-red-500/20 text-red-500 px-4 py-3 rounded-lg text-sm">
                           {error}
+                        </motion.div>
+                      )}
+                      {isSubmitted && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="bg-green-500/10 border border-green-500/20 text-green-500 px-4 py-3 rounded-lg text-sm">
+                          Üzenet sikeresen elküldve! Hamarosan felvesszük Önnel a kapcsolatot.
                         </motion.div>
                       )}
                       <motion.button 
