@@ -11,6 +11,7 @@ import Loading from './components/Loading';
 
 // Lazy load components
 const Navbar = React.lazy(() => import('./components/Navbar'));
+const Home = React.lazy(() => import('./components/Home'));
 const Services = React.lazy(() => import('./components/Services'));
 const About = React.lazy(() => import('./components/About'));
 const Contact = React.lazy(() => import('./components/Contact'));
@@ -313,7 +314,7 @@ function App() {
       <Suspense fallback={<Loading />}>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Services />} />
+          <Route path="/" element={<Home />} />
           <Route path="/szolgaltatasok" element={<Services />} />
           <Route path="/rolunk" element={<About />} />
           <Route path="/kapcsolat" element={<Contact />} />
