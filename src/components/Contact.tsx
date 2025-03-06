@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, ArrowRight, MessageSquare, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -16,6 +16,30 @@ const Contact = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [activeSection, setActiveSection] = useState<'form' | 'map'>('form');
+  const [userInfo, setUserInfo] = useState({
+    ip: '',
+    device: '',
+    browser: ''
+  });
+
+  useEffect(() => {
+    // Collect device and browser information
+    const deviceInfo = {
+      device: `${navigator.platform} - ${navigator.userAgent.match(/\((.*?)\)/)?.[1] || 'Unknown'}`,
+      browser: `${navigator.userAgent.match(/(Chrome|Safari|Firefox|Edge|MSIE|Trident)\/[\d.]+/)?.[0] || 'Unknown'}`
+    };
+    setUserInfo(prev => ({ ...prev, ...deviceInfo }));
+
+    // Get IP address
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        setUserInfo(prev => ({ ...prev, ip: data.ip }));
+      })
+      .catch(error => {
+        console.error('Error fetching IP:', error);
+      });
+  }, []);
 
   const fadeInUp = {
     initial: { y: 20, opacity: 0 },
@@ -36,13 +60,17 @@ const Contact = () => {
     setError('');
 
     try {
-      // Let Formspree handle the submission
       const form = e.target as HTMLFormElement;
       const formData = new FormData(form);
       
       // Add additional fields to the form data
       formData.append('_subject', 'Új érdeklődő - vizitor.hu');
       formData.append('_replyto', formState.email);
+      
+      // Add user information
+      formData.append('ip_address', userInfo.ip);
+      formData.append('device_info', userInfo.device);
+      formData.append('browser_info', userInfo.browser);
       
       const response = await fetch('https://formspree.io/f/xvgkpzen', {
         method: 'POST',
