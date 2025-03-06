@@ -27,11 +27,23 @@ const words = [
 
 const AnimatedText = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentText, setCurrentText] = useState("");
+  const [currentText, setCurrentText] = useState(words[0]); // Start with first word
   const [isDeleting, setIsDeleting] = useState(false);
-  const [isTyping, setIsTyping] = useState(true);
+  const [isTyping, setIsTyping] = useState(false); // Start as false to show initial word immediately
 
   useEffect(() => {
+    // Don't start animations until after initial render and LCP
+    const initialDelay = setTimeout(() => {
+      setIsTyping(true);
+      setIsDeleting(true);
+    }, 2000);
+
+    return () => clearTimeout(initialDelay);
+  }, []);
+
+  useEffect(() => {
+    if (!isTyping) return; // Don't run animation logic until after initial render
+
     let timeout: ReturnType<typeof setTimeout>;
 
     const type = () => {
@@ -39,10 +51,10 @@ const AnimatedText = () => {
       
       if (isDeleting) {
         setCurrentText(currentWord.substring(0, currentText.length - 1));
-        timeout = setTimeout(type, 50); // Törlés sebessége
+        timeout = setTimeout(type, 50);
       } else {
         setCurrentText(currentWord.substring(0, currentText.length + 1));
-        timeout = setTimeout(type, 100); // Írás sebessége
+        timeout = setTimeout(type, 100);
       }
     };
 
@@ -54,7 +66,7 @@ const AnimatedText = () => {
         timeout = setTimeout(() => {
           setIsDeleting(true);
           type();
-        }, 2000); // Mennyi ideig marad meg a szöveg
+        }, 2000);
       } else {
         type();
       }
@@ -62,18 +74,18 @@ const AnimatedText = () => {
 
     timeout = setTimeout(startTyping, 100);
     return () => clearTimeout(timeout);
-  }, [currentText, currentIndex, isDeleting]);
+  }, [currentText, currentIndex, isDeleting, isTyping]);
 
   return (
     <div className="relative h-[1.2em] overflow-hidden">
       <motion.span
         className="absolute left-0 text-[#ff5c35]"
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 1 }} // Start fully visible
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
         {currentText}
-        <span className="animate-pulse">|</span>
+        {isTyping && <span className="animate-pulse">|</span>}
       </motion.span>
     </div>
   );

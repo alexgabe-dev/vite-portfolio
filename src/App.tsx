@@ -385,7 +385,7 @@ function App() {
             <motion.section 
               id="home" 
               className="relative min-h-screen flex items-center pt-16 overflow-hidden"
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 1 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6 }}>
             <div className="absolute inset-0 z-0">
@@ -407,16 +407,26 @@ function App() {
                   initial="initial"
                   animate="animate"
                   className="will-change-transform">
-                  <motion.h1 
-                    className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6"
-                    variants={fadeInUp}>
-                    <span className="md:block leading-[1.2] inline-block py-1">Növekedés</span>{' '}
-                    <span className="md:block leading-[1.2] inline-block py-1">minden</span>{' '}
+                  <h1 
+                    className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6">
+                    <motion.span 
+                      className="md:block leading-[1.2] inline-block py-1"
+                      initial={{ opacity: 1, y: 0 }}
+                      animate={{ opacity: 1, y: 0 }}>
+                      Növekedés
+                    </motion.span>{' '}
+                    <motion.span 
+                      className="md:block leading-[1.2] inline-block py-1"
+                      initial={{ opacity: 1, y: 0 }}
+                      animate={{ opacity: 1, y: 0 }}>
+                      minden
+                    </motion.span>{' '}
                     <AnimatedText />
-                  </motion.h1>
+                  </h1>
                   <motion.p 
                     className="text-lg sm:text-xl mb-6 md:mb-8 text-gray-400 max-w-lg leading-[1.8]"
-                    variants={fadeInUp}
+                    initial={{ opacity: 1, y: 0 }}
+                    animate={{ opacity: 1, y: 0 }}
                     style={{ 
                       contentVisibility: 'auto',
                       willChange: 'transform'
