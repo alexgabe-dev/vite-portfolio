@@ -100,20 +100,50 @@ function App() {
         setMobileMenuOpen(false);
         setSelectedTechs([]);
         setShowPromotion(false);
+        setShowCookieConsent(false);
+        setFormState({
+          name: '',
+          email: '',
+          subject: '',
+          message: '',
+          phone: '',
+          privacyAccepted: false
+        });
+        setIsSubmitted(false);
+        setIsLoading(false);
+        setError('');
       }
     };
 
     const handlePageHide = () => {
       // Clean up any timers, subscriptions, or connections
       localStorage.removeItem('tempFormData');
+      
+      // Cancel any pending requests
+      if (window.navigator.sendBeacon) {
+        // Use sendBeacon for any analytics
+        window.navigator.sendBeacon('/api/analytics', JSON.stringify({
+          event: 'page_hide',
+          timestamp: Date.now()
+        }));
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        // Similar cleanup as pageHide
+        localStorage.removeItem('tempFormData');
+      }
     };
 
     window.addEventListener('pageshow', handlePageShow);
     window.addEventListener('pagehide', handlePageHide);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
       window.removeEventListener('pageshow', handlePageShow);
       window.removeEventListener('pagehide', handlePageHide);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
 
