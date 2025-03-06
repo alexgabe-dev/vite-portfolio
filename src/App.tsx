@@ -34,17 +34,12 @@ function App() {
     const checkCookiebot = () => {
       if (window.Cookiebot) {
         try {
-          // Initialize Cookiebot if needed
-          if (typeof window.Cookiebot.consent === 'undefined') {
-            window.Cookiebot.consent = {
-              marketing: false,
-              necessary: true,
-              preferences: false,
-              statistics: false
-            };
-          }
+          // Register callback for when consent is given
+          window.Cookiebot.callback = () => {
+            setShowCookieConsent(false);
+          };
         } catch (error) {
-          console.warn('Cookiebot initialization failed:', error);
+          console.warn('Cookiebot callback registration failed:', error);
         }
       } else {
         // Retry after a short delay if not loaded yet
@@ -56,7 +51,6 @@ function App() {
   }, []);
 
   const handleCookieConsent = () => {
-    // Handle any post-consent actions here
     setShowCookieConsent(false);
   };
 

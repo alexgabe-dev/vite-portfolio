@@ -10,22 +10,12 @@ const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept }) => {
     const checkCookiebot = () => {
       if (window.Cookiebot) {
         try {
-          // Initialize Cookiebot if needed
-          if (typeof window.Cookiebot.consent === 'undefined') {
-            window.Cookiebot.consent = {
-              marketing: false,
-              necessary: true,
-              preferences: false,
-              statistics: false
-            };
-          }
-
           // Register callback for when consent is given
           window.Cookiebot.callback = () => {
             onAccept();
           };
         } catch (error) {
-          console.warn('Cookiebot initialization failed:', error);
+          console.warn('Cookiebot callback registration failed:', error);
         }
       } else {
         // Retry after a short delay if not loaded yet
