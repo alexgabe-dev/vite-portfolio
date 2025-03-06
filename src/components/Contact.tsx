@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, ArrowRight, MessageSquare, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Contact = () => {
+  const location = useLocation();
+  const isFromPromotion = location.state?.fromPromotion || false;
+  
+  // Add effect to scroll to form when coming from promotion
+  useEffect(() => {
+    if (isFromPromotion) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [isFromPromotion]);
+
   const [formState, setFormState] = useState({
     name: '',
     email: '',
@@ -71,6 +81,12 @@ const Contact = () => {
       formData.append('ip_address', userInfo.ip);
       formData.append('device_info', userInfo.device);
       formData.append('browser_info', userInfo.browser);
+      
+      // Add promotion information if coming from popup
+      if (isFromPromotion) {
+        formData.append('promotion_request', 'true');
+        formData.append('discount_applied', '20%');
+      }
       
       const response = await fetch('https://formspree.io/f/xvgkpzen', {
         method: 'POST',

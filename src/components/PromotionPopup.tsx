@@ -125,6 +125,7 @@ const PromotionPopup: React.FC<PromotionPopupProps> = ({ isOpen, onClose }) => {
                 >
                   <Link 
                     to="/kapcsolat" 
+                    state={{ fromPromotion: true }}
                     className="flex-1"
                     onClick={onClose}
                   >
