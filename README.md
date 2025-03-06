@@ -9,7 +9,7 @@
 
 ## 📖 About
 
-A modern, responsive portfolio and business website built with React, Vite, TypeScript, and Tailwind CSS. Features smooth animations, dark theme, and a professional design.
+A modern, sleek, responsive portfolio and business website built with React, Vite, TypeScript, and Tailwind CSS. Features smooth animations, dark theme, and a professional design.
 
 🎨 **Live Demo**: [vizitor.hu](https://vizitor.hu)
 
