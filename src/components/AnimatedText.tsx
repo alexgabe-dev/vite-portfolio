@@ -21,7 +21,7 @@ const words = [
   "érdeklődéssel",
   "konzultációval",
   "támogatással",
-  "követőkkel",
+  "követővkel",
   "aktivitással"
 ];
 
