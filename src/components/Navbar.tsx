@@ -37,22 +37,18 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" onClick={handleNavClick} className="flex items-center">
-            <motion.picture
+            <motion.img
+              src="/vizitor-logo.min.svg"
+              alt="Vizitor Logo" 
+              width={32}
+              height={32}
+              className="h-8 w-8 object-contain" 
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
               whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}>
-              <source type="image/svg+xml" srcSet="/vizitor-logo.min.svg" />
-              <source type="image/webp" srcSet="/vizitor-logo.webp" />
-              <img 
-                src="/vizitor-logo.png" 
-                alt="Vizitor Logo" 
-                width={32}
-                height={32}
-                className="h-8 w-8 object-contain" 
-                loading="eager"
-                decoding="async"
-                fetchPriority="high"
-              />
-            </motion.picture>
+              transition={{ type: "spring", stiffness: 300 }}
+            />
           </Link>
 
           {/* Desktop Navigation */}
