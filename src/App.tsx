@@ -90,20 +90,51 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Popup state management
+  // Add bfcache support
   React.useEffect(() => {
-    const hasSeenPopup = localStorage.getItem('hasSeenPopup');
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        // Page was restored from bfcache
+        console.log('Page restored from bfcache');
+        // Reset any necessary state
+        setMobileMenuOpen(false);
+        setSelectedTechs([]);
+        setShowPromotion(false);
+      }
+    };
+
+    const handlePageHide = () => {
+      // Clean up any timers, subscriptions, or connections
+      localStorage.removeItem('tempFormData');
+    };
+
+    window.addEventListener('pageshow', handlePageShow);
+    window.addEventListener('pagehide', handlePageHide);
+
+    return () => {
+      window.removeEventListener('pageshow', handlePageShow);
+      window.removeEventListener('pagehide', handlePageHide);
+    };
+  }, []);
+
+  // Modify popup effect to support bfcache
+  React.useEffect(() => {
+    let popupTimer: number | null = null;
     
-    // Ne jelenítse meg a popupot a hibaoldalakon
+    const hasSeenPopup = localStorage.getItem('hasSeenPopup');
     const isErrorPage = ['/404', '/403', '/500'].includes(location.pathname) || location.pathname.match(/^\/\w+/);
     
     if (!hasSeenPopup && !isErrorPage) {
-      const timer = setTimeout(() => {
+      popupTimer = window.setTimeout(() => {
         setShowPromotion(true);
       }, 10000);
-
-      return () => clearTimeout(timer);
     }
+
+    return () => {
+      if (popupTimer) {
+        window.clearTimeout(popupTimer);
+      }
+    };
   }, [location]);
 
   const handleClosePromotion = () => {
