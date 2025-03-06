@@ -1418,6 +1418,9 @@ function App() {
                   width={32}
                   height={32}
                   className="h-8 w-8 object-contain" 
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 />
