@@ -355,9 +355,9 @@ function App() {
             <motion.section 
               id="home" 
               className="relative min-h-screen flex items-center pt-16 overflow-hidden"
-              initial={{ opacity: 1 }}
+              initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}>
+              transition={{ duration: 0.6 }}>
             <div className="absolute inset-0 z-0">
               <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-[#0a0a0f] via-transparent to-transparent opacity-80"></div>
               <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-tr from-[#0a0a0f] via-transparent to-transparent opacity-80"></div>
@@ -375,7 +375,8 @@ function App() {
                 <motion.div
                   variants={staggerChildren}
                   initial="initial"
-                  animate="animate">
+                  animate="animate"
+                  className="will-change-transform">
                   <motion.h1 
                     className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6"
                     variants={fadeInUp}>
@@ -383,11 +384,15 @@ function App() {
                     <span className="md:block leading-[1.2] inline-block py-1">minden</span>{' '}
                     <AnimatedText />
                   </motion.h1>
-                  <p 
+                  <motion.p 
                     className="text-lg sm:text-xl mb-6 md:mb-8 text-gray-400 max-w-lg leading-[1.8]"
-                    style={{ contentVisibility: 'auto' }}>
+                    variants={fadeInUp}
+                    style={{ 
+                      contentVisibility: 'auto',
+                      willChange: 'transform'
+                    }}>
                     Modern weboldalkészítés, hatékony digitális marketing és automatizált megoldások, amelyek lenyűgözik a látogatókat és növelik a bevételt.
-                  </p>
+                  </motion.p>
                   <motion.div 
                     className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8 md:mt-0"
                     variants={fadeInUp}>
