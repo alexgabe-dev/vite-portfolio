@@ -355,13 +355,20 @@ function App() {
             <motion.section 
               id="home" 
               className="relative min-h-screen flex items-center pt-16 overflow-hidden"
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 1 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}>
+              transition={{ duration: 0.3 }}>
             <div className="absolute inset-0 z-0">
               <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-[#0a0a0f] via-transparent to-transparent opacity-80"></div>
               <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-tr from-[#0a0a0f] via-transparent to-transparent opacity-80"></div>
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80')] bg-cover bg-center opacity-10"></div>
+              <img 
+                src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=1200&q=80"
+                alt="Background"
+                className="absolute inset-0 w-full h-full object-cover opacity-10"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+              />
             </div>
             
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid md:grid-cols-2 gap-12 items-center">
@@ -376,11 +383,11 @@ function App() {
                     <span className="md:block leading-[1.2] inline-block py-1">minden</span>{' '}
                     <AnimatedText />
                   </motion.h1>
-                  <motion.p 
+                  <p 
                     className="text-lg sm:text-xl mb-6 md:mb-8 text-gray-400 max-w-lg leading-[1.8]"
-                    variants={fadeInUp}>
+                    style={{ contentVisibility: 'auto' }}>
                     Modern weboldalkészítés, hatékony digitális marketing és automatizált megoldások, amelyek lenyűgözik a látogatókat és növelik a bevételt.
-                  </motion.p>
+                  </p>
                   <motion.div 
                     className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8 md:mt-0"
                     variants={fadeInUp}>

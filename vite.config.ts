@@ -11,7 +11,7 @@ export default defineConfig({
     open: true,
     headers: {
       'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://safeframe.googlesyndication.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https: ws: wss:; worker-src 'self' blob:; frame-src 'self' https://safeframe.googlesyndication.com;",
-      'Cache-Control': 'public, max-age=31536000, immutable',
+      'Cache-Control': 'public, max-age=31536000',
       'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
       'X-Content-Type-Options': 'nosniff',
       'X-Frame-Options': 'SAMEORIGIN',
@@ -37,17 +37,28 @@ export default defineConfig({
     }
   },
   build: {
-    sourcemap: true,
+    target: 'esnext',
     minify: 'terser',
+    cssMinify: true,
+    sourcemap: true,
     rollupOptions: {
       output: {
-        // Ensure consistent chunk names
-        chunkFileNames: 'assets/[name]-[hash].js'
+        manualChunks: {
+          'vendor': ['react', 'react-dom', 'react-router-dom'],
+          'animations': ['framer-motion'],
+          'icons': ['lucide-react']
+        }
+      }
+    },
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
       }
     }
   },
   optimizeDeps: {
-    exclude: ['lucide-react'],
+    include: ['react', 'react-dom', 'react-router-dom', 'framer-motion', 'lucide-react']
   },
   test: {
     globals: true,

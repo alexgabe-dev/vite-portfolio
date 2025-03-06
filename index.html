@@ -92,6 +92,32 @@
     <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-KGN8CMBL"></script>
     <!-- End Google Tag Manager -->
 
+    <!-- Font preloading -->
+    <link
+      rel="preload"
+      href="/fonts/your-main-font.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    
+    <!-- Critical CSS for text -->
+    <style>
+      /* Optimize text rendering */
+      body {
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      /* Add font-display swap for better text loading */
+      @font-face {
+        font-family: 'Your Main Font';
+        font-display: swap;
+        src: url('/fonts/your-main-font.woff2') format('woff2');
+      }
+    </style>
+
     <style>
       /* Accessibility styles */
       .sr-only {
