@@ -68,124 +68,6 @@
     <meta name="theme-color" content="#ff5c35" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0a0a0f" media="(prefers-color-scheme: dark)">
     
-    <!-- Google Consent Mode -->
-    <script data-cookieconsent="ignore">
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("consent", "default", {
-        ad_personalization: "denied",
-        ad_storage: "denied",
-        ad_user_data: "denied",
-        analytics_storage: "denied",
-        functionality_storage: "denied",
-        personalization_storage: "denied",
-        security_storage: "granted",
-        wait_for_update: 500,
-      });
-      gtag("set", "ads_data_redaction", true);
-      gtag("set", "url_passthrough", false);
-    </script>
-
-    <!-- Custom Cookie Banner Styles -->
-    <style>
-      /* Mobile styles */
-      @media screen and (max-width:720px) {
-        #cookiebanner a.c-button { 
-          width: 100%; 
-          box-sizing: border-box; 
-          text-align: center; 
-          margin-bottom: 20px;
-        } 
-        #c-right { 
-          float: none;
-        }
-        #c-left { 
-          float: none;
-        }   
-        #cookiebanner p.c-message { 
-          margin-bottom: 20px;
-        }   
-      }    
-
-      /* Desktop styles */
-      @media screen and (min-width:720px) {
-        #cookiebanner #c-left { 
-          float: left; 
-          max-width: 80%;
-        }
-        #cookiebanner #c-right { 
-          float: right; 
-        }
-      }
-
-      /* Base styles */
-      #cookiebanner { 
-        box-sizing: border-box; 
-        background-color: rgb(36,36,39); 
-        opacity: 0.9; 
-        width: 100%; 
-        padding: 25px 40px; 
-        position: fixed; 
-        z-index: 2147483645; 
-        bottom: -800px;
-      }
-
-      #cookiebanner p { 
-        font-size: 14px; 
-        line-height: 1.4;
-      }
-
-      #cookiebanner .c-header { 
-        text-transform: uppercase; 
-        color: #fff; 
-        font-weight: bold; 
-        margin-bottom: 4px;
-      }
-
-      #cookiebanner p.c-message {
-        font-size: 14px; 
-        color: #999;
-      }
-
-      #cookiebanner a { 
-        font-weight: bold; 
-        color: #999;
-      }
-
-      #cookiebanner a:hover { 
-        color: #fff;
-      }
-
-      #cookiebanner a.c-button { 
-        border-radius: 4px;
-        background-color: rgb(255,255,255);
-        box-shadow: 0 2px 0 0 rgb(221,221,221);
-        border: 1px solid rgb(221,221,221);
-        padding: 12px 60px;
-        text-decoration: none;
-        display: inline-block;
-        vertical-align: middle;
-        margin-top: 10px;
-        color: #666;
-        font-size: 16px;
-        -o-transition: .2s;
-        -ms-transition: .2s;
-        -moz-transition: .2s;
-        -webkit-transition: .2s;
-        transition: .2s;
-      }
-
-      #cookiebanner a.c-button:hover { 
-        box-shadow: none; 
-        background-color: #f8f8f8;
-      }
-    </style>
-
-    <!-- Cookiebot -->
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="8fc32faa-f7cb-4c33-94a2-9645308d6217" type="text/javascript"></script>
-
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-6XTDE9Y48B"></script>
     <script>
@@ -209,49 +91,6 @@
     </script>
     <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-KGN8CMBL"></script>
     <!-- End Google Tag Manager -->
-
-    <!-- Cookie Declaration -->
-    <script id="CookieDeclaration" src="https://consent.cookiebot.com/8fc32faa-f7cb-4c33-94a2-9645308d6217/cd.js" type="text/javascript" async></script>
-
-    <!-- Custom Cookie Banner Script -->
-    <script>
-      // Cookie Banner Animation
-      var cookieBannerSliderPos = 0;
-
-      function showCookieBanner() {
-          var cookiebanner = document.getElementById("cookiebanner");
-          var dialogHeight = parseInt(cookiebanner.offsetHeight);
-          cookiebanner.style.bottom = (cookieBannerSliderPos - dialogHeight) + "px";
-          cookieBannerSliderPos += 4;
-          if (cookieBannerSliderPos < dialogHeight) {
-              setTimeout(function () {
-                  showCookieBanner();
-              }, 1);
-          } else {
-              cookieBannerSliderPos = 0;
-              cookiebanner.style.bottom = "0px";
-          }
-      }
-
-      function hideCookieBanner() {
-          var cookiebanner = document.getElementById("cookiebanner");
-          cookiebanner.style.display = "none";
-      }
-
-      // Initialize Cookiebot
-      window.addEventListener('load', function() {
-          // Show cookie banner after a short delay
-          setTimeout(showCookieBanner, 1000);
-      });
-
-      // Handle accept button click
-      function handleAcceptClick() {
-          if (window.Cookiebot) {
-              window.Cookiebot.dialog.submitConsent();
-              hideCookieBanner();
-          }
-      }
-    </script>
 
     <style>
       /* Accessibility styles */
@@ -292,18 +131,6 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KGN8CMBL"
       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-
-    <!-- Custom Cookie Banner -->
-    <div id="cookiebanner" lang="hu" dir="ltr">
-      <div id="c-left">
-        <p class="c-header">Cookie beállítások</p>
-        <p class="c-message">Ez a weboldal sütiket (cookie-kat) használ a felhasználói élmény javítása érdekében. A webhely használatával elfogadja a sütik használatát.</p>
-      </div>
-      <div id="c-right">
-        <a href="javascript:void(0)" onclick="handleAcceptClick()" class="c-button">Elfogadom</a>
-      </div>
-      <div style="clear:both"></div>
-    </div>
 
     <!-- Skip to main content link for keyboard users -->
     <a href="#main-content" class="skip-link" style="position: absolute; left: -9999px; z-index: 999; padding: 1em; background: white; text-decoration: none;" tabindex="0">
