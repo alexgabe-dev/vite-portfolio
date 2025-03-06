@@ -36,15 +36,6 @@
           "value": "public, max-age=31536000, immutable"
         }
       ]
-    },
-    {
-      "source": "/cdn\\.jsdelivr\\.net/.*\\.(svg|png|jpg|jpeg|gif|webp|css|js)$",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
     }
   ]
 } 
