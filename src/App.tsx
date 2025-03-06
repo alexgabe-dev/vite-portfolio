@@ -16,6 +16,7 @@ import PromotionPopup from './components/PromotionPopup';
 import Error from './components/Error';
 import AdFrame from './components/AdFrame';
 import CookieConsent from './components/CookieConsent';
+import Cookies from 'js-cookie';
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -29,39 +30,34 @@ function App() {
 
   // Cookie consent initialization
   useEffect(() => {
-    const hasConsent = localStorage.getItem('cookieConsent');
-    if (!hasConsent) {
-      // Wait for external cookie control to load
-      const checkExternalCookieControl = () => {
-        if (window.CookieControl && window.CookieControl.Dialog) {
-          try {
-            window.CookieControl.Dialog.init();
-          } catch (error) {
-            console.warn('External cookie control initialization failed:', error);
+    // Wait for Cookiebot to load
+    const checkCookiebot = () => {
+      if (window.Cookiebot) {
+        try {
+          // Initialize Cookiebot if needed
+          if (typeof window.Cookiebot.consent === 'undefined') {
+            window.Cookiebot.consent = {
+              marketing: false,
+              necessary: true,
+              preferences: false,
+              statistics: false
+            };
           }
-        } else {
-          // Retry after a short delay if not loaded yet
-          setTimeout(checkExternalCookieControl, 100);
+        } catch (error) {
+          console.warn('Cookiebot initialization failed:', error);
         }
-      };
-      
-      checkExternalCookieControl();
-      setShowCookieConsent(true);
-    }
+      } else {
+        // Retry after a short delay if not loaded yet
+        setTimeout(checkCookiebot, 100);
+      }
+    };
+    
+    checkCookiebot();
   }, []);
 
   const handleCookieConsent = () => {
-    localStorage.setItem('cookieConsent', 'true');
+    // Handle any post-consent actions here
     setShowCookieConsent(false);
-    
-    // Handle external cookie control if it exists
-    if (window.CookieControl && window.CookieControl.Dialog) {
-      try {
-        window.CookieControl.Dialog.accept();
-      } catch (error) {
-        console.warn('External cookie control accept failed:', error);
-      }
-    }
   };
 
   React.useEffect(() => {

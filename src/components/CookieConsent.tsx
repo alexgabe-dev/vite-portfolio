@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 
 interface CookieConsentProps {
   onAccept: () => void;
@@ -8,51 +6,21 @@ interface CookieConsentProps {
 
 const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept }) => {
   useEffect(() => {
-    // Initialize external cookie control if it exists
-    if (window.CookieControl && window.CookieControl.Dialog) {
+    // Initialize Cookiebot if it exists
+    if (window.Cookiebot) {
       try {
-        window.CookieControl.Dialog.init();
+        // Register callback for when consent is given
+        window.Cookiebot.callback = () => {
+          onAccept();
+        };
       } catch (error) {
-        console.warn('External cookie control initialization failed:', error);
+        console.warn('Cookiebot callback registration failed:', error);
       }
     }
-  }, []);
+  }, [onAccept]);
 
-  const handleAccept = () => {
-    // Handle external cookie control if it exists
-    if (window.CookieControl && window.CookieControl.Dialog) {
-      try {
-        window.CookieControl.Dialog.accept();
-      } catch (error) {
-        console.warn('External cookie control accept failed:', error);
-      }
-    }
-    onAccept();
-  };
-
-  return (
-    <motion.div
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: 100, opacity: 0 }}
-      className="fixed bottom-0 left-0 right-0 bg-[#1a1a2e] border-t border-gray-800/30 p-4 z-50">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="text-gray-300 text-sm">
-          A weboldal használatával elfogadja a cookie-k használatát. 
-          <Link to="/adatvedelem" className="text-[#ff5c35] hover:text-[#ff5c35]/80 ml-1">
-            Részletek
-          </Link>
-        </div>
-        <motion.button
-          onClick={handleAccept}
-          className="primary-button px-6 py-2 text-sm"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}>
-          Elfogadom
-        </motion.button>
-      </div>
-    </motion.div>
-  );
+  // Don't render anything as Cookiebot provides its own banner
+  return null;
 };
 
 export default CookieConsent; 
