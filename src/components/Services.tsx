@@ -6,9 +6,6 @@ import {
   MonitorSmartphone, Sparkles, Coffee, Phone, Mail
 } from 'lucide-react';
 import ProgressBar from './ProgressBar';
-import Particles from "react-tsparticles";
-import { loadSlim } from "tsparticles-slim";
-import type { Container, Engine } from "tsparticles-engine";
 
 interface Service {
   id: string;
@@ -93,7 +90,7 @@ const Services = () => {
         'Teljesítmény monitoring',
         'Backlink elemzés',
         'On-site SEO',
-        'Off-site SEO',
+        'Off-site SEO'
       ],
       benefits: [
         'Jobb keresési pozíciók',
@@ -128,292 +125,208 @@ const Services = () => {
     }
   ];
 
-  const particlesInit = React.useCallback(async (engine: Engine) => {
-    await loadSlim(engine);
-  }, []);
-
-  const particlesLoaded = React.useCallback(async (container: Container | undefined) => {
-    console.log(container);
-  }, []);
-
   return (
-    <main className="min-h-screen bg-[#0f0f17] relative overflow-hidden">
-      {/* Particles Background */}
-      <Particles
-        id="tsparticles-services"
-        init={particlesInit}
-        loaded={particlesLoaded}
-        options={{
-          background: {
-            color: {
-              value: "transparent",
-            },
-          },
-          fpsLimit: 60,
-          particles: {
-            color: {
-              value: "#ff5c35",
-            },
-            links: {
-              color: "#ff5c35",
-              distance: 150,
-              enable: true,
-              opacity: 0.12,
-              width: 1,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: false,
-              speed: 0.8,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 1200,
-              },
-              value: 60,
-            },
-            opacity: {
-              value: 0.12,
-              animation: {
-                enable: true,
-                speed: 0.3,
-                minimumValue: 0.08,
-              },
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 2 },
-            },
-          },
-          detectRetina: true,
-          interactivity: {
-            events: {
-              onHover: {
-                enable: true,
-                mode: "grab",
-                parallax: {
-                  enable: true,
-                  force: 50,
-                  smooth: 80
-                }
-              },
-            },
-            modes: {
-              grab: {
-                distance: 200,
-                links: {
-                  opacity: 0.25
-                }
-              }
-            }
-          }
-        }}
-        className="absolute inset-0"
-      />
+    <div className="min-h-screen bg-[#0a0a0f] text-white py-24 relative overflow-hidden">
+      {/* Modern Background Effect */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#ff5c35] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob"></div>
+        <div className="absolute top-[20%] right-0 w-[500px] h-[500px] bg-[#ff8f35] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-0 left-[25%] w-[500px] h-[500px] bg-purple-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
-        <ProgressBar />
+      <ProgressBar />
 
-        {/* Easter Egg */}
-        <motion.div
+      {/* Easter Egg */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: showEasterEgg ? 1 : 0, y: showEasterEgg ? 0 : 20 }}
+        className="fixed bottom-4 right-4 bg-[#ff5c35] text-white p-4 rounded-lg shadow-lg z-50">
+        <p className="text-sm font-medium">☕️ Kávészünet! Megérdemled!</p>
+      </motion.div>
+
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <motion.div 
+          className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: showEasterEgg ? 1 : 0, y: showEasterEgg ? 0 : 20 }}
-          className="fixed bottom-4 right-4 bg-[#ff5c35] text-white p-4 rounded-lg shadow-lg z-50">
-          <p className="text-sm font-medium">☕️ Kávészünet! Megérdemled!</p>
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}>
+          <h1 className="text-5xl font-bold mb-6">
+            Szolgáltatásaink
+          </h1>
+          <p className="text-gray-400 text-lg max-w-3xl mx-auto mb-8">
+            Fedezze fel átfogó szolgáltatásainkat, amelyek segítenek vállalkozása digitális növekedésében. Modern megoldásaink révén versenyelőnyhöz juthat az online térben.
+          </p>
+          <div className="w-24 h-1 bg-[#ff5c35] mx-auto"></div>
         </motion.div>
 
-        {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}>
-            <h1 className="text-5xl font-bold mb-6">
-              Szolgáltatásaink
-            </h1>
-            <p className="text-gray-400 text-lg max-w-3xl mx-auto mb-8">
-              Fedezze fel átfogó szolgáltatásainkat, amelyek segítenek vállalkozása digitális növekedésében. Modern megoldásaink révén versenyelőnyhöz juthat az online térben.
-            </p>
-            <div className="w-24 h-1 bg-[#ff5c35] mx-auto"></div>
-          </motion.div>
-
-          {/* Services Grid */}
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
-            {services.map((service, index) => {
-              const Icon = service.icon;
-              return (
-                <motion.div
-                  key={service.id}
-                  className={`bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border transition-all cursor-pointer ${
-                    activeService === service.id
-                      ? 'border-[#ff5c35] shadow-lg shadow-[#ff5c35]/20'
-                      : 'border-gray-800/50 hover:border-[#ff5c35]/30'
-                  }`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  onClick={() => setActiveService(activeService === service.id ? null : service.id)}
-                  whileHover={{ y: -5 }}>
-                  <div className="flex items-start space-x-4">
-                    <div className="p-3 bg-[#ff5c35]/20 rounded-xl">
-                      <Icon className="w-6 h-6 text-[#ff5c35]" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-bold mb-2">{service.title}</h3>
-                      <p className="text-gray-400 mb-4">{service.description}</p>
+        {/* Services Grid */}
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
+          {services.map((service, index) => {
+            const Icon = service.icon;
+            return (
+              <motion.div
+                key={service.id}
+                className={`bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border transition-all cursor-pointer ${
+                  activeService === service.id
+                    ? 'border-[#ff5c35] shadow-lg shadow-[#ff5c35]/20'
+                    : 'border-gray-800/50 hover:border-[#ff5c35]/30'
+                }`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                onClick={() => setActiveService(activeService === service.id ? null : service.id)}
+                whileHover={{ y: -5 }}>
+                <div className="flex items-start space-x-4">
+                  <div className="p-3 bg-[#ff5c35]/20 rounded-xl">
+                    <Icon className="w-6 h-6 text-[#ff5c35]" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold mb-2">{service.title}</h3>
+                    <p className="text-gray-400 mb-4">{service.description}</p>
+                    
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ 
+                        height: activeService === service.id ? 'auto' : 0,
+                        opacity: activeService === service.id ? 1 : 0
+                      }}
+                      className="overflow-hidden">
+                      <div className="grid md:grid-cols-2 gap-6 mt-6">
+                        <div>
+                          <h4 className="font-semibold text-[#ff5c35] mb-3">Szolgáltatások</h4>
+                          <ul className="space-y-2">
+                            {service.features.map((feature, idx) => (
+                              <motion.li
+                                key={idx}
+                                className="flex items-start text-gray-300"
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: idx * 0.1 }}>
+                                <Sparkles className="w-5 h-5 text-[#ff5c35] mt-1 mr-2 flex-shrink-0" />
+                                <span>{feature}</span>
+                              </motion.li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-[#ff5c35] mb-3">Előnyök</h4>
+                          <ul className="space-y-2">
+                            {service.benefits.map((benefit, idx) => (
+                              <motion.li
+                                key={idx}
+                                className="flex items-start text-gray-300"
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: idx * 0.1 }}>
+                                <Rocket className="w-5 h-5 text-[#ff5c35] mt-1 mr-2 flex-shrink-0" />
+                                <span>{benefit}</span>
+                              </motion.li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
                       
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ 
-                          height: activeService === service.id ? 'auto' : 0,
-                          opacity: activeService === service.id ? 1 : 0
-                        }}
-                        className="overflow-hidden">
-                        <div className="grid md:grid-cols-2 gap-6 mt-6">
-                          <div>
-                            <h4 className="font-semibold text-[#ff5c35] mb-3">Szolgáltatások</h4>
-                            <ul className="space-y-2">
-                              {service.features.map((feature, idx) => (
-                                <motion.li
-                                  key={idx}
-                                  className="flex items-start text-gray-300"
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: idx * 0.1 }}>
-                                  <Sparkles className="w-5 h-5 text-[#ff5c35] mt-1 mr-2 flex-shrink-0" />
-                                  <span>{feature}</span>
-                                </motion.li>
-                              ))}
-                            </ul>
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-[#ff5c35] mb-3">Előnyök</h4>
-                            <ul className="space-y-2">
-                              {service.benefits.map((benefit, idx) => (
-                                <motion.li
-                                  key={idx}
-                                  className="flex items-start text-gray-300"
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: idx * 0.1 }}>
-                                  <Rocket className="w-5 h-5 text-[#ff5c35] mt-1 mr-2 flex-shrink-0" />
-                                  <span>{benefit}</span>
-                                </motion.li>
-                              ))}
-                            </ul>
+                      {service.technologies && (
+                        <div className="mt-6">
+                          <h4 className="font-semibold text-[#ff5c35] mb-3">Technológiák</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {service.technologies.map((tech, idx) => (
+                              <motion.span
+                                key={idx}
+                                className="px-3 py-1 bg-[#ff5c35]/10 text-[#ff5c35] rounded-full text-sm"
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: idx * 0.1 }}>
+                                {tech}
+                              </motion.span>
+                            ))}
                           </div>
                         </div>
-                        
-                        {service.technologies && (
-                          <div className="mt-6">
-                            <h4 className="font-semibold text-[#ff5c35] mb-3">Technológiák</h4>
-                            <div className="flex flex-wrap gap-2">
-                              {service.technologies.map((tech, idx) => (
-                                <motion.span
-                                  key={idx}
-                                  className="px-3 py-1 bg-[#ff5c35]/10 text-[#ff5c35] rounded-full text-sm"
-                                  initial={{ opacity: 0, scale: 0.8 }}
-                                  animate={{ opacity: 1, scale: 1 }}
-                                  transition={{ delay: idx * 0.1 }}>
-                                  {tech}
-                                </motion.span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </motion.div>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Why Choose Us Section */}
-          <motion.div
-            className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50 mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}>
-            <h2 className="text-3xl font-bold mb-6">Miért Válassza a Vizitor.hu-t?</h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <div className="p-2 bg-[#ff5c35]/20 rounded-lg">
-                    <Shield className="w-5 h-5 text-[#ff5c35]" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">Professzionális megoldások</h3>
-                    <p className="text-gray-400">Magasan képzett szakértőink a legmodernebb technológiákat alkalmazzák.</p>
+                      )}
+                    </motion.div>
                   </div>
                 </div>
-                <div className="flex items-start space-x-3">
-                  <div className="p-2 bg-[#ff5c35]/20 rounded-lg">
-                    <Zap className="w-5 h-5 text-[#ff5c35]" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">Teljes körű szolgáltatás</h3>
-                    <p className="text-gray-400">Minden digitális megoldást egy helyen kínálunk.</p>
-                  </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Why Choose Us Section */}
+        <motion.div
+          className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50 mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}>
+          <h2 className="text-3xl font-bold mb-6">Miért Válassza a Vizitor.hu-t?</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="space-y-4">
+              <div className="flex items-start space-x-3">
+                <div className="p-2 bg-[#ff5c35]/20 rounded-lg">
+                  <Shield className="w-5 h-5 text-[#ff5c35]" />
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-2">Professzionális megoldások</h3>
+                  <p className="text-gray-400">Magasan képzett szakértőink a legmodernebb technológiákat alkalmazzák.</p>
                 </div>
               </div>
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <div className="p-2 bg-[#ff5c35]/20 rounded-lg">
-                    <MessageSquare className="w-5 h-5 text-[#ff5c35]" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">Átlátható kommunikáció</h3>
-                    <p className="text-gray-400">Folyamatos támogatás és gyors válaszidő minden kérdésre.</p>
-                  </div>
+              <div className="flex items-start space-x-3">
+                <div className="p-2 bg-[#ff5c35]/20 rounded-lg">
+                  <Zap className="w-5 h-5 text-[#ff5c35]" />
                 </div>
-                <div className="flex items-start space-x-3">
-                  <div className="p-2 bg-[#ff5c35]/20 rounded-lg">
-                    <Share2 className="w-5 h-5 text-[#ff5c35]" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">Egyedi megközelítés</h3>
-                    <p className="text-gray-400">Személyre szabott megoldások az Ön igényei szerint.</p>
-                  </div>
+                <div>
+                  <h3 className="font-semibold mb-2">Teljes körű szolgáltatás</h3>
+                  <p className="text-gray-400">Minden digitális megoldást egy helyen kínálunk.</p>
                 </div>
               </div>
             </div>
-          </motion.div>
+            <div className="space-y-4">
+              <div className="flex items-start space-x-3">
+                <div className="p-2 bg-[#ff5c35]/20 rounded-lg">
+                  <MessageSquare className="w-5 h-5 text-[#ff5c35]" />
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-2">Átlátható kommunikáció</h3>
+                  <p className="text-gray-400">Folyamatos támogatás és gyors válaszidő minden kérdésre.</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-3">
+                <div className="p-2 bg-[#ff5c35]/20 rounded-lg">
+                  <Share2 className="w-5 h-5 text-[#ff5c35]" />
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-2">Egyedi megközelítés</h3>
+                  <p className="text-gray-400">Személyre szabott megoldások az Ön igényei szerint.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
-          {/* CTA Section */}
-          <motion.div
-            className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50 text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}>
-            <h2 className="text-3xl font-bold mb-4">
-              Kezdjük el a közös munkát!
-            </h2>
-            <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-              Ne várjon tovább, kezdje el a digitális sikert még ma! Kérjen személyre szabott árajánlatot szolgáltatásainkra.
-            </p>
-            <motion.a
-              href="/kapcsolat"
-              className="inline-flex items-center px-8 py-4 bg-[#ff5c35] text-white rounded-lg font-semibold text-lg hover:bg-[#ff5c35]/90 transition-colors shadow-lg shadow-[#ff5c35]/20"
-              whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(255, 92, 53, 0.3)' }}
-              whileTap={{ scale: 0.98 }}>
-              <Rocket className="w-6 h-6 mr-2" />
-              Ajánlatkérés
-            </motion.a>
-          </motion.div>
-        </div>
+        {/* CTA Section */}
+        <motion.div
+          className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}>
+          <h2 className="text-3xl font-bold mb-4">
+            Kezdjük el a közös munkát!
+          </h2>
+          <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
+            Ne várjon tovább, kezdje el a digitális sikert még ma! Kérjen személyre szabott árajánlatot szolgáltatásainkra.
+          </p>
+          <motion.a
+            href="/kapcsolat"
+            className="inline-flex items-center px-8 py-4 bg-[#ff5c35] text-white rounded-lg font-semibold text-lg hover:bg-[#ff5c35]/90 transition-colors shadow-lg shadow-[#ff5c35]/20"
+            whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(255, 92, 53, 0.3)' }}
+            whileTap={{ scale: 0.98 }}>
+            <Rocket className="w-6 h-6 mr-2" />
+            Ajánlatkérés
+          </motion.a>
+        </motion.div>
       </div>
-    </main>
+    </div>
   );
 };
 

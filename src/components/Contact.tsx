@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, ArrowRight, MessageSquare, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import Particles from "react-tsparticles";
-import { loadSlim } from "tsparticles-slim";
-import type { Container, Engine } from "tsparticles-engine";
 
 const Contact = () => {
   const location = useLocation();
@@ -35,14 +32,6 @@ const Contact = () => {
     device: '',
     browser: ''
   });
-
-  const particlesInit = React.useCallback(async (engine: Engine) => {
-    await loadSlim(engine);
-  }, []);
-
-  const particlesLoaded = React.useCallback(async (container: Container | undefined) => {
-    console.log(container);
-  }, []);
 
   useEffect(() => {
     // Collect device and browser information
@@ -186,90 +175,16 @@ const Contact = () => {
   ];
 
   return (
-    <main className="min-h-screen bg-[#0f0f17] relative overflow-hidden">
-      {/* Particles Background */}
-      <Particles
-        id="tsparticles-contact"
-        init={particlesInit}
-        loaded={particlesLoaded}
-        options={{
-          background: {
-            color: {
-              value: "transparent",
-            },
-          },
-          fpsLimit: 60,
-          particles: {
-            color: {
-              value: "#ff5c35",
-            },
-            links: {
-              color: "#ff5c35",
-              distance: 200,
-              enable: true,
-              opacity: 0.1,
-              width: 1,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: true,
-              speed: 0.6,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 1500,
-              },
-              value: 50,
-            },
-            opacity: {
-              value: 0.1,
-              animation: {
-                enable: true,
-                speed: 0.3,
-                minimumValue: 0.06,
-              },
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 2 },
-            },
-          },
-          detectRetina: true,
-          interactivity: {
-            events: {
-              onHover: {
-                enable: true,
-                mode: "connect",
-                parallax: {
-                  enable: true,
-                  force: 60,
-                  smooth: 120
-                }
-              },
-            },
-            modes: {
-              connect: {
-                distance: 200,
-                links: {
-                  opacity: 0.2
-                },
-                radius: 200
-              }
-            }
-          }
-        }}
-        className="absolute inset-0"
-      />
+    <div className="min-h-screen bg-[#0a0a0f] text-white pt-28 pb-12 md:py-24 relative overflow-hidden">
+      {/* Modern Background Effect */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-0 left-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-[#ff5c35] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob"></div>
+        <div className="absolute top-[20%] right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-[#ff8f35] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-0 left-[25%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-purple-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Success Message */}
         <AnimatePresence>
           {isSubmitted && (
@@ -525,7 +440,7 @@ const Contact = () => {
           </motion.div>
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 

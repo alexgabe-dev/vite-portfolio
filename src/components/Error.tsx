@@ -2,9 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Home } from 'lucide-react';
-import Particles from "react-tsparticles";
-import { loadSlim } from "tsparticles-slim";
-import type { Container, Engine } from "tsparticles-engine";
 
 interface ErrorProps {
   code: number;
@@ -12,14 +9,6 @@ interface ErrorProps {
 
 const Error: React.FC<ErrorProps> = ({ code }) => {
   const navigate = useNavigate();
-
-  const particlesInit = React.useCallback(async (engine: Engine) => {
-    await loadSlim(engine);
-  }, []);
-
-  const particlesLoaded = React.useCallback(async (container: Container | undefined) => {
-    console.log(container);
-  }, []);
 
   const getErrorDetails = (errorCode: number) => {
     switch (errorCode) {
@@ -53,89 +42,16 @@ const Error: React.FC<ErrorProps> = ({ code }) => {
   const errorDetails = getErrorDetails(code);
 
   return (
-    <main className="min-h-screen bg-[#0f0f17] relative overflow-hidden">
-      {/* Particles Background */}
-      <Particles
-        id="tsparticles-error"
-        init={particlesInit}
-        loaded={particlesLoaded}
-        options={{
-          background: {
-            color: {
-              value: "transparent",
-            },
-          },
-          fpsLimit: 60,
-          particles: {
-            color: {
-              value: "#ff5c35",
-            },
-            links: {
-              color: "#ff5c35",
-              distance: 150,
-              enable: true,
-              opacity: 0.12,
-              width: 1,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: false,
-              speed: 0.8,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 1200,
-              },
-              value: 60,
-            },
-            opacity: {
-              value: 0.12,
-              animation: {
-                enable: true,
-                speed: 0.3,
-                minimumValue: 0.08,
-              },
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 2 },
-            },
-          },
-          detectRetina: true,
-          interactivity: {
-            events: {
-              onHover: {
-                enable: true,
-                mode: "grab",
-                parallax: {
-                  enable: true,
-                  force: 50,
-                  smooth: 80
-                }
-              },
-            },
-            modes: {
-              grab: {
-                distance: 200,
-                links: {
-                  opacity: 0.25
-                }
-              }
-            }
-          }
-        }}
-        className="absolute inset-0"
-      />
+    <main className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden flex items-center justify-center">
+      {/* Modern Background Effect */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-0 left-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-[#ff5c35] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob"></div>
+        <div className="absolute top-[20%] right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-[#ff8f35] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-0 left-[25%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-purple-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
+      {/* Content */}
+      <div className="relative z-10 max-w-2xl mx-auto px-4 py-16 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
