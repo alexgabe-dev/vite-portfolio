@@ -20,7 +20,25 @@
       ]
     },
     {
-      "source": "/static/(.*)",
+      "source": "/(.*)\\.(svg|png|jpg|jpeg|gif|webp|ico|woff2|css|js)$",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/_next/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/cdn\\.jsdelivr\\.net/.*\\.(svg|png|jpg|jpeg|gif|webp|css|js)$",
       "headers": [
         {
           "key": "Cache-Control",

@@ -776,6 +776,11 @@ function App() {
                                   ? 'brightness-125 scale-110'
                                   : 'filter group-hover:brightness-110'
                               }`}
+                              loading="lazy"
+                              decoding="async"
+                              fetchPriority="low"
+                              width={48}
+                              height={48}
                             />
                           </motion.div>
                           <motion.h3 
