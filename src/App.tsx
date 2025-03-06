@@ -638,10 +638,10 @@ function App() {
                       color: "from-[#21759B]/20 to-[#21759B]/5"
                     },
                     {
-                      name: "Wix",
-                      description: "Weboldalépítő platform",
-                      icon: "https://cdn.worldvectorlogo.com/logos/wix-1.svg",
-                      color: "from-[#000000]/20 to-[#000000]/5"
+                      name: "Figma",
+                      description: "UI/UX tervezőeszköz",
+                      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg",
+                      color: "from-[#F24E1E]/20 to-[#F24E1E]/5"
                     },
                     {
                       name: "Webflow",
