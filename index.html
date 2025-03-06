@@ -69,13 +69,19 @@
     <meta name="theme-color" content="#0a0a0f" media="(prefers-color-scheme: dark)">
     
     <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6XTDE9Y48B"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-6XTDE9Y48B');
+      gtag('config', 'G-6XTDE9Y48B', {
+        'anonymize_ip': true,
+        'cookie_flags': 'SameSite=None;Secure'
+      });
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6XTDE9Y48B"></script>
+
+    <!-- Cookiebot -->
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="8fc32faa-f7cb-4c33-94a2-9645308d6217" type="text/javascript"></script>
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -84,9 +90,6 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-KGN8CMBL');</script>
     <!-- End Google Tag Manager -->
-
-    <!-- Cookiebot -->
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="8fc32faa-f7cb-4c33-94a2-9645308d6217" type="text/javascript"></script>
 
     <style>
       /* Accessibility styles */
