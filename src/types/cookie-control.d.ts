@@ -34,6 +34,10 @@ interface Cookiebot {
       type: string;
     }>;
   };
+  show?: () => void;
+  hide?: () => void;
+  renew?: () => void;
+  init?: () => void;
 }
 
 declare global {
