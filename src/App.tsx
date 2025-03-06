@@ -992,63 +992,6 @@ function App() {
                       ))}
                   </div>
                 </motion.div>
-
-                {/* Team */}
-                <motion.div
-                  variants={staggerChildren}
-                  initial="initial"
-                  whileInView="animate"
-                  viewport={{ once: true }}>
-                  <motion.h2 
-                    className="text-3xl font-bold mb-12 text-center"
-                    variants={fadeInUp}>
-                    Csapatunk
-                  </motion.h2>
-                  <div className="grid md:grid-cols-4 gap-8">
-                    {[
-                      {
-                        name: "Nagy Péter",
-                        role: "Ügyvezető",
-                        image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3"
-                      },
-                      {
-                        name: "Kiss Anna",
-                        role: "Vezető Fejlesztő",
-                        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3"
-                      },
-                      {
-                        name: "Kovács Tamás",
-                        role: "Design Vezető",
-                        image: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-4.0.3"
-                      },
-                      {
-                        name: "Szabó Eszter",
-                        role: "Marketing Vezető",
-                        image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3"
-                      }
-                    ].map((member, index) => (
-                      <motion.div
-                        key={index}
-                        className="group relative"
-                        variants={fadeInUp}>
-                          <motion.div 
-                            className="relative h-[300px] rounded-lg overflow-hidden mb-4"
-                            whileHover={{ scale: 1.05 }}>
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] to-transparent z-10"></div>
-                            <img 
-                              src={member.image} 
-                              alt={member.name}
-                              className="w-full h-full object-cover"
-                            />
-                            <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
-                              <h3 className="text-xl font-bold">{member.name}</h3>
-                              <p className="text-[#ff5c35]">{member.role}</p>
-                            </div>
-                          </motion.div>
-                        </motion.div>
-                      ))}
-                </div>
-                </motion.div>
               </div>
             </motion.section>
 
