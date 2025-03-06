@@ -1,5 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Shield, Lock, Eye, FileText, ChevronRight } from 'lucide-react';
+import Particles from "react-tsparticles";
+import { loadSlim } from "tsparticles-slim";
+import type { Container, Engine } from "tsparticles-engine";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -8,8 +12,97 @@ const fadeInUp = {
 };
 
 const Privacy = () => {
+  const particlesInit = React.useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
+  }, []);
+
+  const particlesLoaded = React.useCallback(async (container: Container | undefined) => {
+    console.log(container);
+  }, []);
+
   return (
-    <main className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
+    <main className="min-h-screen bg-[#0f0f17] relative overflow-hidden">
+      {/* Particles Background */}
+      <Particles
+        id="tsparticles-privacy"
+        init={particlesInit}
+        loaded={particlesLoaded}
+        options={{
+          background: {
+            color: {
+              value: "transparent",
+            },
+          },
+          fpsLimit: 60,
+          particles: {
+            color: {
+              value: "#ff5c35",
+            },
+            links: {
+              color: "#ff5c35",
+              distance: 250,
+              enable: true,
+              opacity: 0.08,
+              width: 0.8,
+            },
+            move: {
+              direction: "none",
+              enable: true,
+              outModes: {
+                default: "bounce",
+              },
+              random: false,
+              speed: 0.4,
+              straight: false,
+            },
+            number: {
+              density: {
+                enable: true,
+                area: 2000,
+              },
+              value: 40,
+            },
+            opacity: {
+              value: 0.08,
+              animation: {
+                enable: true,
+                speed: 0.2,
+                minimumValue: 0.04,
+              },
+            },
+            shape: {
+              type: "circle",
+            },
+            size: {
+              value: { min: 0.8, max: 1.5 },
+            },
+          },
+          detectRetina: true,
+          interactivity: {
+            events: {
+              onHover: {
+                enable: true,
+                mode: "bubble",
+                parallax: {
+                  enable: true,
+                  force: 70,
+                  smooth: 150
+                }
+              },
+            },
+            modes: {
+              bubble: {
+                distance: 250,
+                size: 3,
+                duration: 2,
+                opacity: 0.2,
+              }
+            }
+          }
+        }}
+        className="absolute inset-0"
+      />
+
       {/* Modern Background Effect */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 left-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-[#ff5c35] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob"></div>
@@ -661,7 +754,7 @@ const Privacy = () => {
                 Abban az esetben megtagadjuk a kérés teljesítését, ha bizonyítjuk, hogy az adatkezelést olyan kényszerítő erejű jogos okok indokolják, amelyek elsőbbséget élveznek az Ön érdekeivel, jogaival és szabadságaival szemben, vagy amelyek jogi igények előterjesztéséhez, érvényesítéséhez vagy védelméhez kapcsolódnak. Amennyiben Ön a döntésünkkel nem ért egyet, illetve, ha elmulasztjuk a határidőt, a döntés közlésétől, illetve a határidő utolsó napjától számított 30 napon belül Ön bírósághoz fordulhat.
               </p>
               <p className="mt-4 text-gray-300">
-                Az adatvédelmi perek elbírálása a törvényszék hatáskörébe tartozik, a per – az érintett választása szerint – az érintett lakóhelye vagy tartózkodási helye szerinti törvényszék előtt is megindítható. Külföldi állampolgár esetén a lakóhelye szerint illetékes felügyelő hatósághoz is fordulhat panasszal.
+                Az adatvédelmi perek elbírálása a törvénysék hatáskörébe tartozik, a per – az érintett választása szerint – az érintett lakóhelye vagy tartózkodási helye szerinti törvénysék előtt is megindítható. Külföldi állampolgár esetén a lakóhelye szerint illetékes felügyelő hatósághoz is fordulhat panasszal.
               </p>
             </div>
           </section>

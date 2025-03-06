@@ -2,6 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Users, Target, Award, Rocket, ChevronRight, Code, Palette, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Particles from "react-tsparticles";
+import { loadSlim } from "tsparticles-slim";
+import type { Container, Engine } from "tsparticles-engine";
 
 const About = () => {
   const fadeInUp = {
@@ -56,17 +59,98 @@ const About = () => {
     }
   ];
 
-  return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white py-24 relative overflow-hidden">
-      {/* Modern Background Effect */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#ff5c35] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob"></div>
-        <div className="absolute top-[20%] right-0 w-[500px] h-[500px] bg-[#ff8f35] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-0 left-[25%] w-[500px] h-[500px] bg-purple-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-4000"></div>
-      </div>
+  const particlesInit = React.useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
+  }, []);
 
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  const particlesLoaded = React.useCallback(async (container: Container | undefined) => {
+    console.log(container);
+  }, []);
+
+  return (
+    <main className="min-h-screen bg-[#0f0f17] relative overflow-hidden">
+      {/* Particles Background */}
+      <Particles
+        id="tsparticles-about"
+        init={particlesInit}
+        loaded={particlesLoaded}
+        options={{
+          background: {
+            color: {
+              value: "transparent",
+            },
+          },
+          fpsLimit: 60,
+          particles: {
+            color: {
+              value: "#ff5c35",
+            },
+            links: {
+              color: "#ff5c35",
+              distance: 250,
+              enable: true,
+              opacity: 0.08,
+              width: 0.8,
+            },
+            move: {
+              direction: "none",
+              enable: true,
+              outModes: {
+                default: "bounce",
+              },
+              random: false,
+              speed: 0.4,
+              straight: false,
+            },
+            number: {
+              density: {
+                enable: true,
+                area: 2000,
+              },
+              value: 40,
+            },
+            opacity: {
+              value: 0.08,
+              animation: {
+                enable: true,
+                speed: 0.2,
+                minimumValue: 0.04,
+              },
+            },
+            shape: {
+              type: "circle",
+            },
+            size: {
+              value: { min: 0.8, max: 1.5 },
+            },
+          },
+          detectRetina: true,
+          interactivity: {
+            events: {
+              onHover: {
+                enable: true,
+                mode: "bubble",
+                parallax: {
+                  enable: true,
+                  force: 70,
+                  smooth: 150
+                }
+              },
+            },
+            modes: {
+              bubble: {
+                distance: 250,
+                size: 3,
+                duration: 2,
+                opacity: 0.2,
+              }
+            }
+          }
+        }}
+        className="absolute inset-0"
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
         {/* Hero Section */}
         <motion.div 
           className="text-center mb-24"
@@ -192,7 +276,7 @@ const About = () => {
           </Link>
         </motion.div>
       </div>
-    </div>
+    </main>
   );
 };
 
