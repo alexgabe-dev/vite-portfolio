@@ -1255,7 +1255,7 @@ function App() {
 
                   {/* Contact Info */}
                   <motion.div variants={fadeInUp}>
-                    <h2 className="text-2xl font-bold mb-6">Elérhetőségeink</h2>
+                    <h2 className="text-2xl font-bold mb-6 mt-12">Elérhetőségeink</h2>
                     
                     <div className="space-y-8">
                       <div>

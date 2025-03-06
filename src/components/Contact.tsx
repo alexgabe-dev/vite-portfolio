@@ -296,7 +296,7 @@ const Contact = () => {
                   value={formState.subject}
                   onChange={handleInputChange}
                   placeholder="Üzenet tárgya"
-                  className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
+                  className="w-full bg-[#0a0a0f] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
                   whileFocus={{ scale: 1.01 }}
                   required
                 />
@@ -309,7 +309,7 @@ const Contact = () => {
                   onChange={handleInputChange}
                   placeholder="Írja le kérdését vagy projektjét..."
                   rows={5}
-                  className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors resize-none"
+                  className="w-full bg-[#0a0a0f] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors resize-none"
                   whileFocus={{ scale: 1.01 }}
                   required
                 />
