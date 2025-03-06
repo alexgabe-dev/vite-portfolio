@@ -243,6 +243,14 @@
           // Show cookie banner after a short delay
           setTimeout(showCookieBanner, 1000);
       });
+
+      // Handle accept button click
+      function handleAcceptClick() {
+          if (window.Cookiebot) {
+              window.Cookiebot.dialog.submitConsent();
+              hideCookieBanner();
+          }
+      }
     </script>
 
     <style>
@@ -292,7 +300,7 @@
         <p class="c-message">Ez a weboldal sütiket (cookie-kat) használ a felhasználói élmény javítása érdekében. A webhely használatával elfogadja a sütik használatát.</p>
       </div>
       <div id="c-right">
-        <a href="javascript:void(0)" onclick="Cookiebot.dialog.submitConsent()" class="c-button">Elfogadom</a>
+        <a href="javascript:void(0)" onclick="handleAcceptClick()" class="c-button">Elfogadom</a>
       </div>
       <div style="clear:both"></div>
     </div>
