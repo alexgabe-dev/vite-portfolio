@@ -68,7 +68,31 @@
     <meta name="theme-color" content="#ff5c35" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0a0a0f" media="(prefers-color-scheme: dark)">
     
+    <!-- Google Consent Mode -->
+    <script data-cookieconsent="ignore">
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("consent", "default", {
+        ad_personalization: "denied",
+        ad_storage: "denied",
+        ad_user_data: "denied",
+        analytics_storage: "denied",
+        functionality_storage: "denied",
+        personalization_storage: "denied",
+        security_storage: "granted",
+        wait_for_update: 500,
+      });
+      gtag("set", "ads_data_redaction", true);
+      gtag("set", "url_passthrough", false);
+    </script>
+
+    <!-- Cookiebot -->
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="8fc32faa-f7cb-4c33-94a2-9645308d6217" type="text/javascript"></script>
+
     <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6XTDE9Y48B"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -78,18 +102,21 @@
         'cookie_flags': 'SameSite=None;Secure'
       });
     </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6XTDE9Y48B"></script>
-
-    <!-- Cookiebot -->
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="8fc32faa-f7cb-4c33-94a2-9645308d6217" type="text/javascript"></script>
 
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-KGN8CMBL');</script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        'gtm.start': new Date().getTime(),
+        event: 'gtm.js',
+        'ga4_id': 'G-6XTDE9Y48B'
+      });
+    </script>
+    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-KGN8CMBL"></script>
     <!-- End Google Tag Manager -->
+
+    <!-- Cookie Declaration -->
+    <script id="CookieDeclaration" src="https://consent.cookiebot.com/8fc32faa-f7cb-4c33-94a2-9645308d6217/cd.js" type="text/javascript" async></script>
 
     <style>
       /* Accessibility styles */
