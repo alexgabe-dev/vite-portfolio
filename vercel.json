@@ -4,5 +4,5 @@
   "rewrites": [
     { "source": "/(.*)", "destination": "/" }
   ],
-  "framework": "create-react-app"
+  "outputDirectory": "dist"
 } 
