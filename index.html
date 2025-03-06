@@ -3,31 +3,66 @@
   <head>
     <meta charset="UTF-8" />
     <!-- Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://safeframe.googlesyndication.com https://www.googletagmanager.com https://www.google-analytics.com https://consent.cookiebot.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: https: https://www.google-analytics.com; font-src 'self' data: https:; connect-src 'self' https: ws: wss: https://www.google-analytics.com; worker-src 'self' blob:; frame-src 'self' https://safeframe.googlesyndication.com https://consentcdn.cookiebot.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://safeframe.googlesyndication.com https://www.googletagmanager.com https://www.google-analytics.com https://consent.cookiebot.com https://consentcdn.cookiebot.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: https: https://www.google-analytics.com; font-src 'self' data: https:; connect-src 'self' https: ws: wss: https://www.google-analytics.com; worker-src 'self' blob:; frame-src 'self' https://safeframe.googlesyndication.com https://consentcdn.cookiebot.com;">
+    
+    <!-- SEO - Canonical URL -->
+    <link rel="canonical" href="https://viztor.hu" />
+    
+    <!-- SEO - Language Alternatives -->
+    <link rel="alternate" hreflang="hu" href="https://viztor.hu" />
+    <link rel="alternate" hreflang="x-default" href="https://viztor.hu" />
+    
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
     <link rel="manifest" href="/favicon/site.webmanifest">
     <link rel="shortcut icon" href="/favicon/favicon.ico">
+    
+    <!-- SEO - Primary Meta Tags -->
+    <title>Viztor.hu - Professzionális Weboldalkészítés és Marketing Szolgáltatások</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Viztor - Professzionális webfejlesztés és marketing szolgáltatások. Modern weboldalak, egyedi fejlesztések és hatékony marketing megoldások vállalkozásoknak." />
     <meta name="keywords" content="webfejlesztés, weboldalkészítés, marketing szolgáltatások, SEO, webtervezés, webdesign, digitális marketing, online marketing, honlapkészítés" />
     <meta name="author" content="Viztor" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     
-    <!-- OpenGraph Meta Tags -->
+    <!-- SEO - OpenGraph Meta Tags -->
+    <meta property="og:locale" content="hu_HU" />
+    <meta property="og:type" content="website" />
     <meta property="og:title" content="Viztor - Webfejlesztés, Weboldalkészítés és Marketing Szolgáltatások" />
     <meta property="og:description" content="Professzionális webfejlesztés és marketing szolgáltatások. Modern weboldalak, egyedi fejlesztések és hatékony marketing megoldások vállalkozásoknak." />
     <meta property="og:image" content="https://viztor.hu/src/vizitor-logo.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:url" content="https://viztor.hu" />
-    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Viztor.hu" />
     
-    <!-- Twitter Card Meta Tags -->
+    <!-- SEO - Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="vizitor.hu - Webfejlesztés, Weboldalkészítés és Marketing Szolgáltatások" />
     <meta name="twitter:description" content="Professzionális webfejlesztés, weboldalkészítés és marketing szolgáltatások. Modern weboldalak, egyedi fejlesztések és hatékony marketing megoldások." />
     <meta name="twitter:image" content="https://viztor.hu/src/vizitor-logo.png" />
+    
+    <!-- SEO - Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Viztor",
+      "url": "https://viztor.hu",
+      "logo": "https://viztor.hu/src/vizitor-logo.png",
+      "description": "Professzionális webfejlesztés és marketing szolgáltatások. Modern weboldalak, egyedi fejlesztések és hatékony marketing megoldások vállalkozásoknak.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "HU"
+      },
+      "sameAs": [
+        "https://www.facebook.com/viztorhu",
+        "https://www.instagram.com/viztor.hu"
+      ]
+    }
+    </script>
     
     <!-- Theme Color for Mobile Browsers -->
     <meta name="theme-color" content="#ff5c35" media="(prefers-color-scheme: light)">
@@ -53,7 +88,39 @@
   <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="8fc32faa-f7cb-4c33-94a2-9645308d6217"  type="text/javascript"></script>
 
 
-    <title>vizitor.hu - Webfejlesztés és Marketing Szolgáltatások</title>
+    <style>
+      /* Accessibility styles */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* Focus styles for keyboard navigation */
+      .user-is-tabbing *:focus {
+        outline: 2px solid #4A90E2 !important;
+        outline-offset: 2px !important;
+      }
+
+      /* Skip link styles */
+      .skip-link:focus {
+        left: 0;
+        top: 0;
+      }
+
+      /* High contrast mode support */
+      @media (forced-colors: active) {
+        * {
+          forced-color-adjust: auto;
+        }
+      }
+    </style>
   </head>
   <body>
 

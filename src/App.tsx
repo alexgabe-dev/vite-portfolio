@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronRight, Code, BarChart, Settings, Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Twitter, 
-  Globe, Box, Palette, FileCode, Layout, CircuitBoard, Blocks, Laptop, Braces, Workflow, FileJson } from 'lucide-react';
+  Globe, Box, Palette, FileCode, Layout, CircuitBoard, Blocks, Laptop, Braces, Workflow, FileJson, Lightbulb, Handshake, Target } from 'lucide-react';
 import { motion, AnimatePresence, useInView, useSpring, useTransform } from 'framer-motion';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import './App.css';
@@ -207,7 +207,7 @@ function App() {
                   <motion.p 
                     className="text-lg sm:text-xl mb-6 md:mb-8 text-gray-400 max-w-lg leading-[1.8]"
                     variants={fadeInUp}>
-                    Weboldalak, digitális marketing és automatizált megoldások, amelyek lenyűgözik a látogatókat és növelik a bevételt.
+                    Modern weboldalkészítés, hatékony digitális marketing és automatizált megoldások, amelyek lenyűgözik a látogatókat és növelik a bevételt.
                   </motion.p>
                   <motion.div 
                     className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8 md:mt-0"
@@ -227,7 +227,7 @@ function App() {
                         className="secondary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}>
-                        Szolgáltatásaink
+                        Szolgáltatásaim
                       </motion.button>
                     </Link>
                   </motion.div>
@@ -342,12 +342,12 @@ function App() {
                   <motion.h2 
                     className="text-4xl sm:text-5xl font-bold mb-6"
                     variants={fadeInUp}>
-                    Szolgáltatásaink
+                    Szolgáltatásaim
                   </motion.h2>
                   <motion.p 
                     className="text-gray-400 max-w-2xl mx-auto text-lg"
                     variants={fadeInUp}>
-                    Fedezze fel átfogó szolgáltatásainkat, amelyek segítenek vállalkozása digitális növekedésében
+                    Fedezd fel átfogó szolgáltatásaimat, amelyek segítenek vállalkozásod digitális növekedésében
                   </motion.p>
                   <div className="w-24 h-1 bg-[#ff5c35] mx-auto mt-6"></div>
                 </motion.div>
@@ -362,9 +362,9 @@ function App() {
                     {
                       icon: <Code size={28} />,
                       title: "Webfejlesztés",
-                      description: "Modern, reszponzív weboldalak fejlesztése, amelyek nem csak jól néznek ki, de hatékonyan konvertálnak.",
+                      description: "Modern, reszponzív weboldalak készítése, amelyek nem csak jól néznek ki, de hatékonyan konvertálnak.",
                       features: [
-                        "Egyedi weboldal fejlesztés",
+                        "Egyedi weboldal készítés",
                         "WordPress fejlesztés",
                         "E-commerce megoldások",
                         "Weboldal karbantartás"
@@ -374,11 +374,11 @@ function App() {
                     {
                       icon: <BarChart size={28} />,
                       title: "Marketing",
-                      description: "Átfogó digitális marketing stratégiák, amelyek növelik az online láthatóságot és az értékesítést.",
+                      description: "Átfogó, professzionális digitális marketing stratégiák, amelyek növelik az online láthatóságot és az értékesítést.",
                       features: [
                         "SEO optimalizálás",
-                        "Google Ads kampányok",
-                        "Social media marketing",
+                        "PPC kampányok",
+                        "Social Media Marketing",
                         "Email marketing"
                       ],
                       color: "from-orange-500/20 to-red-500/20"
@@ -386,7 +386,7 @@ function App() {
                     {
                       icon: <Settings size={28} />,
                       title: "Automatizálás",
-                      description: "Üzleti folyamatok automatizálása, amely időt és erőforrásokat szabadít fel vállalkozása számára.",
+                      description: "Üzleti folyamatok részletes automatizálása, amely időt és erőforrásokatanak szabadít fel vállalkozásod számára.",
                       features: [
                         "Folyamatautomatizálás",
                         "CRM rendszerek",
@@ -862,17 +862,17 @@ function App() {
                   whileInView="animate"
                   viewport={{ once: true }}>
                   <motion.div variants={fadeInUp}>
-                    <h2 className="text-3xl font-bold mb-6">Történetünk</h2>
-                  <p className="text-gray-400 mb-6">
-                      A Vizitor története 2020-ban kezdődött, amikor felismertük, hogy a magyar vállalkozásoknak 
-                      szükségük van egy megbízható partnerre a digitális átalakulásban. Célunk az volt, hogy 
-                      olyan megoldásokat kínáljunk, amelyek nem csak technológiailag korszerűek, hanem 
-                      valódi üzleti értéket is teremtenek.
-                  </p>
-                  <p className="text-gray-400">
-                      Ma már büszkén mondhatjuk, hogy több mint 100 sikeres projektet valósítottunk meg, 
-                      és csapatunk folyamatosan növekszik elkötelezett szakemberekkel.
-                    </p>
+                  <h2 className="text-3xl font-bold mb-6">Történetem</h2>
+                      <p className="text-gray-400 mb-6">
+                  A viztor.hu-t azért hosztam létre, mivel felismertem, hogy a magyar vállalkozásoknak 
+                  szükségük van egy megbízható partnerre a digitális átalakulásban. Célom az, hogy 
+                  olyan megoldásokat kínáljak, amelyek nem csak technológiailag korszerűek, hanem 
+                  valódi üzleti értéket is teremtenek.
+                      </p>
+                      <p className="text-gray-400">
+                  Ma már büszkén mondhatom, hogy több sikeres projektet valósítottam meg, 
+                  és folyamatosan fejlesztem magam, hogy együtt növekedjek az ügyfeleimmel.
+                      </p>
                   </motion.div>
                   <motion.div 
                     className="relative h-[400px]"
@@ -901,35 +901,61 @@ function App() {
                   <div className="grid md:grid-cols-3 gap-8">
                     {[
                       {
-                        icon: "💡",
+                        icon: <Lightbulb className="w-8 h-8 text-[#ff5c35]" />,
                         title: "Innováció",
-                        description: "Folyamatosan keressük az új technológiai megoldásokat"
+                        description: "Folyamatosan keressem az új technológiai megoldásokat",
+                        gradient: "from-blue-500/20 to-purple-500/20",
+                        features: ["Új technológiák", "Kreatív megoldások", "Folyamatos fejlődés"]
                       },
                       {
-                        icon: "🤝",
+                        icon: <Handshake className="w-8 h-8 text-[#ff5c35]" />,
                         title: "Megbízhatóság",
-                        description: "Amit ígérünk, azt teljesítjük, határidőre és minőségben"
+                        description: "Amit megígérek, azt időben és kiváló minőségben teljesítem, ezt garantálni tudom",
+                        gradient: "from-orange-500/20 to-red-500/20",
+                        features: ["Pontos határidők", "Minőségi szolgáltatás", "Megbízható partner"]
                       },
                       {
-                        icon: "🎯",
+                        icon: <Target className="w-8 h-8 text-[#ff5c35]" />,
                         title: "Eredményorientáltság",
-                        description: "A mérhető üzleti eredmények elérése a célunk"
+                        description: "A mérhető, valós üzleti eredmények elérése a célom",
+                        gradient: "from-green-500/20 to-teal-500/20",
+                        features: ["Mérhető eredmények", "Üzleti növekedés", "ROI fókusz"]
                       }
                     ].map((value, index) => (
                       <motion.div
                         key={index}
-                        className="bg-[#1a1a2e] p-8 rounded-lg border border-gray-800/50"
-                        variants={fadeInUp}
-                        whileHover={{ 
-                          scale: 1.03,
-                          boxShadow: "0 10px 30px -15px rgba(255, 92, 53, 0.2)"
-                        }}>
-                        <div className="text-4xl mb-4">{value.icon}</div>
-                        <h3 className="text-xl font-bold mb-2">{value.title}</h3>
-                        <p className="text-gray-400">{value.description}</p>
-                      </motion.div>
-                    ))}
-                </div>
+                        className="group relative"
+                        variants={fadeInUp}>
+                          <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl ${value.gradient}`}></div>
+                          <div className="relative bg-[#1a1a2e] p-8 rounded-xl border border-gray-800/50 group-hover:border-[#ff5c35]/30 transition-all duration-500">
+                            <motion.div 
+                              className="w-14 h-14 bg-gradient-to-br from-[#ff5c35]/20 to-[#ff5c35]/10 rounded-lg flex items-center justify-center mb-6 text-[#ff5c35] group-hover:scale-110 transition-transform duration-500">
+                              {value.icon}
+                            </motion.div>
+                            <h3 className="text-xl font-bold mb-2 group-hover:text-[#ff5c35] transition-colors duration-300">
+                              {value.title}
+                            </h3>
+                            <p className="text-gray-400 mb-6 group-hover:text-gray-300 transition-colors duration-300">
+                              {value.description}
+                            </p>
+                            <ul className="space-y-3">
+                              {value.features.map((feature, idx) => (
+                                <motion.li 
+                                  key={idx}
+                                  className="flex items-center text-gray-400 group-hover:text-gray-300"
+                                  initial={{ opacity: 0, x: -10 }}
+                                  whileInView={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: 0.1 * idx }}
+                                  whileHover={{ x: 5 }}>
+                                  <ChevronRight size={16} className="text-[#ff5c35] mr-2" />
+                                  {feature}
+                                </motion.li>
+                              ))}
+                            </ul>
+                          </div>
+                        </motion.div>
+                      ))}
+                  </div>
                 </motion.div>
 
                 {/* Team */}
