@@ -36,6 +36,21 @@
           "value": "public, max-age=31536000, immutable"
         }
       ]
+    },
+    {
+      "source": "/site.webmanifest",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/manifest+json"
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "src": "/site.webmanifest",
+      "dest": "/site.webmanifest"
     }
   ]
 } 
