@@ -404,7 +404,6 @@ function App() {
                 alt="Background"
                 className="absolute inset-0 w-full h-full object-cover opacity-10"
                 loading="eager"
-                fetchPriority="high"
                 decoding="async"
               />
             </div>
@@ -826,7 +825,6 @@ function App() {
                               }`}
                               loading="lazy"
                               decoding="async"
-                              fetchPriority="low"
                               width={48}
                               height={48}
                             />
