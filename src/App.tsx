@@ -44,6 +44,7 @@ function App() {
     device: '',
     browser: ''
   });
+  const [showBottomPopup, setShowBottomPopup] = useState(false);
 
   // Cookie consent initialization
   useEffect(() => {
@@ -368,6 +369,18 @@ function App() {
     setPrevPackage(currentPackage);
     setCurrentPackage(newIndex);
   };
+
+  // Logic to show popup after reaching the bottom
+  useEffect(() => {
+    const handleScroll = () => {
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        setTimeout(() => setShowBottomPopup(true), 10000);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <>
@@ -1440,7 +1453,7 @@ function App() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}>
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-3 gap-8">
             <motion.div variants={fadeInUp}>
               <div className="mb-4">
                 <motion.img
@@ -1472,30 +1485,10 @@ function App() {
               </ul>
             </motion.div>
             <motion.div variants={fadeInUp}>
-              <h4 className="font-semibold mb-4">Vállalat</h4>
+              <h4 className="font-semibold mb-4">Kapcsolat</h4>
               <ul className="space-y-2">
                 <motion.li whileHover={{ x: 5 }}>
-                  <Link to="/rolunk" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Rólunk</Link>
-                </motion.li>
-                <motion.li whileHover={{ x: 5 }}>
-                  <Link to="/rolunk" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Karrier</Link>
-                </motion.li>
-                <motion.li whileHover={{ x: 5 }}>
-                  <Link to="/kapcsolat" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Kapcsolat</Link>
-                </motion.li>
-              </ul>
-            </motion.div>
-            <motion.div variants={fadeInUp}>
-              <h4 className="font-semibold mb-4">Jogi</h4>
-              <ul className="space-y-2">
-                <motion.li whileHover={{ x: 5 }}>
-                  <Link to="/adatvedelem" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Adatvédelmi Tájékoztató</Link>
-                </motion.li>
-                <motion.li whileHover={{ x: 5 }}>
-                  <Link to="/adatvedelem" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">ÁSZF</Link>
-                </motion.li>
-                <motion.li whileHover={{ x: 5 }}>
-                  <Link to="/adatvedelem" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Cookie tájékoztató</Link>
+                  <Link to="/kapcsolat" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Kapcsolatfelvétel</Link>
                 </motion.li>
               </ul>
             </motion.div>
@@ -1507,6 +1500,29 @@ function App() {
           </motion.div>
         </div>
       </motion.footer>
+
+      {/* Popup for reaching the bottom of the page */}
+      <AnimatePresence>
+        {showBottomPopup && (
+          <motion.div 
+            className="fixed bottom-4 right-4 bg-[#0a0a0f] text-white p-4 rounded-lg shadow-lg"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}>
+            <p>Látom a végére értél! Kérdésed van? Szívesen válaszlok.</p>
+            <Link to="/kapcsolat">
+              <motion.button 
+                className="mt-2 px-4 py-2 bg-[#ff5c35] text-white rounded-lg flex items-center"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}>
+                <Send className="mr-2" />
+                Üzenet küldése
+              </motion.button>
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
