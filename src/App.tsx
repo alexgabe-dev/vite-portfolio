@@ -723,73 +723,61 @@ function App() {
                   {[
                     {
                       name: "WordPress",
-                      // description: "Content Management System",
                       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-plain.svg",
                       color: "from-[#21759B]/20 to-[#21759B]/5"
                     },
                     {
                       name: "Figma",
-                      // description: "UI/UX Design Tool",
                       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg",
                       color: "from-[#F24E1E]/20 to-[#F24E1E]/5"
                     },
                     {
                       name: "Webflow",
-                      // description: "Visual Development Tool",
                       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/webflow/webflow-original.svg",
                       color: "from-[#4353FF]/20 to-[#4353FF]/5"
                     },
                     {
                       name: "HTML5",
-                      // description: "Web Standard",
                       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
                       color: "from-[#E34F26]/20 to-[#E34F26]/5"
                     },
                     {
                       name: "CSS3",
-                      // description: "Styling Language",
                       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
                       color: "from-[#1572B6]/20 to-[#1572B6]/5"
                     },
                     {
                       name: "JavaScript",
-                      // description: "Programming Language",
                       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
                       color: "from-[#F7DF1E]/20 to-[#F7DF1E]/5"
                     },
                     {
                       name: "React",
-                      // description: "Frontend Framework",
                       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
                       color: "from-[#61DAFB]/20 to-[#61DAFB]/5"
                     },
                     {
                       name: "Vite",
-                      // description: "Development Tool",
                       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg",
                       color: "from-[#646CFF]/20 to-[#646CFF]/5"
                     },
                     {
                       name: "Next.js",
-                      // description: "React Framework",
                       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
                       color: "from-[#000000]/20 to-[#000000]/5"
                     },
                     {
                       name: "TypeScript",
-                      // description: "Typed JavaScript",
                       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
                       color: "from-[#3178C6]/20 to-[#3178C6]/5"
                     },
                     {
                       name: "Svelte",
-                      // description: "Modern Framework",
                       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/svelte/svelte-original.svg",
                       color: "from-[#FF3E00]/20 to-[#FF3E00]/5"
                     },
                     {
                       name: "PHP",
-                      // description: "Programming Language",
                       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg",
                       color: "from-[#777BB4]/20 to-[#777BB4]/5"
                     }
@@ -838,13 +826,6 @@ function App() {
                             whileHover={{ scale: 1.05 }}>
                               {tech.name}
                             </motion.h3>
-                            <p className={`text-sm transition-colors duration-300 ${
-                              selectedTechs.includes(tech.name)
-                                ? 'text-gray-300'
-                                : 'text-gray-400 group-hover:text-gray-300'
-                            }`}>
-                              {/* {tech.description} */}
-                            </p>
                         </div>
                       </div>
                     </motion.div>
@@ -1228,6 +1209,7 @@ function App() {
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
                           whileFocus={{ scale: 1.01 }}
                           required
+                          autocomplete="name"
                         />
                       </div>
                       <div>
@@ -1241,6 +1223,7 @@ function App() {
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
                           whileFocus={{ scale: 1.01 }}
                           required
+                          autocomplete="email"
                         />
                       </div>
                       <div>
@@ -1253,6 +1236,7 @@ function App() {
                           placeholder="+36 30 123 4567"
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
                           whileFocus={{ scale: 1.01 }}
+                          autocomplete="tel"
                         />
                       </div>
                       <div>
@@ -1266,6 +1250,7 @@ function App() {
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
                           whileFocus={{ scale: 1.01 }}
                           required
+                          autocomplete="off"
                         />
                       </div>
                       <div>
@@ -1279,6 +1264,7 @@ function App() {
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors resize-none"
                           whileFocus={{ scale: 1.01 }}
                           required
+                          autocomplete="off"
                         />
                       </div>
                       <div className="flex items-center space-x-2">
@@ -1366,12 +1352,12 @@ function App() {
                       <div>
                         <h3 className="text-lg font-semibold mb-4">Telefon</h3>
                         <motion.a 
-                          href="tel:+36301234567"
+                          href="tel:+36205180921"
                           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           className="text-gray-400 hover:text-white flex items-center"
                           whileHover={{ x: 5 }}>
                           <Phone className="mr-2 text-[#ff5c35]" size={20} />
-                          +36 30 123 4567
+                          +36 20 518 0921
                         </motion.a>
                     </div>
                     
