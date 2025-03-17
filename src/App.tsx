@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronRight, Code, BarChart, Settings, Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Twitter, 
-  Globe, Box, Palette, FileCode, Layout, CircuitBoard, Blocks, Laptop, Braces, Workflow, FileJson, Lightbulb, Handshake, Target, CheckCircle, Send } from 'lucide-react';
+  Globe, Box, Palette, FileCode, Layout, CircuitBoard, Blocks, Laptop, Braces, Workflow, FileJson, Lightbulb, Handshake, Target, CheckCircle, Send, Github } from 'lucide-react';
 import { motion, AnimatePresence, useInView, useSpring, useTransform } from 'framer-motion';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import './App.css';
@@ -1401,22 +1401,24 @@ function App() {
                             href="#"
                             className="w-10 h-10 bg-[#1a1a2e] rounded-lg flex items-center justify-center text-[#ff5c35] hover:text-white transition-colors"
                             whileHover={{ y: -5 }}
-                            aria-label="Kövessen minket Instagramon">
+                            aria-label="Kövessen engem Instagramon">
                             <Instagram size={20} />
                           </motion.a>
                           <motion.a 
                             href="#"
                             className="w-10 h-10 bg-[#1a1a2e] rounded-lg flex items-center justify-center text-[#ff5c35] hover:text-white transition-colors"
                             whileHover={{ y: -5 }}
-                            aria-label="Kövessen minket LinkedInen">
+                            aria-label="Kövessen engem LinkedInen">
                             <Linkedin size={20} />
                           </motion.a>
                           <motion.a 
-                            href="#"
+                            href="https://github.com/alexgabe-dev"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="w-10 h-10 bg-[#1a1a2e] rounded-lg flex items-center justify-center text-[#ff5c35] hover:text-white transition-colors"
                             whileHover={{ y: -5 }}
-                            aria-label="Kövessen minket Twitteren">
-                            <Twitter size={20} />
+                            aria-label="Kövessen engem GitHubon">
+                            <Github size={20} />
                           </motion.a>
                     </div>
                   </div>
