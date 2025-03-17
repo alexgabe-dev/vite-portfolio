@@ -826,8 +826,8 @@ function App() {
                               }`}
                               loading="lazy"
                               decoding="async"
-                              width={48}
-                              height={48}
+                              width={64}
+                              height={64}
                             />
                           </motion.div>
                           <motion.h3 
@@ -1453,21 +1453,19 @@ function App() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}>
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8">
-            <motion.div variants={fadeInUp}>
-              <div className="mb-4">
-                <motion.img
-                  src="/vizitor-logo.min.svg"
-                  alt="Vizitor Logo" 
-                  width={32}
-                  height={32}
-                  className="h-8 w-8 object-contain" 
-                  loading="lazy"
-                  decoding="async"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                />
-              </div>
+          <div className="grid md:grid-cols-4 gap-8">
+            <motion.div variants={fadeInUp} className="flex flex-col items-start">
+              <motion.img
+                src="/vizitor-logo.svg"
+                alt="Vizitor Logo" 
+                width={64}
+                height={64}
+                className="h-32 w-32 object-contain" 
+                loading="lazy"
+                decoding="async"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              />
               <p className="text-gray-400">Modern megoldások az Ön vállalkozása számára</p>
             </motion.div>
             <motion.div variants={fadeInUp}>
@@ -1477,7 +1475,7 @@ function App() {
                   <Link to="/szolgaltatasok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Webfejlesztés</Link>
                 </motion.li>
                 <motion.li whileHover={{ x: 5 }}>
-                  <Link to="/szolgaltatasok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Marketing</Link>
+                  <Link to="/szolgaltatasok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">PPC kampánykezelés</Link>
                 </motion.li>
                 <motion.li whileHover={{ x: 5 }}>
                   <Link to="/szolgaltatasok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Automatizálás</Link>
@@ -1485,10 +1483,30 @@ function App() {
               </ul>
             </motion.div>
             <motion.div variants={fadeInUp}>
-              <h4 className="font-semibold mb-4">Kapcsolat</h4>
+              <h4 className="font-semibold mb-4">Csomagok</h4>
+              <ul className="space-y-2">
+                <motion.li whileHover={{ x: 5 }}>
+                  <Link to="/csomagok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Weboldalkészítés</Link>
+                </motion.li>
+                <motion.li whileHover={{ x: 5 }}>
+                  <Link to="/csomagok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Marketing szolgáltatások</Link>
+                </motion.li>
+                <motion.li whileHover={{ x: 5 }}>
+                  <Link to="/csomagok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Web karbantartás</Link>
+                </motion.li>
+              </ul>
+            </motion.div>
+            <motion.div variants={fadeInUp}>
+              <h4 className="font-semibold mb-4">Továbbiak</h4>
               <ul className="space-y-2">
                 <motion.li whileHover={{ x: 5 }}>
                   <Link to="/kapcsolat" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Kapcsolatfelvétel</Link>
+                </motion.li>
+                <motion.li whileHover={{ x: 5 }}>
+                  <Link to="/adatvedelem" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Adatvédelmi Tájékoztató</Link>
+                </motion.li>
+                <motion.li whileHover={{ x: 5 }}>
+                  <Link to="/kapcsolat" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Elérhetőségek</Link>
                 </motion.li>
               </ul>
             </motion.div>
@@ -1500,29 +1518,6 @@ function App() {
           </motion.div>
         </div>
       </motion.footer>
-
-      {/* Popup for reaching the bottom of the page */}
-      <AnimatePresence>
-        {showBottomPopup && (
-          <motion.div 
-            className="fixed bottom-4 right-4 bg-[#0a0a0f] text-white p-4 rounded-lg shadow-lg"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}>
-            <p>Látom a végére értél! Kérdésed van? Szívesen válaszlok.</p>
-            <Link to="/kapcsolat">
-              <motion.button 
-                className="mt-2 px-4 py-2 bg-[#ff5c35] text-white rounded-lg flex items-center"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}>
-                <Send className="mr-2" />
-                Üzenet küldése
-              </motion.button>
-            </Link>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 }
