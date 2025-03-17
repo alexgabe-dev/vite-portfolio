@@ -22,6 +22,7 @@ function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [selectedTechs, setSelectedTechs] = React.useState<string[]>([]);
   const [currentPackage, setCurrentPackage] = React.useState(0);
+  const [prevPackage, setPrevPackage] = React.useState(0);
   const [clickCount, setClickCount] = React.useState(0);
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
   const [showPromotion, setShowPromotion] = React.useState(false);
@@ -202,7 +203,7 @@ function App() {
   const packages = [
     {
       title: "Starter Csomag",
-      price: "150.000 Ft",
+      price: "135.000 Ft",
       type: "Egyszeri díj",
       features: [
         "Egyedi, modern dizájn",
@@ -231,7 +232,8 @@ function App() {
         "Google Analytics integráció",
         "Galéria, portfólió és videó szekció",
         "Prémium design elemek & grafikai illusztrációk",
-        "Egyedi süti banner"
+        "Egyedi süti banner",
+        "2 hónap ingyenes karbantartás"
       ],
       isPopular: true
     },
@@ -248,7 +250,7 @@ function App() {
         "Fejlett biztonsági megoldások",
         "Haladó teljesítmény optimalizáció",
         "CRM integráció & automatizált ügyfélkezelés",
-        "2 hónap ingyenes karbantartás"
+        "3 hónap ingyenes karbantartás"
       ],
       isPopular: false
     }
@@ -359,6 +361,12 @@ function App() {
       ...prev,
       [name]: value
     }));
+  };
+
+  // Update the currentPackage and prevPackage states
+  const handlePackageChange = (newIndex: number) => {
+    setPrevPackage(currentPackage);
+    setCurrentPackage(newIndex);
   };
 
   return (
@@ -908,9 +916,9 @@ function App() {
                       <motion.div
                         key={currentPackage}
                         className="flex w-full"
-                        initial={{ opacity: 0, x: 100 }}
+                        initial={{ opacity: 0, x: prevPackage < currentPackage ? 100 : -100 }}
                         animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -100 }}
+                        exit={{ opacity: 0, x: prevPackage < currentPackage ? -100 : 100 }}
                         transition={{
                           type: "spring",
                           stiffness: 300,
@@ -932,9 +940,9 @@ function App() {
                             onDragEnd={(e, { offset, velocity }) => {
                               const swipe = offset.x + velocity.x * 50;
                               if (swipe < -50 && currentPackage < (isMobile ? 3 : packages.length - 1)) {
-                                setCurrentPackage(currentPackage + 1);
+                                handlePackageChange(currentPackage + 1);
                               } else if (swipe > 50 && currentPackage > 0) {
-                                setCurrentPackage(currentPackage - 1);
+                                handlePackageChange(currentPackage - 1);
                               }
                             }}>
                             {currentPackage < packages.length && packages[currentPackage].isPopular && (

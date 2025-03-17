@@ -25,7 +25,7 @@ const Packages = () => {
     web: [
       {
         title: "Starter Csomag",
-        price: "150.000 Ft",
+        price: "135.000 Ft",
         type: "-tól",
         category: "ALAP CSOMAG",
         features: [
@@ -58,7 +58,8 @@ const Packages = () => {
           "Google Analytics integráció",
           "Galéria, portfólió és videó szekció",
           "Prémium design elemek & grafikai illusztrációk",
-          "Egyedi süti banner"
+          "Egyedi süti banner",
+          "2 hónap ingyenes karbantartás"
         ]
       },
       {
@@ -75,15 +76,15 @@ const Packages = () => {
           "Fejlett biztonsági megoldások",
           "Haladó teljesítmény optimalizáció",
           "CRM integráció & automatizált ügyfélkezelés",
-          "2 hónap ingyenes karbantartás"
+          "3 hónap ingyenes karbantartás"
         ]
       }
     ],
     marketing: [
       {
         title: "Alap Marketing Csomag",
-        price: billingCycle === 'monthly' ? "75.000 Ft" : "729.000 Ft",
-        type: billingCycle === 'monthly' ? "/ hónap" : "/ év",
+        price: billingCycle === 'monthly' ? "75.000 Ft" : `${Math.round((75000 * 12 * 0.8) / 12).toLocaleString()} Ft`,
+        type: "/ hónap",
         category: "ALAP CSOMAG",
         features: [
           "Social media jelenlét kezelése (2 platform)",
@@ -98,8 +99,8 @@ const Packages = () => {
       },
       {
         title: "Közép Marketing Csomag",
-        price: billingCycle === 'monthly' ? "145.000 Ft" : "1.409.400 Ft",
-        type: billingCycle === 'monthly' ? "/ hónap" : "/ év",
+        price: billingCycle === 'monthly' ? "145.000 Ft" : `${Math.round((145000 * 12 * 0.8) / 12).toLocaleString()} Ft`,
+        type: "/ hónap",
         category: "LEGNÉPSZERŰBB",
         popular: true,
         features: [
@@ -116,29 +117,28 @@ const Packages = () => {
       },
       {
         title: "Prémium Marketing Csomag",
-        price: billingCycle === 'monthly' ? "295.000 Ft" : "2.867.400 Ft",
-        type: billingCycle === 'monthly' ? "/ hónap" : "/ év",
+        price: billingCycle === 'monthly' ? "295.000 Ft" : `${Math.round((295000 * 12 * 0.8) / 12).toLocaleString()} Ft`,
+        type: "/ hónap",
         category: "PRÉMIUM CSOMAG",
         features: [
-          "Teljes körű social media menedzsment",
-          "Napi posztok készítése és ütemezése",
-          "Egyedi grafikai tervezés",
-          "Komplex Google Ads kampányok",
-          "Facebook, Instagram, LinkedIn hirdetések",
-          "Email marketing (korlátlan)",
-          "Heti blog bejegyzések",
-          "PR és sajtóközlemények",
-          "Influencer kampányok",
-          "Heti konzultáció",
-          "24/7 ügyfélszolgálat"
+          "Átfogó közösségi média menedzsment",
+          "Napi posztok tervezése, elkészítése és ütemezése",
+          "Testreszabott grafikai tervezési megoldások",
+          "Összetett Google Ads kampányok kezelése",
+          "Facebook, Instagram és LinkedIn hirdetési kampányok",
+          "Korlátlan email marketing kampány",
+          "Heti friss blog tartalom készítése",
+          "PR stratégia és sajtóközlemények kidolgozása",
+          "Influencer együttműködések menedzselése",
+          "Heti szakértői konzultáció"
         ]
       }
     ],
     maintenance: [
       {
         title: "Alap Karbantartási Csomag",
-        price: billingCycle === 'monthly' ? "15.000 Ft" : "145.800 Ft",
-        type: billingCycle === 'monthly' ? "/ hónap" : "/ év",
+        price: billingCycle === 'monthly' ? "25.000 Ft" : `${Math.round((25000 * 12 * 0.8) / 12).toLocaleString()} Ft`,
+        type: "/ hónap",
         category: "ALAP CSOMAG",
         features: [
           "Havi biztonsági mentés",
@@ -152,15 +152,15 @@ const Packages = () => {
       },
       {
         title: "Közép Karbantartási Csomag",
-        price: billingCycle === 'monthly' ? "35.000 Ft" : "340.200 Ft",
-        type: billingCycle === 'monthly' ? "/ hónap" : "/ év",
+        price: billingCycle === 'monthly' ? "35.000 Ft" : `${Math.round((35000 * 12 * 0.8) / 12).toLocaleString()} Ft`,
+        type: "/ hónap",
         category: "LEGNÉPSZERŰBB",
         popular: true,
         features: [
           "Heti biztonsági mentés",
           "Rendszeres frissítések és ellenőrzések",
           "Biztonsági monitoring",
-          "Malware védelem",
+          "Adatbázis védelem",
           "Havi 3 óra tartalommódosítás",
           "Teljesítmény optimalizálás",
           "SSL tanúsítvány kezelés",
@@ -170,13 +170,13 @@ const Packages = () => {
       },
       {
         title: "Prémium Karbantartási Csomag",
-        price: billingCycle === 'monthly' ? "75.000 Ft" : "729.000 Ft",
-        type: billingCycle === 'monthly' ? "/ hónap" : "/ év",
+        price: billingCycle === 'monthly' ? "75.000 Ft" : `${Math.round((75000 * 12 * 0.8) / 12).toLocaleString()} Ft`,
+        type: "/ hónap",
         category: "PRÉMIUM CSOMAG",
         features: [
           "Napi biztonsági mentés",
           "24/7 monitoring és védelem",
-          "Fejlett biztonsági rendszer",
+          "Fejlett biztonsági szoftver",
           "DDoS védelem",
           "Korlátlan tartalommódosítás",
           "Folyamatos teljesítmény optimalizálás",
@@ -253,7 +253,7 @@ const Packages = () => {
                 aria-pressed={billingCycle === 'annually'}>
                 Éves
                 <span className="ml-2 text-xs bg-white/10 text-white px-2 py-1 rounded-full">
-                  -10%
+                  -20%
                 </span>
               </button>
             </div>
@@ -311,13 +311,19 @@ const Packages = () => {
                   </span>
                 </div>
               )}
-              
+              {billingCycle === 'annually' && activeCategory !== 'web' && (
+                <div className="absolute top-4 right-4">
+                  <span className="bg-[#ff5c35] text-white text-xs font-semibold px-2 py-1 rounded-full">
+                    -20%
+                  </span>
+                </div>
+              )}
               <div className="p-8">
                 <div className="text-sm font-medium text-[#ff5c35] mb-2">{pkg.category}</div>
                 <h3 className="text-2xl font-bold mb-2">{pkg.title}</h3>
-                <div className="flex items-baseline mb-6">
+                <div className="flex items-baseline mb-6 space-x-2">
                   <span className="text-4xl font-bold">{pkg.price}</span>
-                  <span className="text-gray-400 ml-2">{pkg.type}</span>
+                  <span className="text-gray-400 text-sm">{pkg.type}</span>
                 </div>
 
                 <motion.button

@@ -139,38 +139,34 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Címünk",
-      details: ["1234 Budapest", "Példa utca 123."],
+      details: ["1136 Budapest", "Pannónia utca 14."],
       action: {
         text: "Útvonaltervezés",
-        link: "https://goo.gl/maps/your-location"
+        link: "https://www.google.com/maps/place/Budapest,+Pann%C3%B3nia+u.+14,+1136/@47.5136694,19.0516091,17z/data=!3m1!4b1!4m6!3m5!1s0x4741dc0ecf631f79:0x7a0f66f702183eb8!8m2!3d47.5136694!4d19.0516091!16s%2Fg%2F11yb03m09z?entry=ttu&g_ep=EgoyMDI1MDMxMi4wIKXMDSoASAFQAw%3D%3D"
       }
     },
     {
       icon: Phone,
       title: "Telefonszám",
-      details: ["+36 30 123 4567", "+36 1 123 4567"],
+      details: ["+36 20 518 0921"],
       action: {
         text: "Hívás most",
-        link: "tel:+36301234567"
+        link: "tel:+36205180921"
       }
     },
     {
       icon: Mail,
       title: "Email",
-      details: ["info@weboldal.hu", "support@weboldal.hu"],
+      details: ["info@vizitor"],
       action: {
         text: "Email küldése",
-        link: "mailto:info@weboldal.hu"
+        link: "mailto:info@vizitor.hu"
       }
     },
     {
       icon: Clock,
       title: "Nyitvatartás",
-      details: ["H-P: 9:00 - 17:00", "Hétvégén: Zárva"],
-      action: {
-        text: "Időpontfoglalás",
-        link: "#"
-      }
+      details: ["H-P: 9:00 - 17:00", "Hétvégén: Zárva"]
     }
   ];
 
@@ -225,7 +221,7 @@ const Contact = () => {
             velünk
           </h1>
           <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
-            Keressen minket bizalommal! Szakértő csapatunk <span className="text-white font-semibold">15 percen belül</span> válaszol megkeresésére
+            Keress bizalommal! Az űrlap kitöltése után <span className="text-white font-semibold">24 órán belül</span> válaszolok a megkeresésedre!
           </p>
         </motion.div>
 
@@ -381,15 +377,15 @@ const Contact = () => {
                   <Phone className="w-6 h-6 text-[#ff5c35]" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">Azonnali kapcsolat</h3>
-                  <p className="text-gray-400">+36 30 123 4567</p>
+                  <h3 className="font-bold text-lg">Hívj azonnal</h3>
+                  <p className="text-gray-400">+36 20 518 0921</p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-[#ff5c35] ml-auto transform group-hover:translate-x-1 transition-transform" />
               </div>
             </motion.a>
 
             <motion.a
-              href="mailto:info@weboldal.hu"
+              href="mailto:info@vizitor.hu"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="block w-full bg-[#1a1a2e]/80 backdrop-blur-sm p-6 rounded-2xl border border-gray-800/50 hover:border-[#ff5c35] transition-all group"
               whileHover={{ y: -5 }}>
@@ -399,14 +395,14 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg">Email küldése</h3>
-                  <p className="text-gray-400">info@weboldal.hu</p>
+                  <p className="text-gray-400">info@vizitor.hu</p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-[#ff5c35] ml-auto transform group-hover:translate-x-1 transition-transform" />
               </div>
             </motion.a>
 
             <motion.a
-              href="https://goo.gl/maps/your-location"
+              href="https://www.google.com/maps/place/Budapest,+Pann%C3%B3nia+u.+14,+1136/@47.5136694,19.0516091,17z/data=!3m1!4b1!4m6!3m5!1s0x4741dc0ecf631f79:0x7a0f66f702183eb8!8m2!3d47.5136694!4d19.0516091!16s%2Fg%2F11yb03m09z?entry=ttu&g_ep=EgoyMDI1MDMxMi4wIKXMDSoASAFQAw%3D%3D"
               target="_blank"
               rel="noopener noreferrer"
               className="block w-full bg-[#1a1a2e]/80 backdrop-blur-sm p-6 rounded-2xl border border-gray-800/50 hover:border-[#ff5c35] transition-all group"
@@ -417,7 +413,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg">Címünk</h3>
-                  <p className="text-gray-400">1234 Budapest, Példa utca 123.</p>
+                  <p className="text-gray-400">1136 Budapest, Pannónia utca 14.</p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-[#ff5c35] ml-auto transform group-hover:translate-x-1 transition-transform" />
               </div>

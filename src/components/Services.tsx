@@ -156,7 +156,7 @@ const Services = () => {
             Szolgáltatásaink
           </h1>
           <p className="text-gray-400 text-lg max-w-3xl mx-auto mb-8">
-            Fedezze fel átfogó szolgáltatásainkat, amelyek segítenek vállalkozása digitális növekedésében. Modern megoldásaink révén versenyelőnyhöz juthat az online térben.
+            Fedezd fel átfogó szolgáltatásaimat, amelyek segítenek vállalkozásod digitális növekedésében. Modern megoldásaim révén versenyelőnyhöz juthatsz az online térben.
           </p>
           <div className="w-24 h-1 bg-[#ff5c35] mx-auto"></div>
         </motion.div>
@@ -195,7 +195,7 @@ const Services = () => {
                       className="overflow-hidden">
                       <div className="grid md:grid-cols-2 gap-6 mt-6">
                         <div>
-                          <h4 className="font-semibold text-[#ff5c35] mb-3">Szolgáltatások</h4>
+                          <h4 className="font-semibold text-[#ff5c35] mb-3">Szolgáltatásaim</h4>
                           <ul className="space-y-2">
                             {service.features.map((feature, idx) => (
                               <motion.li
@@ -259,7 +259,7 @@ const Services = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}>
-          <h2 className="text-3xl font-bold mb-6">Miért Válassza a Vizitor.hu-t?</h2>
+          <h2 className="text-3xl font-bold mb-6">Miért válassz engem?</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <div className="flex items-start space-x-3">
@@ -268,7 +268,7 @@ const Services = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold mb-2">Professzionális megoldások</h3>
-                  <p className="text-gray-400">Magasan képzett szakértőink a legmodernebb technológiákat alkalmazzák.</p>
+                  <p className="text-gray-400">A legmodernebb technológiákat alkalmazzom.</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
@@ -277,7 +277,7 @@ const Services = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold mb-2">Teljes körű szolgáltatás</h3>
-                  <p className="text-gray-400">Minden digitális megoldást egy helyen kínálunk.</p>
+                  <p className="text-gray-400">Minden digitális megoldást egy helyen kínálok.</p>
                 </div>
               </div>
             </div>
@@ -297,7 +297,7 @@ const Services = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold mb-2">Egyedi megközelítés</h3>
-                  <p className="text-gray-400">Személyre szabott megoldások az Ön igényei szerint.</p>
+                  <p className="text-gray-400">Személyre szabott megoldások az igényeid szerint.</p>
                 </div>
               </div>
             </div>
@@ -314,7 +314,7 @@ const Services = () => {
             Kezdjük el a közös munkát!
           </h2>
           <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-            Ne várjon tovább, kezdje el a digitális sikert még ma! Kérjen személyre szabott árajánlatot szolgáltatásainkra.
+            Ne várj tovább, kezdd el a digitális sikert még ma! Kérj személyre szabott INGYENES árajánlatot szolgáltatásaimra!
           </p>
           <motion.a
             href="/kapcsolat"
