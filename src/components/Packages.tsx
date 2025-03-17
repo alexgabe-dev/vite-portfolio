@@ -375,7 +375,9 @@ const Packages = () => {
                 className="inline-flex items-center px-6 py-3 bg-transparent border-2 border-[#ff5c35] text-[#ff5c35] rounded-lg font-semibold hover:bg-[#ff5c35] hover:text-white transition-colors group"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                aria-label="Contact us for custom solutions">
+                aria-label="Contact us for custom solutions"
+                onClick={() => window.location.href = '/kapcsolat'}
+              >
                 Kapcsolatfelvétel
                 <ChevronRight className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
               </motion.button>

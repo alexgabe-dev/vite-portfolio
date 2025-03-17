@@ -1209,7 +1209,7 @@ function App() {
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
                           whileFocus={{ scale: 1.01 }}
                           required
-                          autocomplete="name"
+                          autoComplete="name"
                         />
                       </div>
                       <div>
@@ -1223,7 +1223,7 @@ function App() {
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
                           whileFocus={{ scale: 1.01 }}
                           required
-                          autocomplete="email"
+                          autoComplete="email"
                         />
                       </div>
                       <div>
@@ -1236,7 +1236,7 @@ function App() {
                           placeholder="+36 30 123 4567"
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
                           whileFocus={{ scale: 1.01 }}
-                          autocomplete="tel"
+                          autoComplete="tel"
                         />
                       </div>
                       <div>
@@ -1250,7 +1250,7 @@ function App() {
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
                           whileFocus={{ scale: 1.01 }}
                           required
-                          autocomplete="off"
+                          autoComplete="off"
                         />
                       </div>
                       <div>
@@ -1264,7 +1264,7 @@ function App() {
                           className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors resize-none"
                           whileFocus={{ scale: 1.01 }}
                           required
-                          autocomplete="off"
+                          autoComplete="off"
                         />
                       </div>
                       <div className="flex items-center space-x-2">
@@ -1372,7 +1372,7 @@ function App() {
                   </div>
                   
                       <div>
-                        <h3 className="text-lg font-semibold mb-4">Kövessen minket</h3>
+                        <h3 className="text-lg font-semibold mb-4">Kövess engem</h3>
                     <div className="flex space-x-4">
                           <motion.a 
                             href="https://facebook.com/vizitor"
