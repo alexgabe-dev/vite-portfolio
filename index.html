@@ -99,7 +99,8 @@
     <!-- End Google Tag Manager -->
 
     <!-- Font preloading -->
-    <link rel="preload" href="/fonts/Inter.var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preconnect" href="/fonts" crossorigin>
+<link rel="preload" href="/fonts/Inter.var.woff2" as="font" type="font/woff2" crossorigin="anonymous" fetchpriority="high">
     <link rel="preload" href="/src/index.css" as="style">
     <link rel="preload" href="/src/App.css" as="style">
     
@@ -114,9 +115,11 @@
       
       /* Add font-display swap for better text loading */
       @font-face {
-        font-family: 'Your Main Font';
+        font-family: 'Inter';
         font-display: swap;
-        src: url('/fonts/your-main-font.woff2') format('woff2');
+        src: url('/fonts/Inter.var.woff2') format('woff2');
+        font-weight: 100 900;
+        font-style: oblique 0deg 10deg;
       }
     </style>
 
@@ -174,8 +177,10 @@
       </main>
     </div>
 
-    <link rel="stylesheet" href="/src/index.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="/src/App.css" media="print" onload="this.media='all'">
+    <style>/* Kritikus CSS */
+body{font-family:Inter,sans-serif;line-height:1.6;color:#fff}.text-lg{font-size:1.125rem}.mb-6{margin-bottom:1.5rem}.text-gray-400{color:#9ca3af}.max-w-lg{max-width:32rem}.leading-\[1\.8\]{line-height:1.8}</style>
+<link rel="preload" href="/src/index.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/src/index.css"></noscript>
     <script type="module" src="/src/main.tsx"></script>
 
     <!-- Accessibility announcement for screen readers -->
