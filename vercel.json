@@ -68,7 +68,7 @@
       ]
     },
     {
-      "source": "/:path*.(svg|png|jpg|jpeg|gif|webp|ico|woff2|css|js)",
+      "source": "/:path*.(svg|png|jpg|jpeg|gif|webp|ico|ttf|woff2|css|js)",
       "headers": [
         {
           "key": "Cache-Control",
