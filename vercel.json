@@ -4,7 +4,9 @@
   "rewrites": [
     { "source": "/robots.txt", "destination": "/robots.txt" },
     { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
-    { "source": "/:path*", "destination": "/", "has": [{ "type": "header", "key": "accept", "value": "text/html" }] }
+    { "source": "/_next/static/(.*)", "destination": "/_next/static/$1" },
+    { "source": "/static/(.*)", "destination": "/static/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "outputDirectory": "dist",
   "headers": [
