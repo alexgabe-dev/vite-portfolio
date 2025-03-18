@@ -6,6 +6,11 @@
     { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
     { "source": "/_next/static/(.*)", "destination": "/_next/static/$1" },
     { "source": "/static/(.*)", "destination": "/static/$1" },
+    { "source": "/szolgaltatasok", "destination": "/index.html" },
+    { "source": "/csomagok", "destination": "/index.html" },
+    { "source": "/kapcsolat", "destination": "/index.html" },
+    { "source": "/rolunk", "destination": "/index.html" },
+    { "source": "/adatvedelem", "destination": "/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "outputDirectory": "dist",
