@@ -3,6 +3,3 @@ Allow: /
 
 # Sitemap location
 Sitemap: https://vizitor.hu/sitemap.xml
-
-# Crawl-delay
-Crawl-delay: 10
