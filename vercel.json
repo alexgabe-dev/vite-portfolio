@@ -4,7 +4,7 @@
   "rewrites": [
     { "source": "/robots.txt", "destination": "/robots.txt" },
     { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
-    { "source": "/(.*)", "destination": "/" }
+    { "source": "/:path*", "destination": "/" }
   ],
   "outputDirectory": "dist",
   "headers": [
@@ -35,7 +35,7 @@
       ]
     },
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "headers": [
         {
           "key": "Cache-Control",
@@ -68,7 +68,7 @@
       ]
     },
     {
-      "source": "/(.*)\\.(svg|png|jpg|jpeg|gif|webp|ico|woff2|css|js)$",
+      "source": "/:path*.(svg|png|jpg|jpeg|gif|webp|ico|woff2|css|js)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -77,7 +77,7 @@
       ]
     },
     {
-      "source": "/_next/static/(.*)",
+      "source": "/_next/static/:path*",
       "headers": [
         {
           "key": "Cache-Control",
@@ -96,6 +96,6 @@
     }
   ],
   "redirects": [
-    { "source": "https://www.vizitor.hu/(.*)", "destination": "https://vizitor.hu/$1", "permanent": true }
+    { "source": "https://www.vizitor.hu/:path*", "destination": "https://vizitor.hu/:path", "permanent": true }
   ]
 }
