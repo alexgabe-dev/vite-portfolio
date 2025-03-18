@@ -2,7 +2,9 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    { "source": "/robots.txt", "destination": "/robots.txt" },
+    { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
+    { "source": "/:path*", "destination": "/" }
   ],
   "outputDirectory": "dist",
   "headers": [
