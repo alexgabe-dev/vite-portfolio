@@ -112,6 +112,11 @@
       ],
       "destination": "https://vizitor.hu/:path",
       "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "destination": "/index.html",
+      "statusCode": 200
     }
   ]
 }
