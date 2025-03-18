@@ -6,7 +6,7 @@
     { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
     { "source": "/static/(.*)", "destination": "/static/$1" },
     { "source": "/assets/(.*)", "destination": "/assets/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/((?!api/.*).*)", "destination": "/index.html" }
   ],
   "outputDirectory": "dist",
   "headers": [
