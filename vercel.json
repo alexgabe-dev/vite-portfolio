@@ -2,10 +2,38 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
+    { "source": "/robots.txt", "destination": "/robots.txt" },
+    { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
     { "source": "/(.*)", "destination": "/" }
   ],
   "outputDirectory": "dist",
   "headers": [
+    {
+      "source": "/robots.txt",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        },
+        {
+          "key": "Content-Type",
+          "value": "text/plain"
+        }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/xml"
+        }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
@@ -66,5 +94,8 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    { "source": "https://www.vizitor.hu/(.*)", "destination": "https://vizitor.hu/$1", "permanent": true }
   ]
-} 
+}
