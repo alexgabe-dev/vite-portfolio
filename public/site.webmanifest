@@ -1,6 +1,6 @@
 {
-  "name": "Viztor.hu - Webfejlesztés és Marketing",
-  "short_name": "Viztor.hu",
+  "name": "Vizitor.hu - Webfejlesztés és Marketing",
+  "short_name": "Vizitor.hu",
   "icons": [
     {
       "src": "/favicon/android-chrome-192x192.png",
@@ -16,4 +16,4 @@
   "theme_color": "#ff5c35",
   "background_color": "#ffffff",
   "display": "standalone"
-} 
+}

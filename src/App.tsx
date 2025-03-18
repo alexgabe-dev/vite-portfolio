@@ -1090,7 +1090,7 @@ function App() {
                   <motion.div variants={fadeInUp}>
                   <h2 className="text-3xl font-bold mb-6">Történetem</h2>
                       <p className="text-gray-400 mb-6">
-                  A viztor.hu-t azért hosztam létre, mivel felismertem, hogy a magyar vállalkozásoknak 
+                  A vizitor.hu-t azért hosztam létre, mivel felismertem, hogy a magyar vállalkozásoknak 
                   szükségük van egy megbízható partnerre a digitális átalakulásban. Célom az, hogy 
                   olyan megoldásokat kínáljak, amelyek nem csak technológiailag korszerűek, hanem 
                   valódi üzleti értéket is teremtenek.
