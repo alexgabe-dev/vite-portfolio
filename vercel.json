@@ -107,7 +107,7 @@
       "has": [
         {
           "type": "host",
-          "value": "vizitor.hu"
+          "value": "www.vizitor.hu"
         }
       ],
       "destination": "https://vizitor.hu/:path",
