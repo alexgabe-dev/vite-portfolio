@@ -1388,7 +1388,7 @@ function App() {
                         <h3 className="text-lg font-semibold mb-4">Kövess engem</h3>
                     <div className="flex space-x-4">
                           <motion.a 
-                            href="https://facebook.com/vizitor"
+                            href="https://facebook.com/vizitor.hu"
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -1398,14 +1398,14 @@ function App() {
                             <Facebook size={20} />
                           </motion.a>
                           <motion.a 
-                            href="#"
+                            href="https://www.instagram.com/viztorhu"
                             className="w-10 h-10 bg-[#1a1a2e] rounded-lg flex items-center justify-center text-[#ff5c35] hover:text-white transition-colors"
                             whileHover={{ y: -5 }}
                             aria-label="Kövessen engem Instagramon">
                             <Instagram size={20} />
                           </motion.a>
                           <motion.a 
-                            href="#"
+                            href="https://www.linkedin.com/in/sandor-gabor/"
                             className="w-10 h-10 bg-[#1a1a2e] rounded-lg flex items-center justify-center text-[#ff5c35] hover:text-white transition-colors"
                             whileHover={{ y: -5 }}
                             aria-label="Kövessen engem LinkedInen">
