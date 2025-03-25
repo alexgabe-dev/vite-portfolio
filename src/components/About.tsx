@@ -1,13 +1,24 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Users, Target, Award, Rocket, ChevronRight, Code, Palette, Globe } from 'lucide-react';
+import { Users, Target, Award, Rocket, ChevronRight, Code, Palette, Globe, Lightbulb, Handshake } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import CountUp from 'react-countup';
 
 const About = () => {
   const fadeInUp = {
     initial: { y: 20, opacity: 0 },
     animate: { y: 0, opacity: 1 },
     exit: { y: -20, opacity: 0 }
+  };
+
+  const staggerChildren = {
+    initial: { opacity: 0 },
+    animate: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
   };
 
   const teamMembers = [
@@ -99,10 +110,155 @@ const About = () => {
                 whileHover={{ scale: 1.1, backgroundColor: 'rgba(255, 92, 53, 0.3)' }}>
                 {React.createElement(stat.icon, { className: "w-6 h-6 text-[#ff5c35]" })}
               </motion.div>
-              <h3 className="text-3xl font-bold text-white mb-1">{stat.number}</h3>
+              <motion.h3
+                className="text-3xl font-bold text-white mb-1"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 100,
+                  delay: index * 0.2,
+                  duration: 2
+                }}>
+                <CountUp
+                  end={parseInt(stat.number) || 0}
+                  duration={2}
+                  suffix={stat.number.includes("+") ? "+" : stat.number.includes("%") ? "%" : ""}
+                  start={0}
+                  delay={index * 0.2}
+                />
+              </motion.h3>
               <p className="text-gray-400">{stat.label}</p>
             </motion.div>
           ))}
+        </motion.div>
+
+        {/* Values */}
+        <motion.div 
+          className="mb-20"
+          variants={staggerChildren}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}>
+          <motion.h2 
+            className="text-3xl font-bold mb-12 text-center"
+            variants={fadeInUp}>
+            Értékeink
+          </motion.h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: <Lightbulb className="w-8 h-8 text-[#ff5c35]" />,
+                title: "Innováció",
+                description: "Folyamatosan keressem az új technológiai megoldásokat",
+                gradient: "from-blue-500/20 to-purple-500/20",
+                features: ["Új technológiák", "Kreatív megoldások", "Folyamatos fejlődés"]
+              },
+              {
+                icon: <Handshake className="w-8 h-8 text-[#ff5c35]" />,
+                title: "Megbízhatóság",
+                description: "Amit megígérek, azt időben és kiváló minőségben teljesítem, ezt garantálni tudom",
+                gradient: "from-orange-500/20 to-red-500/20",
+                features: ["Pontos határidők", "Minőségi szolgáltatás", "Megbízható partner"]
+              },
+              {
+                icon: <Target className="w-8 h-8 text-[#ff5c35]" />,
+                title: "Eredményorientáltság",
+                description: "A mérhető, valós üzleti eredmények elérése a célom",
+                gradient: "from-green-500/20 to-teal-500/20",
+                features: ["Mérhető eredmények", "Üzleti növekedés", "ROI fókusz"]
+              }
+            ].map((value, index) => (
+              <motion.div
+                key={index}
+                className="group relative"
+                variants={fadeInUp}>
+                  <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl ${value.gradient}`}></div>
+                  <div className="relative bg-[#1a1a2e] p-8 rounded-xl border border-gray-800/50 group-hover:border-[#ff5c35]/30 transition-all duration-500">
+                    <motion.div 
+                      className="w-14 h-14 bg-gradient-to-br from-[#ff5c35]/20 to-[#ff5c35]/10 rounded-lg flex items-center justify-center mb-6 text-[#ff5c35] group-hover:scale-110 transition-transform duration-500">
+                      {value.icon}
+                    </motion.div>
+                    <h3 className="text-xl font-bold mb-2 group-hover:text-[#ff5c35] transition-colors duration-300">
+                      {value.title}
+                    </h3>
+                    <p className="text-gray-400 mb-6 group-hover:text-gray-300 transition-colors duration-300">
+                      {value.description}
+                    </p>
+                    <ul className="space-y-3">
+                      {value.features.map((feature, idx) => (
+                        <motion.li 
+                          key={idx}
+                          className="flex items-center text-gray-400 group-hover:text-gray-300"
+                          initial={{ opacity: 0, x: -10 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.1 * idx }}
+                          whileHover={{ x: 5 }}>
+                          <ChevronRight size={16} className="text-[#ff5c35] mr-2" />
+                          {feature}
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </div>
+                </motion.div>
+              ))}
+          </div>
+        </motion.div>
+
+        {/* Statistics Section */}
+        <motion.div 
+          className="mb-24"
+          variants={fadeInUp}
+          initial="initial"
+          animate="animate">
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Miért fontos a
+            <span className="bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"> weboldalad?</span>
+          </h2>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto text-center mb-16">
+            Sok kisvállalkozás alulértékeli weboldalát, ami
+            <span className="text-[#ff5c35]"> milliós értékű elveszett lehetőségekhez</span> vezethet.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            <motion.div
+              className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
+              whileHover={{ y: -5, borderColor: '#ff5c35' }}
+              transition={{ duration: 0.2 }}>
+              <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent">88%</h3>
+              <p className="text-gray-400">az online vásárlók közül nem tér vissza egy rossz élmény után</p>
+            </motion.div>
+            <motion.div
+              className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
+              whileHover={{ y: -5, borderColor: '#ff5c35' }}
+              transition={{ duration: 0.2 }}>
+              <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent">75%</h3>
+              <p className="text-gray-400">a felhasználók a weboldal alapján ítéli meg a cég hitelességét</p>
+            </motion.div>
+            <motion.div
+              className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
+              whileHover={{ y: -5, borderColor: '#ff5c35' }}
+              transition={{ duration: 0.2 }}>
+              <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent">61%</h3>
+              <p className="text-gray-400">a felhasználók elhagyja a mobilon rosszul működő oldalt</p>
+            </motion.div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <motion.div
+              className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
+              whileHover={{ y: -5, borderColor: '#ff5c35' }}
+              transition={{ duration: 0.2 }}>
+              <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent">8/10</h3>
+              <p className="text-gray-400">felhasználó abbahagyja a böngészést, ha az oldal nem jelenik meg megfelelően</p>
+            </motion.div>
+            <motion.div
+              className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
+              whileHover={{ y: -5, borderColor: '#ff5c35' }}
+              transition={{ duration: 0.2 }}>
+              <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent">94%</h3>
+              <p className="text-gray-400">a negatív visszajelzések a weboldal dizájnjával kapcsolatosak</p>
+            </motion.div>
+          </div>
         </motion.div>
 
         {/* Services Section */}
@@ -196,4 +352,4 @@ const About = () => {
   );
 };
 
-export default About; 
+export default About;

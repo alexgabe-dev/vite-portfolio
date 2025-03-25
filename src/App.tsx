@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronRight, Code, BarChart, Settings, Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Twitter, 
   Globe, Box, Palette, FileCode, Layout, CircuitBoard, Blocks, Laptop, Braces, Workflow, FileJson, Lightbulb, Handshake, Target, CheckCircle, Send, Github } from 'lucide-react';
+import CountUp from './components/CountUp';
 import { motion, AnimatePresence, useInView, useSpring, useTransform } from 'framer-motion';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import './App.css';
@@ -562,6 +563,111 @@ function App() {
               </div>
             </motion.section>
 
+            {/* Statistics Section */}
+            <motion.section 
+              className="py-24 px-4 sm:px-6 lg:px-8 bg-[#0f0f17] relative overflow-hidden"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}>
+              {/* Background decoration */}
+              <div className="absolute inset-0">
+                <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-bl from-[#ff5c35]/10 to-transparent"></div>
+                <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-[#ff5c35]/10 to-transparent"></div>
+              </div>
+              
+              <div className="max-w-7xl mx-auto relative z-10">
+                <motion.div 
+                  className="text-center mb-16"
+                  variants={staggerChildren}
+                  initial="initial"
+                  whileInView="animate"
+                  viewport={{ once: true }}>
+                  <motion.h2 
+                    className="text-4xl sm:text-5xl font-bold mb-6"
+                    variants={fadeInUp}>
+                    Miért fontos a
+                    <span className="bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"> weboldalad?</span>
+                  </motion.h2>
+                  <motion.p 
+                    className="text-gray-400 text-lg max-w-2xl mx-auto"
+                    variants={fadeInUp}>
+                    Sok kisvállalkozás <span className="underline decoration-[#ff5c35] underline-offset-4">alulértékeli</span> weboldalát, ami
+                    <span className="text-[#ff5c35]"> milliós értékű elveszett lehetőségekhez</span> vezethet.
+                  </motion.p>
+                </motion.div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                  <motion.div
+                    className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
+                    whileHover={{ y: -5, borderColor: '#ff5c35' }}
+                    transition={{ duration: 0.2 }}>
+                    <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"><CountUp end={88} suffix="%" delay={0.2} /></h3>
+                    <p className="text-gray-400">az online vásárlók közül nem tér vissza egy rossz vásárlási élmény után</p>
+                  </motion.div>
+                  <motion.div
+                    className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
+                    whileHover={{ y: -5, borderColor: '#ff5c35' }}
+                    transition={{ duration: 0.2 }}>
+                    <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"><CountUp end={75} suffix="%" delay={0.4} /></h3>
+                    <p className="text-gray-400">a felhasználóknak a weboldal alapján ítéli meg a cég hitelességét</p>
+                  </motion.div>
+                  <motion.div
+                    className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
+                    whileHover={{ y: -5, borderColor: '#ff5c35' }}
+                    transition={{ duration: 0.2 }}>
+                    <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"><CountUp end={61} suffix="%" delay={0.6} /></h3>
+                    <p className="text-gray-400">a felhasználók elhagyják a mobilos felületen rosszul működő oldalt</p>
+                  </motion.div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                  <motion.div
+                    className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
+                    whileHover={{ y: -5, borderColor: '#ff5c35' }}
+                    transition={{ duration: 0.2 }}>
+                    <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"><CountUp end={8} suffix="/10" delay={0.8} /></h3>
+                    <p className="text-gray-400">felhasználó abbahagyja a böngészést, ha az oldal nem jelenik meg megfelelően</p>
+                  </motion.div>
+                  <motion.div
+                    className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
+                    whileHover={{ y: -5, borderColor: '#ff5c35' }}
+                    transition={{ duration: 0.2 }}>
+                    <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"><CountUp end={94} suffix="%" delay={1.0} /></h3>
+                    <p className="text-gray-400">a negatív visszajelzéseknek a weboldal dizájnjával kapcsolatosak</p>
+                  </motion.div>
+                </div>
+
+                <div className="text-center mt-16 mb-12">
+                  <motion.h2 
+                    className="text-4xl sm:text-5xl font-bold mb-6"
+                    variants={fadeInUp}>
+                    Több ezer weboldalt elemeztem
+                    <span className="bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"> hogy veled ez ne történhessen meg.</span>
+                  </motion.h2>
+                  
+                  <motion.div 
+                    className="mt-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}>
+                    <Link to="/kapcsolat" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                      <motion.button 
+                        type="button"
+                        className="secondary-button inline-flex items-center"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}>
+                        Ingyenes konzultációt kérek!
+                        <ChevronRight size={20} className="ml-2" />
+                      </motion.button>
+                    </Link>
+                  </motion.div>
+                </div>
+               
+{/* 3 hete ezzel baszakodunk valaki megcsinálhatná már */}
+              </div>
+            </motion.section>
+
             {/* Services Section */}
             <motion.section 
               id="services" 
@@ -692,6 +798,23 @@ function App() {
                   ))}
                 </motion.div>
                 </div>
+
+      <motion.div 
+        className="mt-12 text-center"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}>
+        <Link to="/csomagok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <motion.button 
+            type="button"
+            className="secondary-button inline-flex items-center"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}>
+            Ingyenes konzultációt kérek!
+            <ChevronRight size={20} className="ml-2" />
+          </motion.button>
+        </Link>
+      </motion.div>
             </motion.section>
 
             {/* Technologies Section */}
@@ -1433,6 +1556,9 @@ function App() {
                     </div>
                   </motion.div>
                 </div>
+
+
+
               </div>
             </motion.section>
           </main>
