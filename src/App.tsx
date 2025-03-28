@@ -50,24 +50,34 @@ function App() {
 
   // Cookie consent initialization
   useEffect(() => {
-    // Wait for Cookiebot to load
-    const checkCookiebot = () => {
-      if (window.Cookiebot) {
+    // Wait for CookieYes to load
+    const checkCookieYes = () => {
+      if (window.CookieYes) {
         try {
           // Register callback for when consent is given
-          window.Cookiebot.callback = () => {
+          document.addEventListener('cookieyes_consent_update', () => {
             setShowCookieConsent(false);
-          };
+          });
+          
+          // Also trigger if CookieYes is already loaded with consent
+          if (window.CookieYes.consent) {
+            setShowCookieConsent(false);
+          }
         } catch (error) {
-          console.warn('Cookiebot callback registration failed:', error);
+          console.warn('CookieYes callback registration failed:', error);
         }
       } else {
         // Retry after a short delay if not loaded yet
-        setTimeout(checkCookiebot, 100);
+        setTimeout(checkCookieYes, 100);
       }
     };
     
-    checkCookiebot();
+    checkCookieYes();
+    
+    // Clean up event listener on unmount
+    return () => {
+      document.removeEventListener('cookieyes_consent_update', () => setShowCookieConsent(false));
+    };
   }, []);
 
   const handleCookieConsent = () => {

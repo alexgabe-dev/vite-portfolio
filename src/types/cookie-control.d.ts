@@ -1,38 +1,19 @@
-interface Cookiebot {
-  callback?: () => void;
-  consent?: {
+interface CookieYes {
+  consent: {
     marketing: boolean;
-    necessary: boolean;
+    analytics: boolean;
     preferences: boolean;
-    statistics: boolean;
+    necessary: boolean;
   };
-  consent_modal?: {
-    layout: 'box' | 'cloud' | 'bar';
-    position: 'bottom' | 'bottom-right' | 'bottom-left' | 'top' | 'top-right' | 'top-left';
-    transition: 'slide' | 'fade';
-    flip_buttons: boolean;
-  };
-  declaration?: {
-    revision: number;
-    last_updated: string;
-    cookie_table: Array<{
-      name: string;
-      provider: string;
-      purpose: string;
-      expiry: string;
-      type: string;
-    }>;
-  };
-  show?: () => void;
-  hide?: () => void;
-  renew?: () => void;
-  init?: () => void;
+  show: () => void;
+  hide: () => void;
+  renew: () => void;
 }
 
 declare global {
   interface Window {
-    Cookiebot: Cookiebot;
+    CookieYes: CookieYes;
   }
 }
 
-export {}; 
+export {};
