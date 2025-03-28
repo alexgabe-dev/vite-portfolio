@@ -22,6 +22,7 @@
     "@types/js-cookie": "^3.0.6",
     "@types/next": "^8.0.7",
     "@types/nodemailer": "^6.4.17",
+    "@types/react-helmet": "^6.1.11",
     "@types/react-router-dom": "^5.3.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -34,6 +35,7 @@
     "react": "^18.2.0",
     "react-countup": "^6.5.3",
     "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
     "react-intersection-observer": "^9.16.0",
     "react-router-dom": "^7.2.0"
   },

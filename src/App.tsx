@@ -17,6 +17,7 @@ import PromotionPopup from './components/PromotionPopup';
 import Error from './components/Error';
 import AdFrame from './components/AdFrame';
 import CookieConsent from './components/CookieConsent';
+import SEOProvider from './components/SEOProvider';
 import Cookies from 'js-cookie';
 
 function App() {
@@ -384,7 +385,7 @@ function App() {
   }, []);
 
   return (
-    <>
+    <SEOProvider>
       <ScrollToTop />
       <Navbar />
       <AdFrame src="https://safeframe.googlesyndication.com/safeframe/1-0-40/html" />
@@ -1646,7 +1647,7 @@ function App() {
           </motion.div>
         </div>
       </motion.footer>
-    </>
+    </SEOProvider>
   );
 }
 
