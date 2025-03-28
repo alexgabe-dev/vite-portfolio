@@ -8,9 +8,8 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
-    open: true,
     headers: {
-      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://safeframe.googlesyndication.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn-cookieyes.com https://cdn-cookieyes.com/client_data/* https://vizitor.hu https://*.googlesyndication.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net data: 'unsafe-hashes'; img-src 'self' data: https: https://www.google-analytics.com; font-src 'self' data: https:; connect-src 'self' https: ws: wss: https://www.google-analytics.com https://cdn-cookieyes.com; worker-src 'self' blob:; frame-src 'self' https://safeframe.googlesyndication.com https://*.googlesyndication.com https://www.googletagmanager.com https://cdn-cookieyes.com https://vizitor.hu; object-src 'none';",
+      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://safeframe.googlesyndication.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn-cookieyes.com https://cdn-cookieyes.com/client_data/* https://*.cdn-cookieyes.com https://vizitor.hu https://*.googlesyndication.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net data: 'unsafe-hashes'; img-src 'self' data: https: https://www.google-analytics.com; font-src 'self' data: https:; connect-src 'self' https: ws: wss: https://www.google-analytics.com https://cdn-cookieyes.com https://*.cdn-cookieyes.com; worker-src 'self' blob:; frame-src 'self' https://safeframe.googlesyndication.com https://*.googlesyndication.com https://www.googletagmanager.com https://cdn-cookieyes.com https://*.cdn-cookieyes.com https://vizitor.hu; object-src 'none';",
       'Cache-Control': 'public, max-age=31536000',
       'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
       'X-Content-Type-Options': 'nosniff',
@@ -25,7 +24,7 @@ export default defineConfig({
         headers: {
           'Cache-Control': 'public, max-age=3600, must-revalidate',
           'X-Content-Type-Options': 'nosniff',
-          'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://safeframe.googlesyndication.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn-cookieyes.com https://cdn-cookieyes.com/client_data/* https://vizitor.hu https://*.googlesyndication.com; frame-src 'self' https://safeframe.googlesyndication.com https://*.googlesyndication.com https://www.googletagmanager.com https://cdn-cookieyes.com https://vizitor.hu;"
+          'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://safeframe.googlesyndication.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn-cookieyes.com https://cdn-cookieyes.com/client_data/* https://*.cdn-cookieyes.com https://vizitor.hu https://*.googlesyndication.com; frame-src 'self' https://safeframe.googlesyndication.com https://*.googlesyndication.com https://www.googletagmanager.com https://cdn-cookieyes.com https://*.cdn-cookieyes.com https://vizitor.hu;"
         }
       },
       '/api': {

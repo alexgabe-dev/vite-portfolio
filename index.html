@@ -8,9 +8,38 @@
     <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
     
+
+
     <!-- Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://safeframe.googlesyndication.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn-cookieyes.com https://cdn-cookieyes.com/client_data/* https://vizitor.hu https://*.googlesyndication.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net data: 'unsafe-hashes'; img-src 'self' data: https: https://www.google-analytics.com; font-src 'self' data: https:; connect-src 'self' https: ws: wss: https://www.google-analytics.com https://cdn-cookieyes.com; worker-src 'self' blob:; frame-src 'self' https://safeframe.googlesyndication.com https://*.googlesyndication.com https://www.googletagmanager.com https://cdn-cookieyes.com https://vizitor.hu; object-src 'none';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://safeframe.googlesyndication.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn-cookieyes.com https://cdn-cookieyes.com/client_data/* https://*.cdn-cookieyes.com https://vizitor.hu https://*.googlesyndication.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net data: 'unsafe-hashes'; img-src 'self' data: https: https://www.google-analytics.com; font-src 'self' data: https:; connect-src 'self' https: ws: wss: https://www.google-analytics.com https://cdn-cookieyes.com https://*.cdn-cookieyes.com; worker-src 'self' blob:; frame-src 'self' https://safeframe.googlesyndication.com https://*.googlesyndication.com https://www.googletagmanager.com https://cdn-cookieyes.com https://*.cdn-cookieyes.com https://vizitor.hu; object-src 'none';">
     
+     <!-- Google Tag Manager -->
+     <script defer>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-KGN8CMBL');
+    </script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Google Analytics -->
+    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-6XTDE9Y48B"></script>
+    <script defer>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6XTDE9Y48B', {
+        'anonymize_ip': true,
+        'cookie_flags': 'SameSite=None;Secure',
+        'debug_mode': false
+      });
+    </script>
+
+    <!-- CookieYes Cookie Consent -->
+    <script defer src="https://cdn-cookieyes.com/client_data/64ceae5ed2ab25cfc6922673/script.js"></script>
+    <!-- End CookieYes Cookie Consent -->
+
     <!-- SEO - Canonical URL -->
     <link rel="canonical" href="https://vizitor.hu" />
     
@@ -77,33 +106,8 @@
     <!-- Theme Color for Mobile Browsers -->
     <meta name="theme-color" content="#ff5c35" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0a0a0f" media="(prefers-color-scheme: dark)">
-    
-    <!-- Google Analytics -->
-    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-6XTDE9Y48B"></script>
-    <script defer>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-6XTDE9Y48B', {
-        'anonymize_ip': true,
-        'cookie_flags': 'SameSite=None;Secure',
-        'debug_mode': false
-      });
-    </script>
 
-    <!-- Google Tag Manager -->
-    <script defer>
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-KGN8CMBL');
-    </script>
-    <!-- End Google Tag Manager -->
-    
-    <!-- CookieYes Cookie Consent -->
-    <script defer src="https://cdn-cookieyes.com/client_data/64ceae5ed2ab25cfc6922673/script.js"></script>
-    <!-- End CookieYes Cookie Consent -->
+   
 
     <!-- Font preloading -->
     <link rel="preconnect" href="/fonts" crossorigin>
