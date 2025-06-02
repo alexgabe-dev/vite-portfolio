@@ -1232,7 +1232,7 @@ function App() {
                   <motion.div variants={fadeInUp}>
                   <h2 className="text-3xl font-bold mb-6">Történetem</h2>
                       <p className="text-gray-400 mb-6">
-                  A <a href="https://vizitor.hu" className="text-[#ff5c35]">vizitor.hu</a>-t azért hosztam létre, mivel felismertem, hogy a magyar vállalkozásoknak 
+                  A <a href="https://vizitor.hu" className="text-[#ff5c35] hover:underline">vizitor.hu</a>-t azért hosztam létre, mivel felismertem, hogy a magyar vállalkozásoknak 
                   szükségük van egy megbízható partnerre a digitális átalakulásban. Célom az, hogy 
                   olyan megoldásokat kínáljak, amelyek nem csak technológiailag korszerűek, hanem 
                   valódi üzleti értéket is teremtenek.
