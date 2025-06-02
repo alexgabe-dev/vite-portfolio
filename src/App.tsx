@@ -33,9 +33,8 @@ function App() {
   const [formState, setFormState] = useState({
     name: '',
     email: '',
-    subject: '',
-    message: '',
     phone: '',
+    message: '',
     privacyAccepted: false
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -118,9 +117,8 @@ function App() {
         setFormState({
           name: '',
           email: '',
-          subject: '',
-          message: '',
           phone: '',
+          message: '',
           privacyAccepted: false
         });
         setIsSubmitted(false);
@@ -217,6 +215,7 @@ function App() {
     {
       title: "Starter Csomag",
       price: "135.000 Ft",
+      priceSuffix: "-tól",
       type: "Egyszeri díj",
       features: [
         "Egyedi, modern dizájn",
@@ -234,6 +233,7 @@ function App() {
     {
       title: "Business Csomag",
       price: "200.000 Ft",
+      priceSuffix: "-tól",
       type: "Egyszeri díj",
       features: [
         "Minden a Starterből, plusz:",
@@ -253,6 +253,7 @@ function App() {
     {
       title: "Premium Csomag",
       price: "350.000 Ft",
+      priceSuffix: "-tól",
       type: "Egyszeri díj",
       features: [
         "Minden a Businessből, plusz:",
@@ -263,7 +264,9 @@ function App() {
         "Fejlett biztonsági megoldások",
         "Haladó teljesítmény optimalizáció",
         "CRM integráció & automatizált ügyfélkezelés",
+        "Ecommerce webshop megoldások",
         "3 hónap ingyenes karbantartás"
+        
       ],
       isPopular: false
     }
@@ -284,8 +287,8 @@ function App() {
   const navigation = [
     { name: 'Főoldal', path: '/' },
     { name: 'Szolgáltatások', path: '/szolgaltatasok' },
-    { name: 'Rólunk', path: '/rolunk' },
-    { name: 'Kapcsolat', path: '/kapcsolat' }
+    { name: 'Csomagok', path: '/csomagok' },
+    { name: 'Kapcsolat', path: '/kapcsolat' },
   ];
 
   useEffect(() => {
@@ -352,9 +355,8 @@ function App() {
       setFormState({
         name: '',
         email: '',
-        subject: '',
-        message: '',
         phone: '',
+        message: '',
         privacyAccepted: false
       });
 
@@ -1007,7 +1009,10 @@ function App() {
                       
                       <div className="mb-6">
                         <h3 className="text-xl font-bold mb-2">{pkg.title}</h3>
-                        <div className="text-3xl font-bold text-white">{pkg.price}</div>
+                        <div className="text-3xl font-bold text-white">
+                          {pkg.price}
+                          <span className="text-lg font-normal text-gray-400 ml-1">{pkg.priceSuffix}</span>
+                        </div>
                         <p className="text-gray-500 mt-2">{pkg.type}</p>
                       </div>
                       
@@ -1095,7 +1100,10 @@ function App() {
                               <>
                                 <div className="mb-6">
                                   <h3 className="text-xl font-bold mb-2">{packages[currentPackage].title}</h3>
-                                  <div className="text-3xl font-bold text-white">{packages[currentPackage].price}</div>
+                                  <div className="text-3xl font-bold text-white">
+                                    {packages[currentPackage].price}
+                                    <span className="text-lg font-normal text-gray-400 ml-1">{packages[currentPackage].priceSuffix}</span>
+                                  </div>
                                   <p className="text-gray-500 mt-2">{packages[currentPackage].type}</p>
                                 </div>
                                 
@@ -1200,7 +1208,7 @@ function App() {
 
             {/* About Section */}
             <motion.section 
-              id="rólunk" 
+              id="rólam" 
               className="py-20 px-4 sm:px-6 lg:px-8"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -1210,7 +1218,7 @@ function App() {
                 <motion.h1 
                   className="text-4xl font-bold mb-16"
                   variants={fadeInUp}>
-                  Rólunk
+                  Rólam
                   <div className="w-24 h-1 bg-[#ff5c35] mt-4"></div>
                 </motion.h1>
 
@@ -1224,7 +1232,7 @@ function App() {
                   <motion.div variants={fadeInUp}>
                   <h2 className="text-3xl font-bold mb-6">Történetem</h2>
                       <p className="text-gray-400 mb-6">
-                  A vizitor.hu-t azért hosztam létre, mivel felismertem, hogy a magyar vállalkozásoknak 
+                  A <a href="https://vizitor.hu" className="text-[#ff5c35]">vizitor.hu</a>-t azért hosztam létre, mivel felismertem, hogy a magyar vállalkozásoknak 
                   szükségük van egy megbízható partnerre a digitális átalakulásban. Célom az, hogy 
                   olyan megoldásokat kínáljak, amelyek nem csak technológiailag korszerűek, hanem 
                   valódi üzleti értéket is teremtenek.
@@ -1387,20 +1395,6 @@ function App() {
                         />
                       </div>
                       <div>
-                        <label className="block text-gray-400 mb-2 text-sm">Tárgy *</label>
-                        <motion.input 
-                          type="text" 
-                          name="subject"
-                          value={formState.subject}
-                          onChange={handleInputChange}
-                          placeholder="Üzenet tárgya"
-                          className="w-full bg-[#1a1a2e] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
-                          whileFocus={{ scale: 1.01 }}
-                          required
-                          autoComplete="off"
-                        />
-                      </div>
-                      <div>
                         <label className="block text-gray-400 mb-2 text-sm">Üzenet *</label>
                         <motion.textarea 
                           name="message"
@@ -1472,7 +1466,7 @@ function App() {
                         ) : (
                           <>
                             <Send className="w-5 h-5 mr-2" />
-                            Ingyenes ajánlatkérés
+                            Üzenet küldése
                           </>
                         )}
                       </motion.button>
@@ -1558,10 +1552,9 @@ function App() {
                   </div>
                   
                       <div>
-                        <h3 className="text-lg font-semibold mb-4">Nyitvatartás</h3>
+                        <h3 className="text-lg font-semibold mb-4">Keress bizalommal!</h3>
                     <div className="space-y-2 text-gray-400">
-                      <p>Hétfő - Péntek: 9:00 - 17:00</p>
-                      <p>Szombat - Vasárnap: Zárva</p>
+                      <p>Hétfő - Péntek: 9:00 - 18:00</p>
                     </div>
                   </div>
                     </div>
@@ -1605,7 +1598,7 @@ function App() {
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300 }}
               />
-              <p className="text-gray-400">Modern megoldások az Ön vállalkozása számára</p>
+              <p className="text-gray-400">Modern megoldások a vállalkozásod számára!</p>
             </motion.div>
             <motion.div variants={fadeInUp}>
               <h4 className="font-semibold mb-4">Szolgáltatások</h4>

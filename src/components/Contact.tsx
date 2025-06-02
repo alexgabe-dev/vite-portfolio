@@ -18,9 +18,8 @@ const Contact = () => {
   const [formState, setFormState] = useState({
     name: '',
     email: '',
-    subject: '',
-    message: '',
     phone: '',
+    message: '',
     privacyAccepted: false
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -74,25 +73,8 @@ const Contact = () => {
       const form = e.target as HTMLFormElement;
       const formData = new FormData(form);
       
-      // Add additional fields to the form data
       formData.append('_subject', 'Új érdeklődő - vizitor.hu');
       formData.append('_replyto', formState.email);
-      
-      // Add user information
-      formData.append('ip_address', userInfo.ip);
-      formData.append('device_info', userInfo.device);
-      formData.append('browser_info', userInfo.browser);
-      
-      // Add source information
-      if (isFromPromotion) {
-        formData.append('source', 'promotion_popup');
-        formData.append('promotion_request', 'true');
-        formData.append('discount_applied', '20%');
-      } else if (isFromFooter) {
-        formData.append('source', 'footer_form');
-      } else {
-        formData.append('source', 'contact_page');
-      }
       
       const response = await fetch('https://formspree.io/f/xvgkpzen', {
         method: 'POST',
@@ -110,15 +92,14 @@ const Contact = () => {
       setFormState({
         name: '',
         email: '',
-        subject: '',
-        message: '',
         phone: '',
+        message: '',
         privacyAccepted: false
       });
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(() => setIsSubmitted(false), 3000);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Form submission error:', err);
       setError('Hiba történt az üzenet küldése közben. Kérjük próbálja újra később.');
       setTimeout(() => setError(''), 5000);
@@ -138,7 +119,7 @@ const Contact = () => {
   const contactInfo = [
     {
       icon: MapPin,
-      title: "Címünk",
+      title: "Cím",
       details: ["1136 Budapest", "Pannónia utca 14."],
       action: {
         text: "Útvonaltervezés",
@@ -216,9 +197,9 @@ const Contact = () => {
           initial="initial"
           animate="animate">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Lépjen
+            Lépj
             <span className="bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"> kapcsolatba </span>
-            velünk
+            velem!
           </h1>
           <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
             Keress bizalommal! Az űrlap kitöltése után <span className="text-white font-semibold">24 órán belül</span> válaszolok a megkeresésedre!
@@ -235,39 +216,37 @@ const Contact = () => {
             <form 
               onSubmit={handleSubmit} 
               className="space-y-4 md:space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-1">
-                    Név *
-                  </label>
-                  <motion.input
-                    whileFocus={{ scale: 1.01 }}
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formState.name}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-lg focus:outline-none focus:border-[#ff5c35] transition-colors text-white text-sm md:text-base"
-                    required
-                    placeholder="Az Ön neve"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-1">
-                    Email *
-                  </label>
-                  <motion.input
-                    whileFocus={{ scale: 1.01 }}
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formState.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-lg focus:outline-none focus:border-[#ff5c35] transition-colors text-white text-sm md:text-base"
-                    required
-                    placeholder="pelda@email.hu"
-                  />
-                </div>
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-1">
+                  Név *
+                </label>
+                <motion.input
+                  whileFocus={{ scale: 1.01 }}
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formState.name}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-lg focus:outline-none focus:border-[#ff5c35] transition-colors text-white text-sm md:text-base"
+                  required
+                  placeholder="Az Ön neve"
+                />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-1">
+                  Email *
+                </label>
+                <motion.input
+                  whileFocus={{ scale: 1.01 }}
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formState.email}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-lg focus:outline-none focus:border-[#ff5c35] transition-colors text-white text-sm md:text-base"
+                  required
+                  placeholder="pelda@email.hu"
+                />
               </div>
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-gray-400 mb-1">
@@ -282,19 +261,6 @@ const Contact = () => {
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-lg focus:outline-none focus:border-[#ff5c35] transition-colors text-white text-sm md:text-base"
                   placeholder="+36 30 123 4567"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-400 mb-2 text-sm">Tárgy *</label>
-                <motion.input 
-                  type="text" 
-                  name="subject"
-                  value={formState.subject}
-                  onChange={handleInputChange}
-                  placeholder="Üzenet tárgya"
-                  className="w-full bg-[#0a0a0f] border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#ff5c35] transition-colors"
-                  whileFocus={{ scale: 1.01 }}
-                  required
                 />
               </div>
               <div>
@@ -353,7 +319,7 @@ const Contact = () => {
                 ) : (
                   <>
                     <Send className="w-5 h-5 mr-2" />
-                    Ingyenes ajánlatkérés
+                    Üzenet küldése
                   </>
                 )}
               </motion.button>
@@ -412,7 +378,7 @@ const Contact = () => {
                   <MapPin className="w-6 h-6 text-[#ff5c35]" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">Címünk</h3>
+                  <h3 className="font-bold text-lg">Cím</h3>
                   <p className="text-gray-400">1136 Budapest, Pannónia utca 14.</p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-[#ff5c35] ml-auto transform group-hover:translate-x-1 transition-transform" />
@@ -427,8 +393,8 @@ const Contact = () => {
                   <Clock className="w-6 h-6 text-[#ff5c35]" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">Nyitvatartás</h3>
-                  <p className="text-gray-400">H-P: 9:00 - 17:00</p>
+                  <h3 className="font-bold text-lg">Keress bizalommal!</h3>
+                  <p className="text-gray-400">H-P: 9:00 - 18:00</p>
                   <p className="text-gray-400">Hétvégén: Zárva</p>
                 </div>
               </div>

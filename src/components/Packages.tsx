@@ -76,6 +76,7 @@ const Packages = () => {
           "Fejlett biztonsági megoldások",
           "Haladó teljesítmény optimalizáció",
           "CRM integráció & automatizált ügyfélkezelés",
+          "Ecommerce webshop megoldások",
           "3 hónap ingyenes karbantartás"
         ]
       }
@@ -366,11 +367,13 @@ const Packages = () => {
               <Info className="w-6 h-6 text-[#ff5c35]" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold mb-2">Egyedi igényei vannak?</h2>
+              <h2 className="text-2xl font-bold mb-2">Egyedi igényeid vannak?</h2>
               <p className="text-gray-400 mb-6">
-                Amennyiben a fenti csomagok nem fedik le teljesen az Ön igényeit, keressen minket bizalommal! 
-                Szakértő csapatunk személyre szabott megoldást készít az Ön vállalkozása számára.
+                Amennyiben a fenti csomagok nem fedik le teljesen az igényeidet, keress engem bizalommal! 
               </p>
+              <p className="text-gray-400 mb-6">
+                Garantálom hogy az egyedi problémáidra személyre szabott megoldást találok a vállalkozásod számára.
+                </p>
               <motion.button
                 className="inline-flex items-center px-6 py-3 bg-transparent border-2 border-[#ff5c35] text-[#ff5c35] rounded-lg font-semibold hover:bg-[#ff5c35] hover:text-white transition-colors group"
                 whileHover={{ scale: 1.02 }}
