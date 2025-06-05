@@ -40,15 +40,32 @@ const Contact = () => {
     };
     setUserInfo(prev => ({ ...prev, ...deviceInfo }));
 
-    // Get IP address
-    fetch('https://api.ipify.org?format=json')
-      .then(response => response.json())
-      .then(data => {
+    // Get IP address using HTTPS
+    const fetchIP = async () => {
+      try {
+        const response = await fetch('https://api.ipify.org?format=json', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json'
+          },
+          // Add timeout to prevent hanging requests
+          signal: AbortSignal.timeout(5000)
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
         setUserInfo(prev => ({ ...prev, ip: data.ip }));
-      })
-      .catch(error => {
-        console.error('Error fetching IP:', error);
-      });
+      } catch (error) {
+        console.warn('IP cím lekérése sikertelen:', error);
+        // Set a placeholder or null if IP fetch fails
+        setUserInfo(prev => ({ ...prev, ip: 'Nem elérhető' }));
+      }
+    };
+
+    fetchIP();
   }, []);
 
   const fadeInUp = {

@@ -1,10 +1,155 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Copy, Check, Eye, EyeOff } from 'lucide-react';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.6 }
+};
+
+// Új komponens a maszkolt adatok megjelenítéséhez
+const MaskedData: React.FC<{ label: string; value: string; maskedValue: string }> = ({ label, value, maskedValue }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Reszponzív kezelés
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleCopy = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // Megakadályozza a toggle esemény kiváltását
+    try {
+      await navigator.clipboard.writeText(value);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (err) {
+      console.warn('Másolás sikertelen:', err);
+    }
+  };
+
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+  };
+
+  return (
+    <motion.li 
+      className="flex items-start space-x-3 group relative"
+      onHoverStart={() => !isMobile && setIsHovered(true)}
+      onHoverEnd={() => !isMobile && setIsHovered(false)}
+      whileHover={{ scale: 1.01 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    >
+      <span className="text-[#ff8f35] mt-1.5 flex-shrink-0">•</span>
+      <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+        <strong className="text-white text-sm sm:text-base whitespace-nowrap">{label}:</strong>
+        <div className="relative inline-flex items-center flex-wrap gap-2">
+          {/* Maszkolt/Valós érték konténer */}
+          <div 
+            className="relative flex items-center cursor-pointer whitespace-nowrap"
+            onClick={isMobile ? toggleVisibility : undefined}
+          >
+            <motion.span 
+              className="text-gray-400 select-none inline-flex items-center text-sm sm:text-base"
+              animate={{ 
+                opacity: (isHovered || isVisible) ? 0 : 1,
+                y: (isHovered || isVisible) ? -10 : 0
+              }}
+              transition={{ duration: 0.2 }}
+            >
+              {maskedValue}
+            </motion.span>
+            <motion.span 
+              className="absolute left-0 top-0 text-[#ff8f35] select-none inline-flex items-center text-sm sm:text-base"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ 
+                opacity: (isHovered || isVisible) ? 1 : 0,
+                y: (isHovered || isVisible) ? 0 : 10
+              }}
+              transition={{ duration: 0.2 }}
+            >
+              {value}
+            </motion.span>
+          </div>
+
+          {/* Ikonok konténer */}
+          <div className="flex items-center space-x-2 flex-shrink-0">
+            {/* Másolás ikon */}
+            <motion.button
+              onClick={handleCopy}
+              className="p-1 rounded-full hover:bg-gray-700/50 transition-colors"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              aria-label="Másolás"
+            >
+              <AnimatePresence mode="wait">
+                {isCopied ? (
+                  <motion.div
+                    key="check"
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Check className="w-4 h-4 text-green-400" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="copy"
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Copy className="w-4 h-4 text-gray-400 hover:text-[#ff8f35]" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.button>
+
+            {/* Mobil nézetben megjelenő láthatóság váltó ikon */}
+            {isMobile && (
+              <motion.button
+                onClick={toggleVisibility}
+                className="p-1 rounded-full hover:bg-gray-700/50 transition-colors"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label={isVisible ? "Elrejtés" : "Megjelenítés"}
+              >
+                {isVisible ? (
+                  <EyeOff className="w-4 h-4 text-gray-400 hover:text-[#ff8f35]" />
+                ) : (
+                  <Eye className="w-4 h-4 text-gray-400 hover:text-[#ff8f35]" />
+                )}
+              </motion.button>
+            )}
+          </div>
+        </div>
+
+        {/* Mobil nézetben megjelenő visszajelzés */}
+        <AnimatePresence>
+          {isCopied && (
+            <motion.span
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 5 }}
+              className="absolute left-0 -bottom-6 text-xs text-green-400"
+            >
+              Másolva!
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.li>
+  );
 };
 
 const Privacy = () => {
@@ -106,20 +251,16 @@ const Privacy = () => {
                   <span className="text-gray-400"> Gábor Sándor (az "Adatkezelő")</span>
                 </div>
               </li>
-              <li className="flex items-start space-x-3">
-                <span className="text-[#ff8f35] mt-1.5">•</span>
-                <div>
-                  <strong className="text-white">Nyilvántartási szám:</strong>
-                  <span className="text-gray-400"> 60178884</span>
-                </div>
-              </li>
-              <li className="flex items-start space-x-3">
-                <span className="text-[#ff8f35] mt-1.5">•</span>
-                <div>
-                  <strong className="text-white">Adószám:</strong>
-                  <span className="text-gray-400"> 90834965-1-41</span>
-                </div>
-              </li>
+              <MaskedData 
+                label="Nyilvántartási szám"
+                value="60178884"
+                maskedValue="••••••••"
+              />
+              <MaskedData 
+                label="Adószám"
+                value="90834965-1-41"
+                maskedValue="••••••••-•-••"
+              />
               <li className="flex items-start space-x-3">
                 <span className="text-[#ff8f35] mt-1.5">•</span>
                 <div>
@@ -661,7 +802,7 @@ const Privacy = () => {
                 Abban az esetben megtagadjuk a kérés teljesítését, ha bizonyítjuk, hogy az adatkezelést olyan kényszerítő erejű jogos okok indokolják, amelyek elsőbbséget élveznek az Ön érdekeivel, jogaival és szabadságaival szemben, vagy amelyek jogi igények előterjesztéséhez, érvényesítéséhez vagy védelméhez kapcsolódnak. Amennyiben Ön a döntésünkkel nem ért egyet, illetve, ha elmulasztjuk a határidőt, a döntés közlésétől, illetve a határidő utolsó napjától számított 30 napon belül Ön bírósághoz fordulhat.
               </p>
               <p className="mt-4 text-gray-300">
-                Az adatvédelmi perek elbírálása a törvényszék hatáskörébe tartozik, a per – az érintett választása szerint – az érintett lakóhelye vagy tartózkodási helye szerinti törvényszék előtt is megindítható. Külföldi állampolgár esetén a lakóhelye szerint illetékes felügyelő hatósághoz is fordulhat panasszal.
+                Az adatvédelmi perek elbírálása a törvénysék hatáskörébe tartozik, a per – az érintett választása szerint – az érintett lakóhelye vagy tartózkodási helye szerinti törvénysék előtt is megindítható. Külföldi állampolgár esetén a lakóhelye szerint illetékes felügyelő hatósághoz is fordulhat panasszal.
               </p>
             </div>
           </section>
