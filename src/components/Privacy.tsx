@@ -141,7 +141,7 @@ const MaskedData: React.FC<{ label: string; value: string; maskedValue: string }
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 5 }}
-              className="absolute left-0 -bottom-6 text-xs text-green-400"
+              className="absolute left-0 -bottom-6 text-xs text-green-400 z-50 bg-[#0a0a0f] px-2 py-1 rounded"
             >
               Másolva!
             </motion.span>
