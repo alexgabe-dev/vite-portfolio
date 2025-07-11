@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, ChevronRight, Code, BarChart, Settings, Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Twitter, 
   Globe, Box, Palette, FileCode, Layout, CircuitBoard, Blocks, Laptop, Braces, Workflow, FileJson, Lightbulb, Handshake, Target, CheckCircle, Send, Github } from 'lucide-react';
 import CountUp from './components/CountUp';
@@ -18,7 +18,8 @@ import Error from './components/Error';
 import AdFrame from './components/AdFrame';
 import CookieConsent from './components/CookieConsent';
 import SEOProvider from './components/SEOProvider';
-import Cookies from 'js-cookie';
+import Blog from './components/Blog';
+import BlogDetail from './components/BlogDetail';
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -46,6 +47,18 @@ function App() {
     browser: ''
   });
   const [showBottomPopup, setShowBottomPopup] = useState(false);
+  const stats = [
+    { value: 88, label: 'az online vásárlók közül nem tér vissza egy rossz vásárlási élmény után', colorFrom: '#ff5c35', colorTo: '#ff8f35', suffix: '%' },
+    { value: 75, label: 'a felhasználóknak a weboldal alapján ítéli meg a cég hitelességét', colorFrom: '#ff8f35', colorTo: '#ff5c35', suffix: '%' },
+    { value: 61, label: 'a felhasználók elhagyják a mobilos felületen rosszul működő oldalt', colorFrom: '#ff5c35', colorTo: '#ff8f35', suffix: '%' },
+    { value: 8, label: 'felhasználó abbahagyja a böngészést, ha az oldal nem jelenik meg megfelelően', colorFrom: '#ff8f35', colorTo: '#ff5c35', suffix: '/10' },
+    { value: 94, label: 'a negatív visszajelzéseknek a weboldal dizájnjával kapcsolatosak', colorFrom: '#ff5c35', colorTo: '#ff8f35', suffix: '%' },
+  ];
+  const [statIndex, setStatIndex] = React.useState(0);
+  const statTimeout = useRef<NodeJS.Timeout | null>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [isAutoScroll, setIsAutoScroll] = useState(true);
+  const autoScrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
   // Cookie consent initialization
   useEffect(() => {
@@ -272,18 +285,6 @@ function App() {
     }
   ];
 
-  const handleDragEnd = (event: any, info: any) => {
-    const threshold = 50;
-    const offset = info.offset.x;
-    const velocity = info.velocity.x;
-
-    if (offset < -threshold || velocity < -500) {
-      if (currentPackage < packages.length - 1) setCurrentPackage(prev => prev + 1);
-    } else if (offset > threshold || velocity > 500) {
-      if (currentPackage > 0) setCurrentPackage(prev => prev - 1);
-    }
-  };
-
   const navigation = [
     { name: 'Főoldal', path: '/' },
     { name: 'Szolgáltatások', path: '/szolgaltatasok' },
@@ -395,6 +396,42 @@ function App() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Fluid automatikus scroll mobilon
+  useEffect(() => {
+    if (window.innerWidth >= 768) return;
+    if (!isAutoScroll) return;
+    let frame: number;
+    function step() {
+      if (!isAutoScroll) return;
+      const el = carouselRef.current;
+      if (!el) return;
+      if (el.scrollLeft + el.offsetWidth >= el.scrollWidth - 2) {
+        el.scrollLeft = 0;
+      } else {
+        el.scrollLeft += 2.5; // Folyamatos, gyorsabb scroll
+      }
+      frame = requestAnimationFrame(step);
+    }
+    frame = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(frame);
+  }, [isAutoScroll]);
+
+  // User interakció: scroll/drag/nyomás leállítja az automata scrollt 3mp-re
+  function pauseAutoScroll() {
+    setIsAutoScroll(false);
+    if (autoScrollTimeout.current) clearTimeout(autoScrollTimeout.current);
+    autoScrollTimeout.current = setTimeout(() => setIsAutoScroll(true), 3000);
+  }
+
+  // Carousel drag handler
+  const handleDragEnd = (event: any, info: any) => {
+    if (info.offset.x < -50) {
+      setStatIndex(idx => (idx + 1) % stats.length);
+    } else if (info.offset.x > 50) {
+      setStatIndex(idx => (idx - 1 + stats.length) % stats.length);
+    }
+  };
 
   return (
     <SEOProvider>
@@ -609,75 +646,182 @@ function App() {
                     <span className="text-[#ff5c35]"> milliós értékű elveszett lehetőségekhez</span> vezethet.
                   </motion.p>
                 </motion.div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                  <motion.div
-                    className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
-                    whileHover={{ y: -5, borderColor: '#ff5c35' }}
-                    transition={{ duration: 0.2 }}>
-                    <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"><CountUp end={88} suffix="%" delay={0.2} /></h3>
-                    <p className="text-gray-400">az online vásárlók közül nem tér vissza egy rossz vásárlási élmény után</p>
-                  </motion.div>
-                  <motion.div
-                    className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
-                    whileHover={{ y: -5, borderColor: '#ff5c35' }}
-                    transition={{ duration: 0.2 }}>
-                    <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"><CountUp end={75} suffix="%" delay={0.4} /></h3>
-                    <p className="text-gray-400">a felhasználóknak a weboldal alapján ítéli meg a cég hitelességét</p>
-                  </motion.div>
-                  <motion.div
-                    className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
-                    whileHover={{ y: -5, borderColor: '#ff5c35' }}
-                    transition={{ duration: 0.2 }}>
-                    <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"><CountUp end={61} suffix="%" delay={0.6} /></h3>
-                    <p className="text-gray-400">a felhasználók elhagyják a mobilos felületen rosszul működő oldalt</p>
-                  </motion.div>
+                {/* Mobil: fluid scroll-snap carousel */}
+                <div className="block md:hidden w-full max-w-[95vw] mx-auto relative">
+                  <div
+                    ref={carouselRef}
+                    className="flex gap-4 overflow-x-auto scrollbar-none w-full"
+                    style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    onScroll={pauseAutoScroll}
+                    onTouchStart={pauseAutoScroll}
+                    onMouseDown={pauseAutoScroll}
+                  >
+                    {stats.map((stat, idx) => {
+                      const radius = 44;
+                      const circumference = 2 * Math.PI * radius;
+                      return (
+                        <div
+                          key={idx}
+                          className="relative bg-[#1a1a2e] rounded-2xl border border-gray-800/50 shadow-xl py-10 px-4 flex-shrink-0 flex flex-col items-center justify-center transition-all duration-300 min-h-[340px] w-[70vw] max-w-[300px] select-none"
+                        >
+                          <div className="relative mb-4">
+                            <svg width="100" height="100" viewBox="0 0 100 100" className="block mx-auto">
+                              <circle cx="50" cy="50" r={radius} fill="none" stroke="#232336" strokeWidth="7" />
+                              <motion.circle
+                                cx="50" cy="50" r={radius} fill="none"
+                                stroke={`url(#stat-gradient-${idx})`}
+                                strokeWidth="7"
+                                strokeDasharray={circumference}
+                                strokeDashoffset={circumference * (1 - stat.value / 100)}
+                                strokeLinecap="round"
+                                initial={{ strokeDashoffset: circumference }}
+                                animate={{ strokeDashoffset: circumference * (1 - stat.value / 100) }}
+                                transition={{ duration: 1.5 }}
+                              />
+                              <defs>
+                                <linearGradient id={`stat-gradient-${idx}`} x1="0" y1="0" x2="100" y2="100">
+                                  <stop offset="0%" stopColor={stat.colorFrom} />
+                                  <stop offset="100%" stopColor={stat.colorTo} />
+                                </linearGradient>
+                              </defs>
+                            </svg>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <span className="text-3xl font-extrabold bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent select-none">
+                                <CountUp end={stat.value} duration={1.5} suffix={stat.suffix} />
+                              </span>
+                            </div>
+                          </div>
+                          <p className="text-gray-300 text-center text-base font-medium leading-relaxed">
+                            {stat.label}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  {/* Formázott szöveg és gomb a carousel alá */}
+                  <div className="text-center mt-16 mb-12">
+                    <h2 className="text-4xl sm:text-5xl font-bold mb-6">
+                      Több ezer weboldalt elemeztem
+                      <span className="bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"> hogy veled ez ne történhessen meg.</span>
+                    </h2>
+                    <div className="mt-8">
+                      <a href="/kapcsolat" data-discover="true">
+                        <button type="button" className="secondary-button inline-flex items-center" tabIndex={0}>
+                          Ingyenes konzultációt kérek!
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right ml-2"><path d="m9 18 6-6-6-6"></path></svg>
+                        </button>
+                      </a>
+                    </div>
+                  </div>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-                  <motion.div
-                    className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
-                    whileHover={{ y: -5, borderColor: '#ff5c35' }}
-                    transition={{ duration: 0.2 }}>
-                    <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"><CountUp end={8} suffix="/10" delay={0.8} /></h3>
-                    <p className="text-gray-400">felhasználó abbahagyja a böngészést, ha az oldal nem jelenik meg megfelelően</p>
-                  </motion.div>
-                  <motion.div
-                    className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
-                    whileHover={{ y: -5, borderColor: '#ff5c35' }}
-                    transition={{ duration: 0.2 }}>
-                    <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"><CountUp end={94} suffix="%" delay={1.0} /></h3>
-                    <p className="text-gray-400">a negatív visszajelzéseknek a weboldal dizájnjával kapcsolatosak</p>
-                  </motion.div>
+                {/* Desktop grid */}
+                <div className="hidden lg:block max-w-6xl mx-auto mb-16">
+                  <div className="grid grid-cols-3 gap-6 mb-6 items-stretch">
+                    {stats.slice(0, 3).map((stat, idx) => {
+                      const radius = 44;
+                      const circumference = 2 * Math.PI * radius;
+                      return (
+                        <motion.div
+                          key={idx}
+                          className="relative bg-[#1a1a2e] rounded-3xl border border-gray-800/40 shadow-2xl shadow-[#ff5c35]/10 p-10 flex flex-col items-center justify-center min-h-[320px] h-full w-full transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-[#ff5c35] group"
+                          whileHover={{ y: -8 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <div className="relative mb-4">
+                            <svg width="100" height="100" viewBox="0 0 100 100" className="block mx-auto">
+                              <circle cx="50" cy="50" r={radius} fill="none" stroke="#28304a" strokeWidth="10" />
+                              <motion.circle
+                                cx="50" cy="50" r={radius} fill="none"
+                                stroke={`url(#stat-gradient-${idx})`}
+                                strokeWidth="10"
+                                strokeDasharray={circumference}
+                                strokeDashoffset={circumference * (1 - stat.value / 100)}
+                                strokeLinecap="round"
+                                initial={{ strokeDashoffset: circumference }}
+                                animate={{ strokeDashoffset: circumference * (1 - stat.value / 100) }}
+                                transition={{ duration: 1.5, delay: 0.2 * idx }}
+                              />
+                              <defs>
+                                <linearGradient id={`stat-gradient-${idx}`} x1="0" y1="0" x2="100" y2="100">
+                                  <stop offset="0%" stopColor={stat.colorFrom} />
+                                  <stop offset="100%" stopColor={stat.colorTo} />
+                                </linearGradient>
+                              </defs>
+                            </svg>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <span className="text-5xl font-extrabold bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent drop-shadow-lg select-none">
+                                <CountUp end={stat.value} duration={1.5} suffix={stat.suffix} />
+                              </span>
+                            </div>
+                          </div>
+                          <p className="text-gray-200 text-center text-lg font-medium leading-relaxed mt-2">
+                            {stat.label}
+                          </p>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                  <div className="flex justify-center gap-6">
+                    {stats.slice(3).map((stat, idx) => {
+                      const radius = 44;
+                      const circumference = 2 * Math.PI * radius;
+                      return (
+                        <motion.div
+                          key={idx + 3}
+                          className="relative bg-[#1a1a2e] rounded-3xl border border-gray-800/40 shadow-2xl shadow-[#ff5c35]/10 p-10 flex flex-col items-center justify-center min-h-[320px] h-full w-full max-w-[420px] transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-[#ff5c35] group"
+                          whileHover={{ y: -8 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <div className="relative mb-4">
+                            <svg width="100" height="100" viewBox="0 0 100 100" className="block mx-auto">
+                              <circle cx="50" cy="50" r={radius} fill="none" stroke="#28304a" strokeWidth="10" />
+                              <motion.circle
+                                cx="50" cy="50" r={radius} fill="none"
+                                stroke={`url(#stat-gradient-${idx + 3})`}
+                                strokeWidth="10"
+                                strokeDasharray={circumference}
+                                strokeDashoffset={circumference * (1 - stat.value / 100)}
+                                strokeLinecap="round"
+                                initial={{ strokeDashoffset: circumference }}
+                                animate={{ strokeDashoffset: circumference * (1 - stat.value / 100) }}
+                                transition={{ duration: 1.5, delay: 0.2 * (idx + 3) }}
+                              />
+                              <defs>
+                                <linearGradient id={`stat-gradient-${idx + 3}`} x1="0" y1="0" x2="100" y2="100">
+                                  <stop offset="0%" stopColor={stat.colorFrom} />
+                                  <stop offset="100%" stopColor={stat.colorTo} />
+                                </linearGradient>
+                              </defs>
+                            </svg>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <span className="text-5xl font-extrabold bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent drop-shadow-lg select-none">
+                                <CountUp end={stat.value} duration={1.5} suffix={stat.suffix} />
+                              </span>
+                            </div>
+                          </div>
+                          <p className="text-gray-200 text-center text-lg font-medium leading-relaxed mt-2">
+                            {stat.label}
+                          </p>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
                 </div>
-
-                <div className="text-center mt-16 mb-12">
-                  <motion.h2 
-                    className="text-4xl sm:text-5xl font-bold mb-6"
-                    variants={fadeInUp}>
+                {/* Desktopon is: Több ezer weboldalt... szöveg és gomb */}
+                <div className="hidden md:block text-center mt-16 mb-12">
+                  <h2 className="text-4xl sm:text-5xl font-bold mb-6">
                     Több ezer weboldalt elemeztem
                     <span className="bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"> hogy veled ez ne történhessen meg.</span>
-                  </motion.h2>
-                  
-                  <motion.div 
-                    className="mt-8"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}>
-                    <Link to="/kapcsolat" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                      <motion.button 
-                        type="button"
-                        className="secondary-button inline-flex items-center"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}>
+                  </h2>
+                  <div className="mt-8">
+                    <a href="/kapcsolat" data-discover="true">
+                      <button type="button" className="secondary-button inline-flex items-center" tabIndex={0}>
                         Ingyenes konzultációt kérek!
-                        <ChevronRight size={20} className="ml-2" />
-                      </motion.button>
-                    </Link>
-                  </motion.div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right ml-2"><path d="m9 18 6-6-6-6"></path></svg>
+                      </button>
+                    </a>
+                  </div>
                 </div>
-               
-{/* 3 hete ezzel baszakodunk valaki megcsinálhatná már */}
               </div>
             </motion.section>
 
@@ -1138,27 +1282,6 @@ function App() {
                     </AnimatePresence>
                   </motion.div>
 
-                  {/* Dots Navigation */}
-                  <div className="flex justify-center mt-8 space-x-4 py-2">
-                    {[...Array(4)].map((_, index) => (
-                      <motion.button
-                        type="button"
-                        key={index}
-                        onClick={() => setCurrentPackage(index)}
-                        className="relative h-12 w-12 flex items-center justify-center"
-                        whileHover={{ scale: 1.2 }}
-                        whileTap={{ scale: 0.9 }}
-                        transition={{ duration: 0.2 }}
-                        aria-label={`Go to package ${index + 1}`}>
-                        <div className={`h-3 rounded-full transition-all duration-300 ${
-                          currentPackage === index 
-                            ? 'w-6 bg-[#ff5c35]' 
-                            : 'w-3 bg-gray-600 hover:bg-gray-500'
-                        }`} />
-                      </motion.button>
-                    ))}
-                  </div>
-
                   {/* Navigation Arrows */}
                   <div className="absolute top-1/2 left-0 right-0 -mt-4 flex justify-between px-4 pointer-events-none">
                     {currentPackage > 0 && (
@@ -1571,10 +1694,12 @@ function App() {
         <Route path="/rolunk" element={<About />} />
         <Route path="/kapcsolat" element={<Contact />} />
         <Route path="/szolgaltatasok" element={<Services />} />
+        <Route path="/blog" element={<Blog />} />
         <Route path="/adatvedelem" element={<Privacy />} />
         <Route path="/404" element={<Error code={404} />} />
         <Route path="/403" element={<Error code={403} />} />
         <Route path="/500" element={<Error code={500} />} />
+        <Route path="/blog/:slug" element={<BlogDetail />} />
         <Route path="*" element={<Error code={404} />} />
       </Routes>
 

@@ -12,6 +12,7 @@ const Navbar = () => {
     { name: 'Főoldal', href: '/' },
     { name: 'Szolgáltatások', href: '/szolgaltatasok' },
     { name: 'Csomagok', href: '/csomagok' },
+    { name: 'Blog', href: '/blog' },
     { name: 'Kapcsolat', href: '/kapcsolat' }
   ];
 

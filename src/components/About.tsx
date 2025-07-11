@@ -238,43 +238,56 @@ const About = () => {
               <span className="text-[#ff5c35]"> milliós értékű elveszett lehetőségekhez</span> vezethet.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-              <motion.div
-                className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
-                whileHover={{ y: -5, borderColor: '#ff5c35' }}
-                transition={{ duration: 0.2 }}>
-                <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent">88%</h3>
-                <p className="text-gray-400">az online vásárlók közül nem tér vissza egy rossz élmény után</p>
-              </motion.div>
-              <motion.div
-                className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
-                whileHover={{ y: -5, borderColor: '#ff5c35' }}
-                transition={{ duration: 0.2 }}>
-                <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent">75%</h3>
-                <p className="text-gray-400">a felhasználók a weboldal alapján ítéli meg a cég hitelességét</p>
-              </motion.div>
-              <motion.div
-                className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
-                whileHover={{ y: -5, borderColor: '#ff5c35' }}
-                transition={{ duration: 0.2 }}>
-                <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent">61%</h3>
-                <p className="text-gray-400">a felhasználók elhagyja a mobilon rosszul működő oldalt</p>
-              </motion.div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <motion.div
-                className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
-                whileHover={{ y: -5, borderColor: '#ff5c35' }}
-                transition={{ duration: 0.2 }}>
-                <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent">8/10</h3>
-                <p className="text-gray-400">felhasználó abbahagyja a böngészést, ha az oldal nem jelenik meg megfelelően</p>
-              </motion.div>
-              <motion.div
-                className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50"
-                whileHover={{ y: -5, borderColor: '#ff5c35' }}
-                transition={{ duration: 0.2 }}>
-                <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent">94%</h3>
-                <p className="text-gray-400">a negatív visszajelzések a weboldal dizájnjával kapcsolatosak</p>
-              </motion.div>
+              {[
+                { value: 88, label: 'az online vásárlók közül nem tér vissza egy rossz vásárlási élmény után', colorFrom: '#ff5c35', colorTo: '#ff8f35', suffix: '%' },
+                { value: 75, label: 'a felhasználóknak a weboldal alapján ítéli meg a cég hitelességét', colorFrom: '#ff8f35', colorTo: '#ff5c35', suffix: '%' },
+                { value: 61, label: 'a felhasználók elhagyják a mobilos felületen rosszul működő oldalt', colorFrom: '#ff5c35', colorTo: '#ff8f35', suffix: '%' },
+                { value: 8, label: 'felhasználó abbahagyja a böngészést, ha az oldal nem jelenik meg megfelelően', colorFrom: '#ff8f35', colorTo: '#ff5c35', suffix: '/10' },
+                { value: 94, label: 'a negatív visszajelzéseknek a weboldal dizájnjával kapcsolatosak', colorFrom: '#ff5c35', colorTo: '#ff8f35', suffix: '%' },
+              ].map((stat, idx) => {
+                const radius = 44;
+                const circumference = 2 * Math.PI * radius;
+                return (
+                  <motion.div
+                    key={idx}
+                    className="relative bg-white/10 backdrop-blur-xl rounded-2xl border border-gray-800/50 shadow-xl p-8 flex flex-col items-center justify-center transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-[#ff5c35] group"
+                    whileHover={{ y: -8 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {/* Kör progressbar + szám */}
+                    <div className="relative mb-4">
+                      <svg width="100" height="100" viewBox="0 0 100 100" className="block mx-auto">
+                        <circle cx="50" cy="50" r={radius} fill="none" stroke="#232336" strokeWidth="8" />
+                        <motion.circle
+                          cx="50" cy="50" r={radius} fill="none"
+                          stroke={`url(#stat-gradient-${idx})`}
+                          strokeWidth="8"
+                          strokeDasharray={circumference}
+                          strokeDashoffset={circumference * (1 - stat.value / 100)}
+                          strokeLinecap="round"
+                          initial={{ strokeDashoffset: circumference }}
+                          animate={{ strokeDashoffset: circumference * (1 - stat.value / 100) }}
+                          transition={{ duration: 1.5, delay: 0.2 * idx }}
+                        />
+                        <defs>
+                          <linearGradient id={`stat-gradient-${idx}`} x1="0" y1="0" x2="100" y2="100">
+                            <stop offset="0%" stopColor={stat.colorFrom} />
+                            <stop offset="100%" stopColor={stat.colorTo} />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-4xl font-extrabold bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent drop-shadow-lg select-none">
+                          <CountUp end={stat.value} duration={1.5} suffix={stat.suffix} />
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-gray-300 text-center text-base font-medium leading-relaxed">
+                      {stat.label}
+                    </p>
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
 

@@ -19,12 +19,8 @@ export default defineConfig({
           'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://safeframe.googlesyndication.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn-cookieyes.com https://cdn-cookieyes.com/client_data/* https://cdn-cookieyes.com/client_data/64ceae5ed2ab25cfc6922673/script.js https://cdn-cookieyes.com/client_data/64ceae5ed2ab25cfc6922673/*.js https://cdn-cookieyes.com/client_data/64ceae5ed2ab25cfc6922673gtm.init/script.js https://cdn-cookieyes.com/client_data/64ceae5ed2ab25cfc6922673gtm.init_consent/script.js https://cdn-cookieyes.com/client_data/64ceae5ed2ab25cfc6922673gtm.js/script.js https://*.cdn-cookieyes.com https://vizitor.hu https://*.googlesyndication.com https://*.doubleclick.net https://doubleclick.net https://www.google.com https://region1.google-analytics.com; frame-src 'self' https://safeframe.googlesyndication.com https://*.googlesyndication.com https://www.googletagmanager.com https://cdn-cookieyes.com https://*.cdn-cookieyes.com https://vizitor.hu https://*.doubleclick.net https://doubleclick.net https://www.google.com;"
         }
       },
-      '/api': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
+      '/api': 'http://localhost:1337',
+      '/uploads': 'http://localhost:1337',
     }
   },
   build: {

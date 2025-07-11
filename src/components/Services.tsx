@@ -162,13 +162,13 @@ const Services = () => {
         </motion.div>
 
         {/* Services Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 gap-6 sm:gap-4 mb-12 sm:mb-8">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
               <motion.div
                 key={service.id}
-                className={`bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border transition-all cursor-pointer ${
+                className={`bg-[#1a1a2e]/80 backdrop-blur-sm p-8 sm:p-4 rounded-2xl border transition-all cursor-pointer ${
                   activeService === service.id
                     ? 'border-[#ff5c35] shadow-lg shadow-[#ff5c35]/20'
                     : 'border-gray-800/50 hover:border-[#ff5c35]/30'
@@ -178,13 +178,13 @@ const Services = () => {
                 transition={{ delay: index * 0.1 }}
                 onClick={() => setActiveService(activeService === service.id ? null : service.id)}
                 whileHover={{ y: -5 }}>
-                <div className="flex items-start space-x-4">
-                  <div className="p-3 bg-[#ff5c35]/20 rounded-xl">
-                    <Icon className="w-6 h-6 text-[#ff5c35]" />
+                <div className="flex items-start space-x-4 sm:space-x-2">
+                  <div className="p-3 sm:p-2 bg-[#ff5c35]/20 rounded-xl">
+                    <Icon className="w-6 h-6 sm:w-5 sm:h-5 text-[#ff5c35]" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-2xl font-bold mb-2">{service.title}</h3>
-                    <p className="text-gray-400 mb-4">{service.description}</p>
+                    <h3 className="text-2xl sm:text-lg font-bold mb-2 sm:mb-1">{service.title}</h3>
+                    <p className="text-gray-400 mb-4 sm:mb-2 text-base sm:text-sm">{service.description}</p>
                     
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
@@ -193,34 +193,34 @@ const Services = () => {
                         opacity: activeService === service.id ? 1 : 0
                       }}
                       className="overflow-hidden">
-                      <div className="grid md:grid-cols-2 gap-6 mt-6">
+                      <div className="grid md:grid-cols-2 grid-cols-1 gap-6 sm:gap-3 mt-6 sm:mt-3">
                         <div>
-                          <h4 className="font-semibold text-[#ff5c35] mb-3">Szolgáltatásaim</h4>
-                          <ul className="space-y-2">
+                          <h4 className="font-semibold text-[#ff5c35] mb-3 sm:mb-1 text-base sm:text-sm">Szolgáltatásaim</h4>
+                          <ul className="space-y-2 sm:space-y-1">
                             {service.features.map((feature, idx) => (
                               <motion.li
                                 key={idx}
-                                className="flex items-start text-gray-300"
+                                className="flex items-start text-gray-300 text-sm sm:text-xs"
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: idx * 0.1 }}>
-                                <Sparkles className="w-5 h-5 text-[#ff5c35] mt-1 mr-2 flex-shrink-0" />
+                                <Sparkles className="w-5 h-5 sm:w-4 sm:h-4 text-[#ff5c35] mt-1 mr-2 flex-shrink-0" />
                                 <span>{feature}</span>
                               </motion.li>
                             ))}
                           </ul>
                         </div>
                         <div>
-                          <h4 className="font-semibold text-[#ff5c35] mb-3">Előnyök</h4>
-                          <ul className="space-y-2">
+                          <h4 className="font-semibold text-[#ff5c35] mb-3 sm:mb-1 text-base sm:text-sm">Előnyök</h4>
+                          <ul className="space-y-2 sm:space-y-1">
                             {service.benefits.map((benefit, idx) => (
                               <motion.li
                                 key={idx}
-                                className="flex items-start text-gray-300"
+                                className="flex items-start text-gray-300 text-sm sm:text-xs"
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: idx * 0.1 }}>
-                                <Rocket className="w-5 h-5 text-[#ff5c35] mt-1 mr-2 flex-shrink-0" />
+                                <Rocket className="w-5 h-5 sm:w-4 sm:h-4 text-[#ff5c35] mt-1 mr-2 flex-shrink-0" />
                                 <span>{benefit}</span>
                               </motion.li>
                             ))}
@@ -229,13 +229,13 @@ const Services = () => {
                       </div>
                       
                       {service.technologies && (
-                        <div className="mt-6">
-                          <h4 className="font-semibold text-[#ff5c35] mb-3">Technológiák</h4>
-                          <div className="flex flex-wrap gap-2">
+                        <div className="mt-6 sm:mt-3">
+                          <h4 className="font-semibold text-[#ff5c35] mb-3 sm:mb-1 text-base sm:text-sm">Technológiák</h4>
+                          <div className="flex flex-wrap gap-2 sm:gap-1">
                             {service.technologies.map((tech, idx) => (
                               <motion.span
                                 key={idx}
-                                className="px-3 py-1 bg-[#ff5c35]/10 text-[#ff5c35] rounded-full text-sm"
+                                className="px-3 py-1 sm:px-2 sm:py-0.5 bg-[#ff5c35]/10 text-[#ff5c35] rounded-full text-sm sm:text-xs"
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: idx * 0.1 }}>
@@ -255,13 +255,13 @@ const Services = () => {
 
         {/* Why Choose Us Section */}
         <motion.div
-          className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50 mb-16"
+          className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 sm:p-4 rounded-2xl border border-gray-800/50 mb-12 sm:mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}>
-          <h2 className="text-3xl font-bold mb-6">Miért válassz engem?</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-4">
+          <h2 className="text-3xl sm:text-xl font-bold mb-6 sm:mb-3 text-center">Miért válassz engem?</h2>
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-8 sm:gap-4">
+            <div className="space-y-4 sm:space-y-2">
               <div className="flex items-start space-x-3">
                 <div className="p-2 bg-[#ff5c35]/20 rounded-lg">
                   <Shield className="w-5 h-5 text-[#ff5c35]" />
@@ -281,7 +281,7 @@ const Services = () => {
                 </div>
               </div>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 sm:space-y-2">
               <div className="flex items-start space-x-3">
                 <div className="p-2 bg-[#ff5c35]/20 rounded-lg">
                   <MessageSquare className="w-5 h-5 text-[#ff5c35]" />
@@ -306,22 +306,20 @@ const Services = () => {
 
         {/* CTA Section */}
         <motion.div
-          className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50 text-center"
+          className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 sm:p-4 rounded-2xl border border-gray-800/50 text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}>
-          <h2 className="text-3xl font-bold mb-4">
-            Kezdjük el a közös munkát!
-          </h2>
-          <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
+          <h2 className="text-3xl sm:text-xl font-bold mb-4 sm:mb-2">Kezdjük el a közös munkát!</h2>
+          <p className="text-gray-400 mb-8 sm:mb-4 max-w-2xl mx-auto text-base sm:text-sm">
             Ne várj tovább, kezdd el a digitális sikert még ma! Kérj személyre szabott INGYENES árajánlatot szolgáltatásaimra!
           </p>
           <motion.a
             href="/kapcsolat"
-            className="inline-flex items-center px-8 py-4 bg-[#ff5c35] text-white rounded-lg font-semibold text-lg hover:bg-[#ff5c35]/90 transition-colors shadow-lg shadow-[#ff5c35]/20"
+            className="inline-flex items-center px-8 py-4 sm:px-5 sm:py-2 bg-[#ff5c35] text-white rounded-lg font-semibold text-lg sm:text-base hover:bg-[#ff5c35]/90 transition-colors shadow-lg shadow-[#ff5c35]/20"
             whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(255, 92, 53, 0.3)' }}
             whileTap={{ scale: 0.98 }}>
-            <Rocket className="w-6 h-6 mr-2" />
+            <Rocket className="w-6 h-6 sm:w-5 sm:h-5 mr-2" />
             Ajánlatkérés
           </motion.a>
         </motion.div>

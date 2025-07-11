@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
 :root {
   --primary: #ff5c35;
   --background: #0a0a0f;
@@ -203,4 +205,162 @@ input:focus, textarea:focus, button:focus {
 
 .animation-delay-4000 {
   animation-delay: 4s;
+}
+
+.custom-quote-block {
+  position: relative;
+  padding: 2.5rem 2rem 4rem;
+  margin: 4rem 2rem;
+  font-size: 2rem;
+  color: #303030;
+  background: conic-gradient(from 180deg at 100% calc(100% - 1rem), #303030 0 25%, #fff0 0 100%), conic-gradient(from 180deg at 1rem 50%, #303030 0 25%, #fff0 0 100%), conic-gradient(from 0deg at calc(100% - 1rem) 50%, #303030 0 25%, #fff0 0 100%), conic-gradient(from 0deg at 0rem 1rem, #303030 0 25%, #fff0 0 100%);
+}
+.custom-quote-block:before, 
+.custom-quote-block:after {
+  content: "";
+  position: absolute;
+  width: 3.5rem;
+  height: 4.5rem;
+  top: 3rem;
+  left: -1rem;
+  transform: rotate(5deg) scale(1.15);
+  background: 
+    radial-gradient(circle at 1.75rem 3rem, #303030 1.5rem, #fff0 calc(1.5rem + 1px)), 
+    radial-gradient(circle at 3.5rem 1.5rem, #fff0 2rem, #303030 calc(2rem + 1px) calc(4rem + 1px), #fff0 calc(4rem + 2px));
+  filter: drop-shadow(3.5rem -0.5rem 0px #303030);
+  border-radius: 100%;
+}
+.custom-quote-block:after {
+  top: inherit;
+  bottom: 3rem;
+  transform: rotate(195deg) scale(1.15);
+  right: -1rem;
+  left: inherit;
+}
+.custom-quote-block p {
+  font-weight: bold;
+}
+.custom-quote-block p:after {
+  margin-right: 2rem;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  content: " ";
+  display: inline-flex;
+  background: #f000;
+  width: 8rem;
+  height: 3rem;
+}
+.custom-quote-block p:first-letter {
+  background: #303030;
+  color: #f0f8ff;
+  padding: 0 0.75rem;
+  margin-top: 0;
+  margin-left: 3.75rem;
+  margin-right: 0.5rem;
+  box-sizing: border-box;
+  font-size: 4rem;
+  float: left;
+}
+.custom-quote-block cite {
+  font-weight: bold;
+  position: absolute;
+  bottom: 2.5rem;
+  background: #303030;
+  color: #f0f8ff;
+  right: 8rem;
+  padding: 0.5rem 1rem;
+}
+@media only screen and (max-width: 767px) {
+  .custom-quote-block {
+    max-width: 90vw;
+    font-size: 1.2rem;
+    margin: 2rem 0.5rem;
+    padding: 2rem 1rem 3rem;
+  }
+  .custom-quote-block cite {
+    right: 2rem;
+    font-size: 1rem;
+    padding: 0.3rem 0.7rem;
+  }
+}
+
+.brand-quote-block {
+  color: #ff5c35;
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-size: 3.2rem;
+  width: 80vw;
+  max-width: 900px;
+  margin: 4rem auto;
+  position: relative;
+  background: none;
+  border: none;
+  box-shadow: none;
+  text-align: center;
+  line-height: 1.2;
+}
+.brand-quote-block p {
+  font-style: italic;
+  margin-bottom: 0;
+  position: relative;
+  font-weight: 700;
+  letter-spacing: -1px;
+  z-index: 2;
+  display: inline-block;
+  max-width: 100%;
+}
+.brand-quote-block p::before,
+.brand-quote-block p::after {
+  font-family: Georgia, serif;
+  font-size: 7rem;
+  position: absolute;
+  opacity: 0.18;
+  color: #ff5c35;
+  pointer-events: none;
+  line-height: 1;
+}
+.brand-quote-block p::before {
+  content: "“";
+  left: -3.5rem;
+  top: -2.5rem;
+}
+.brand-quote-block p::after {
+  content: "”";
+  right: -3.5rem;
+  bottom: -2.5rem;
+}
+.brand-quote-block cite {
+  font-size: 1.5rem;
+  display: block;
+  margin-top: 2.5rem;
+  text-align: center;
+  color: #ff5c35;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background: rgba(255,92,53,0.08);
+  border-radius: 2rem;
+  padding: 0.5rem 2rem;
+  display: inline-block;
+}
+@media only screen and (max-width: 900px) {
+  .brand-quote-block {
+    width: 96vw;
+    font-size: 2rem;
+    margin: 2rem 0.5rem;
+    padding: 0 0.5rem;
+  }
+  .brand-quote-block p::before,
+  .brand-quote-block p::after {
+    font-size: 3.5rem;
+    left: -1.5rem;
+    right: -1.5rem;
+    top: -1.5rem;
+    bottom: -1.5rem;
+  }
+  .brand-quote-block cite {
+    font-size: 1rem;
+    margin-top: 1.2rem;
+    padding: 0.3rem 1rem;
+  }
 }
