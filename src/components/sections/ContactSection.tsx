@@ -77,7 +77,15 @@ const ContactSection = () => {
             // Add source information
             formData.append('source', 'footer_form');
 
-            const response = await fetch('https://formspree.io/f/xvgkpzen', { // TODO: Move to Env Variable
+            const formspreeId = import.meta.env.VITE_FORMSPREE_ID;
+            if (!formspreeId) {
+                console.error('Formspree ID is missing');
+                setError('Configuration error');
+                setIsLoading(false);
+                return;
+            }
+
+            const response = await fetch(`https://formspree.io/f/${formspreeId}`, {
                 method: 'POST',
                 body: formData,
                 headers: {
