@@ -20,4 +20,5 @@ export interface BlogPost {
   }[];
   meta_title?: string;
   meta_description?: string;
+  featured?: boolean;
 }

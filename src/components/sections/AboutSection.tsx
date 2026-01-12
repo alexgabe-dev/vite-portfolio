@@ -53,9 +53,9 @@ const AboutSection = () => {
                     </motion.div>
                 </motion.div>
 
-                {/* Values */}
+                {/* Values - Desktop Grid / Mobile Marquee */}
                 <motion.div
-                    className="mb-20"
+                    className="mb-20 overflow-hidden"
                     variants={staggerChildren}
                     initial="initial"
                     whileInView="animate"
@@ -65,7 +65,9 @@ const AboutSection = () => {
                         variants={fadeInUp}>
                         Értékeink
                     </motion.h2>
-                    <div className="grid md:grid-cols-3 gap-8">
+
+                    {/* Desktop Grid (Hidden on mobile) */}
+                    <div className="hidden md:grid grid-cols-3 gap-8">
                         {[
                             {
                                 icon: <Lightbulb className="w-8 h-8 text-[#ff5c35]" />,
@@ -122,6 +124,62 @@ const AboutSection = () => {
                                 </div>
                             </motion.div>
                         ))}
+                    </div>
+
+                    {/* Mobile Infinite Marquee Carousel (Hidden on desktop) */}
+                    <div className="md:hidden relative">
+                        <motion.div
+                            className="flex gap-4 w-fit"
+                            animate={{
+                                x: [0, -888],
+                            }}
+                            transition={{
+                                x: {
+                                    repeat: Infinity,
+                                    repeatType: "loop",
+                                    duration: 30,
+                                    ease: "linear",
+                                },
+                            }}
+                        >
+                            {/* Duplicate items for seamless loop */}
+                            {[...Array(3)].map((_, loopIdx) => (
+                                <div key={loopIdx} className="flex gap-4">
+                                    {[
+                                        {
+                                            icon: <Lightbulb size={24} />,
+                                            title: "Innováció",
+                                            description: "Folyamatosan keressem az új megoldásokat."
+                                        },
+                                        {
+                                            icon: <Handshake size={24} />,
+                                            title: "Megbízhatóság",
+                                            description: "Amit megígérek, azt teljesítem."
+                                        },
+                                        {
+                                            icon: <Target size={24} />,
+                                            title: "Eredményorientáltság",
+                                            description: "Valós üzleti eredmények elérése."
+                                        }
+                                    ].map((value, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="w-[280px] flex-shrink-0 bg-[#1a1a2e] p-6 rounded-2xl border border-gray-800/50"
+                                        >
+                                            <div className="w-12 h-12 bg-[#ff5c35]/10 rounded-xl flex items-center justify-center mb-4 text-[#ff5c35]">
+                                                {value.icon}
+                                            </div>
+                                            <h3 className="text-lg font-bold text-white mb-2">{value.title}</h3>
+                                            <p className="text-gray-400 text-sm">{value.description}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            ))}
+                        </motion.div>
+
+                        {/* Gradient Fades for smoothness */}
+                        <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-[#0a0a0f] to-transparent z-10" />
+                        <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[#0a0a0f] to-transparent z-10" />
                     </div>
                 </motion.div>
             </div>
