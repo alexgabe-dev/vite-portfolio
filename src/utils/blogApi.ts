@@ -1,33 +1,39 @@
+
+import GhostContentAPI from '@tryghost/content-api';
 import { BlogPost } from '../types/blog';
 
-const STRAPI_URL = "http://localhost:1337";
+const api = new GhostContentAPI({
+  url: import.meta.env.VITE_GHOST_API_URL || 'http://localhost:2368',
+  key: import.meta.env.VITE_GHOST_CONTENT_API_KEY || '',
+  version: "v5.0"
+});
 
 export async function fetchBlogPosts(): Promise<BlogPost[]> {
-  const res = await fetch('/api/blog-posts?populate=*');
-  const json = await res.json();
-  if (!json.data || !Array.isArray(json.data)) return [];
-  return json.data.map((item: any) => {
-    const attrs = item.attributes || {};
-    let coverImage;
-    if (attrs.coverImage && Array.isArray(attrs.coverImage.data) && attrs.coverImage.data[0]?.attributes?.url) {
-      coverImage = attrs.coverImage.data[0].attributes.url;
-    } else if (attrs.coverImage?.data?.attributes?.url) {
-      coverImage = attrs.coverImage.data.attributes.url;
-    }
-    return {
-      id: item.id,
-      title: attrs.title,
-      slug: attrs.slug,
-      author: attrs.author,
-      content: attrs.content,
-      excerpt: attrs.excerpt,
-      publishedAt: attrs.publishedAt,
-      createdAt: attrs.createdAt,
-      updatedAt: attrs.updatedAt,
-      coverImage,
-      bodyBlocks: attrs.bodyBlocks,
-      metaDescription: attrs.metaDescription,
-      categories: attrs.categories?.data?.map((cat: any) => cat.attributes?.name) || [],
-    };
-  });
+  try {
+    const posts = await api.posts.browse({
+      include: ['tags', 'authors'],
+      limit: 'all'
+    });
+
+    // Convert Ghost PostOrPage to our BlogPost type if necessary, 
+    // but the types should mostly align. Casting for simplicity here as Ghost types are loose.
+    return posts as unknown as BlogPost[];
+  } catch (err) {
+    console.error('Failed to fetch posts from Ghost:', err);
+    return [];
+  }
+}
+
+export async function fetchBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+  try {
+    const post = await api.posts.read({
+      slug
+    }, {
+      include: ['tags', 'authors']
+    });
+    return post as unknown as BlogPost;
+  } catch (err) {
+    console.error(`Failed to fetch post ${slug} from Ghost:`, err);
+    return null;
+  }
 }

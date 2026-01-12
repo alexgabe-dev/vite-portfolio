@@ -1,0 +1,52 @@
+
+version: '3.9'
+
+services:
+  ghost:
+    image: ghost:5-alpine
+    restart: always
+    ports:
+      - "127.0.0.1:2368:2368"
+    environment:
+      # See https://ghost.org/docs/config/#configuration-options
+      database__client: mysql
+      database__connection__host: db
+      database__connection__user: ghost
+      database__connection__password: ${MYSQL_PASSWORD}
+      database__connection__database: ghost
+      # This is the public URL
+      url: https://pry.hu:4114
+      # Email settings (Mailgun is recommended, but using SMTP as example or none)
+      # mail__transport: SMTP
+      # mail__options__service: ...
+    volumes:
+      - ghost_content:/var/lib/ghost/content
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ghost
+      MYSQL_USER: ghost
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ghost_db:/var/lib/mysql
+
+  # Nginx Proxy to handle SSL on port 4114
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "4114:4114"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - ghost
+
+volumes:
+  ghost_content:
+  ghost_db:

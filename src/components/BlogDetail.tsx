@@ -1,11 +1,11 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { fetchBlogPosts } from '../utils/blogApi';
+import { fetchBlogPostBySlug, fetchBlogPosts } from '../utils/blogApi';
 import { BlogPost } from '../types/blog';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowLeftCircle, ArrowRightCircle, Clock, ArrowRight } from 'lucide-react';
 import DOMPurify from 'dompurify';
-import BlogContentRenderer from './BlogContentRenderer';
 
 const fadeInUp = {
   initial: { y: 20, opacity: 0 },
@@ -21,36 +21,29 @@ const BlogDetail: React.FC = () => {
   const [allPosts, setAllPosts] = useState<BlogPost[]>([]);
 
   useEffect(() => {
-    fetchBlogPosts().then((posts) => {
-      // Sort posts by publishedAt (desc), fallback to createdAt
-      const sorted = [...posts].sort((a, b) => {
-        const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : new Date(a.createdAt).getTime();
-        const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : new Date(b.createdAt).getTime();
-        return dateB - dateA;
-      });
-      setAllPosts(sorted);
-      const found = sorted.find((p) => (p.slug || '').toLowerCase() === (slug || '').toLowerCase());
-      setPost(found || null);
+    // Fetch all posts for navigation (prev/next) and recent list
+    // In a real large blog, you wouldn't fetch all, but Ghost has a small limit by default, 
+    // we might want to just fetch 'browse' and 'read' separately properly. 
+    // For now we do what we did before but ideally we optimize.
+    async function loadData() {
+      if (!slug) return;
+      setLoading(true);
+      // Load the specific post content (including html)
+      const currentPost = await fetchBlogPostBySlug(slug);
+      if (currentPost) setPost(currentPost);
+
+      // Load recent posts for sidebar/nav
+      const posts = await fetchBlogPosts();
+      setAllPosts(posts);
       setLoading(false);
-    });
+    }
+    loadData();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [slug]);
 
-  // Find previous and next posts
   const currentIndex = allPosts.findIndex((p) => p.slug === post?.slug);
   const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
   const nextPost = currentIndex >= 0 && currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
-
-  // Reading time calculation
-  function getReadingTime(text: string): number {
-    const words = text.split(/\s+/).length;
-    return Math.max(1, Math.round(words / 200));
-  }
-  const readingTime = post ? getReadingTime(
-    Array.isArray(post.content)
-      ? post.content.map((block: any) => block.children?.map((c: any) => c.text).join(' ')).join(' ')
-      : typeof post.content === 'string' ? post.content : ''
-  ) : 1;
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center text-gray-400">Betöltés...</div>;
@@ -64,30 +57,13 @@ const BlogDetail: React.FC = () => {
     );
   }
 
-  // Dinamikus zóna renderelése (csak QuoteBlock támogatott most)
-  const renderBodyBlocks = () => {
-    if (!Array.isArray((post as any).bodyBlocks)) return null;
-    return (post as any).bodyBlocks.map((block: any, i: number) => {
-      if (block.__component === 'blog.quote-block' || block.__component === 'blog.quoteblock') {
-        return (
-          <blockquote key={i} className="brand-quote-block relative">
-            <p>{block.text.replace(/^"|"$/g, '')}</p>
-            {block.author && <cite>{block.author}</cite>}
-          </blockquote>
-        );
-      }
-      // További blokktípusok ide jöhetnek
-      return null;
-    });
-  };
+  // Ghost returns sanitized HTML usually, but safe to purify
+  const sanitizedContent = DOMPurify.sanitize(post.html || '');
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white py-24 relative overflow-hidden">
-      {/* Modern Background Effect */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#ff5c35] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob"></div>
-        <div className="absolute top-[20%] right-0 w-[500px] h-[500px] bg-[#ff8f35] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-0 left-[25%] w-[500px] h-[500px] bg-purple-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-4000"></div>
       </div>
       <div className="max-w-3xl mx-auto px-4 relative z-10">
         <Link
@@ -96,10 +72,10 @@ const BlogDetail: React.FC = () => {
         >
           <ArrowLeft size={20} /> Vissza a bloghoz
         </Link>
-        {post.coverImage && (
+        {post.feature_image && (
           <div className="h-72 w-full overflow-hidden rounded-2xl mb-8 bg-[#222]">
             <img
-              src={post.coverImage.startsWith('http') ? post.coverImage : `${post.coverImage}`}
+              src={post.feature_image}
               alt={post.title}
               className="w-full h-full object-cover"
               loading="lazy"
@@ -115,73 +91,55 @@ const BlogDetail: React.FC = () => {
           {post.title}
         </motion.h1>
         <div className="mb-6 text-gray-400 text-sm flex flex-wrap gap-4 items-center">
-          <span className="font-semibold text-[#ff5c35]">{post.author}</span>
-          {post.publishedAt && (
+          {post.primary_author && <span className="font-semibold text-[#ff5c35]">{post.primary_author.name}</span>}
+          {post.published_at && (
             <span className="text-gray-500 flex items-center gap-2">
-              {new Date(post.publishedAt).toLocaleDateString()}
-              <span className="flex items-center gap-1 ml-3 text-xs text-gray-400">
-                <Clock size={16} className="inline-block text-[#ff5c35]" />
-                {readingTime} perc olvasás
-              </span>
+              {new Date(post.published_at).toLocaleDateString()}
+              {post.reading_time && (
+                <span className="flex items-center gap-1 ml-3 text-xs text-gray-400">
+                  <Clock size={16} className="inline-block text-[#ff5c35]" />
+                  {post.reading_time} perc olvasás
+                </span>
+              )}
             </span>
           )}
         </div>
-        <div className="prose prose-invert max-w-none text-lg mb-4">
-          {/* Dinamikus zóna (QuoteBlock-ok) */}
-          {renderBodyBlocks()}
-          {/* Mindig jelenjen meg a content mező, ha van */}
-          {post.content && (
-            <BlogContentRenderer content={post.content} />
-          )}
-        </div>
-        {/* Previous/Next navigation at the bottom */}
+
+        {/* Ghost Content */}
+        <div className="prose prose-invert max-w-none text-lg mb-4 ghost-content"
+          dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
+
+        {/* Navigation */}
         <div className="relative mt-16 border-t border-gray-800 pt-10 min-h-[60px]">
           <div className="flex flex-row justify-between items-center w-full absolute left-0 right-0 px-2 sm:px-0 top-0">
             {prevPost ? (
-              <Link
-                to={`/blog/${prevPost.slug}`}
-                className="flex items-center justify-center p-2 rounded-full hover:bg-[#ff5c35]/10 transition"
-                aria-label="Előző cikk"
-              >
+              <Link to={`/blog/${prevPost.slug}`} className="flex items-center justify-center p-2 rounded-full hover:bg-[#ff5c35]/10 transition">
                 <ArrowLeftCircle size={44} className="text-[#ff5c35]" />
               </Link>
-            ) : <div className="w-[48px]" />} 
+            ) : <div className="w-[48px]" />}
             {nextPost ? (
-              <Link
-                to={`/blog/${nextPost.slug}`}
-                className="flex items-center justify-center p-2 rounded-full hover:bg-[#ff5c35]/10 transition"
-                aria-label="Következő cikk"
-              >
+              <Link to={`/blog/${nextPost.slug}`} className="flex items-center justify-center p-2 rounded-full hover:bg-[#ff5c35]/10 transition">
                 <ArrowRightCircle size={44} className="text-[#ff5c35]" />
               </Link>
             ) : <div className="w-[48px]" />}
           </div>
         </div>
-        {/* Recent Posts section */}
+
+        {/* Recent */}
         <div className="mt-20">
           <h3 className="text-2xl font-bold mb-6 text-[#ff5c35]">Legutóbbi cikkek</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {allPosts.filter(p => p.slug !== post.slug).slice(0, 3).map((recent) => (
-              <Link
-                key={recent.id}
-                to={`/blog/${recent.slug}`}
-                className="group relative bg-[#181828] rounded-2xl border border-gray-800/60 hover:border-[#ff5c35]/80 shadow-xl transition-all overflow-hidden cursor-pointer flex flex-col"
-              >
-                {recent.coverImage && (
+              <Link key={recent.id} to={`/blog/${recent.slug}`} className="group relative bg-[#181828] rounded-2xl border border-gray-800/60 hover:border-[#ff5c35]/80 shadow-xl transition-all overflow-hidden flex flex-col">
+                {recent.feature_image && (
                   <div className="h-48 w-full overflow-hidden bg-[#222]">
-                    <img
-                      src={recent.coverImage}
-                      alt={recent.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
+                    <img src={recent.feature_image} alt={recent.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                   </div>
                 )}
                 <div className="p-6 flex flex-col">
-                  {/* Kategória badge */}
                   <div className="mb-2 flex items-center gap-2">
                     <span className="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-[#ff5c35]/10 text-[#ff5c35] tracking-wide uppercase">
-                      {Array.isArray(recent.categories) && recent.categories.length > 0 ? recent.categories[0] : 'Cikk'}
+                      {recent.tags?.[0]?.name || 'Cikk'}
                     </span>
                   </div>
                   <h4 className="text-2xl font-bold mb-2 group-hover:text-[#ff5c35] transition-colors line-clamp-2">{recent.title}</h4>
@@ -198,4 +156,4 @@ const BlogDetail: React.FC = () => {
   );
 };
 
-export default BlogDetail; 
+export default BlogDetail;

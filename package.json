@@ -17,6 +17,7 @@
     "@tiptap/extension-link": "^2.11.5",
     "@tiptap/react": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
+    "@tryghost/content-api": "^1.12.2",
     "@types/js-cookie": "^3.0.6",
     "@types/react-helmet": "^6.1.11",
     "@types/react-router-dom": "^5.3.3",
