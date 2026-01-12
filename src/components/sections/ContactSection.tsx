@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { CheckCircle, Send, Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Github, ArrowRight, Clock, ChevronRight } from 'lucide-react';
 import { fadeInUp, staggerChildren } from '../../utils/animations';
 
 const ContactSection = () => {
+    const location = useLocation();
     const [formState, setFormState] = useState({
         name: '',
         email: '',
@@ -40,14 +41,17 @@ const ContactSection = () => {
                 console.error('Error fetching IP:', error);
             });
 
-        // Scroll to form on page load
-        setTimeout(() => {
-            const formElement = document.getElementById('contact-form');
-            if (formElement) {
-                formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }, 100);
-    }, []);
+        // Scroll to form on page load - Only if on the Contact page
+        if (location.pathname === '/kapcsolat') {
+            const timer = setTimeout(() => {
+                const formElement = document.getElementById('contact-form');
+                if (formElement) {
+                    formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [location.pathname]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
