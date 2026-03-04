@@ -11,7 +11,7 @@ const Hero = () => {
     return (
         <motion.section
             id="home"
-            className="relative min-h-screen flex items-center pt-20 md:pt-16 overflow-hidden"
+            className="relative w-full min-h-[100svh] md:min-h-screen flex items-center pt-24 pb-12 md:pt-16 overflow-hidden"
             initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}>
@@ -27,12 +27,12 @@ const Hero = () => {
                 />
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                 <motion.div
                     variants={staggerChildren}
                     initial="initial"
                     animate="animate"
-                    className="will-change-transform">
+                    className="will-change-transform w-full">
                     <h1
                         className="text-3xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6 leading-tight">
                         <span className="md:block leading-[1.2] inline-block py-1">
@@ -54,20 +54,20 @@ const Hero = () => {
                         Modern weboldalkészítés, hatékony digitális marketing és automatizált megoldások, amelyek lenyűgözik a látogatókat és növelik a bevételt.
                     </motion.p>
                     <motion.div
-                        className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8 md:mt-0"
+                        className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8 md:mt-0 w-full"
                         variants={fadeInUp}>
-                        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
+                        <motion.div className="w-full sm:w-auto" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
                             <Link
                                 to="/kapcsolat"
                                 state={{ fromFooter: true }}
-                                className="primary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4">
+                                className="primary-button text-base sm:text-lg w-full sm:w-auto flex sm:inline-flex px-6 py-3 sm:py-4 justify-center border border-[#ff5c35]/70 bg-[#ff5c35] shadow-[0_14px_32px_rgba(255,92,53,0.45)] hover:shadow-[0_18px_38px_rgba(255,92,53,0.6)]">
                                 Ajánlatkérés
                             </Link>
                         </motion.div>
-                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                        <motion.div className="w-full sm:w-auto" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                             <Link
                                 to="/szolgaltatasok"
-                                className="secondary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4">
+                                className="secondary-button text-base sm:text-lg w-full sm:w-auto flex sm:inline-flex px-6 py-3 sm:py-4 justify-center">
                                 Szolgáltatásaim
                             </Link>
                         </motion.div>

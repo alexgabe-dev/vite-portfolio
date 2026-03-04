@@ -64,11 +64,11 @@ export const packages = [
 ];
 
 export const stats = [
-    { value: 88, label: 'az online vásárlók közül nem tér vissza egy rossz vásárlási élmény után', colorFrom: '#ff5c35', colorTo: '#ff8f35', suffix: '%' },
-    { value: 75, label: 'a felhasználóknak a weboldal alapján ítéli meg a cég hitelességét', colorFrom: '#ff8f35', colorTo: '#ff5c35', suffix: '%' },
-    { value: 61, label: 'a felhasználók elhagyják a mobilos felületen rosszul működő oldalt', colorFrom: '#ff5c35', colorTo: '#ff8f35', suffix: '%' },
-    { value: 8, label: 'felhasználó abbahagyja a böngészést, ha az oldal nem jelenik meg megfelelően', colorFrom: '#ff8f35', colorTo: '#ff5c35', suffix: '/10' },
-    { value: 94, label: 'a negatív visszajelzéseknek a weboldal dizájnjával kapcsolatosak', colorFrom: '#ff5c35', colorTo: '#ff8f35', suffix: '%' },
+    { value: 88, label: 'az online vásárlók közül nem tér vissza egy rossz vásárlási élmény után', colorFrom: '#ff5c35', colorTo: '#ff5c35', suffix: '%' },
+    { value: 75, label: 'a felhasználóknak a weboldal alapján ítéli meg a cég hitelességét', colorFrom: '#ff5c35', colorTo: '#ff5c35', suffix: '%' },
+    { value: 61, label: 'a felhasználók elhagyják a mobilos felületen rosszul működő oldalt', colorFrom: '#ff5c35', colorTo: '#ff5c35', suffix: '%' },
+    { value: 8, label: 'felhasználó abbahagyja a böngészést, ha az oldal nem jelenik meg megfelelően', colorFrom: '#ff5c35', colorTo: '#ff5c35', suffix: '/10' },
+    { value: 94, label: 'a negatív visszajelzéseknek a weboldal dizájnjával kapcsolatosak', colorFrom: '#ff5c35', colorTo: '#ff5c35', suffix: '%' },
 ];
 
 export const techStack = [

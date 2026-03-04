@@ -285,7 +285,7 @@ const ContactSection = () => {
                                     type="submit"
                                     disabled={isLoading || !formState.privacyAccepted}
                                     className={`w-full py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 shadow-lg ${formState.privacyAccepted && !isLoading
-                                        ? 'bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] text-white hover:opacity-90 shadow-[#ff5c35]/20'
+                                        ? 'bg-[#ff5c35] text-white hover:opacity-90 shadow-[#ff5c35]/20'
                                         : 'bg-gray-700 text-gray-400 cursor-not-allowed'
                                         }`}
                                     whileHover={{ scale: isLoading || !formState.privacyAccepted ? 1 : 1.02 }}

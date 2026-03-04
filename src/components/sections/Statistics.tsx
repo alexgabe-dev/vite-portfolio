@@ -84,7 +84,7 @@ const Statistics = () => {
                 <div className="text-center mb-10 md:mb-16">
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6 leading-tight">
                         Miért fontos a
-                        <span className="bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"> weboldalad?</span>
+                        <span className="text-[#ff5c35]"> weboldalad?</span>
                     </h2>
                     <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
                         Sok kisvállalkozás alulértékeli a weboldalát, ami komoly üzleti lehetőségeket vesz el.
@@ -133,7 +133,7 @@ const Statistics = () => {
                                                     strokeLinecap="round"
                                                 />
                                             </svg>
-                                            <span className="absolute inset-0 flex items-center justify-center text-3xl font-extrabold text-[#ff8f35]">
+                                            <span className="absolute inset-0 flex items-center justify-center text-3xl font-extrabold text-[#ff5c35]">
                                                 <CountUp end={stat.value} duration={2.6} suffix={stat.suffix} />
                                             </span>
                                         </div>
@@ -189,7 +189,7 @@ const Statistics = () => {
                                                 strokeLinecap="round"
                                             />
                                         </svg>
-                                        <span className="absolute inset-0 flex items-center justify-center text-3xl font-bold leading-none tabular-nums text-[#ff8f35]">
+                                        <span className="absolute inset-0 flex items-center justify-center text-3xl font-bold leading-none tabular-nums text-[#ff5c35]">
                                             <CountUp end={stat.value} duration={2.6} suffix={stat.suffix} />
                                         </span>
                                     </div>
@@ -222,7 +222,7 @@ const Statistics = () => {
                                                 strokeLinecap="round"
                                             />
                                         </svg>
-                                        <span className="absolute inset-0 flex items-center justify-center text-3xl font-bold leading-none tabular-nums text-[#ff8f35]">
+                                        <span className="absolute inset-0 flex items-center justify-center text-3xl font-bold leading-none tabular-nums text-[#ff5c35]">
                                             <CountUp end={stat.value} duration={2.6} suffix={stat.suffix} />
                                         </span>
                                     </div>
@@ -236,7 +236,7 @@ const Statistics = () => {
                 <div className="text-center mt-12">
                     <h3 className="text-2xl md:text-4xl font-bold mb-5 leading-tight">
                         Több ezer weboldalt elemeztem,
-                        <span className="bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"> hogy veled ez ne történhessen meg.</span>
+                        <span className="text-[#ff5c35]"> hogy veled ez ne történhessen meg.</span>
                     </h3>
                     <a href="/kapcsolat" data-discover="true" className="inline-flex">
                         <motion.button
