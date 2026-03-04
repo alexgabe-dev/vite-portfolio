@@ -62,24 +62,21 @@ const Hero = () => {
                     <motion.div
                         className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8 md:mt-0"
                         variants={fadeInUp}>
-                        <Link to="/kapcsolat" state={{ fromFooter: true }}>
-                            <motion.button
-                                type="button"
-                                className="primary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4"
-                                whileHover={{ scale: 1.03 }}
-                                whileTap={{ scale: 0.95 }}>
+                        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
+                            <Link
+                                to="/kapcsolat"
+                                state={{ fromFooter: true }}
+                                className="primary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4">
                                 Ajánlatkérés
-                            </motion.button>
-                        </Link>
-                        <Link to="/szolgaltatasok">
-                            <motion.button
-                                type="button"
-                                className="secondary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}>
+                            </Link>
+                        </motion.div>
+                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <Link
+                                to="/szolgaltatasok"
+                                className="secondary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4">
                                 Szolgáltatásaim
-                            </motion.button>
-                        </Link>
+                            </Link>
+                        </motion.div>
                     </motion.div>
                 </motion.div>
                 <motion.div
