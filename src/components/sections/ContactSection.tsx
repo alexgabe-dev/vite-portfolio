@@ -17,30 +17,7 @@ const ContactSection = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const [userInfo, setUserInfo] = useState({
-        ip: '',
-        device: '',
-        browser: ''
-    });
-
     useEffect(() => {
-        // Collect device and browser information
-        const deviceInfo = {
-            device: `${navigator.platform} - ${navigator.userAgent.match(/\((.*?)\)/)?.[1] || 'Unknown'}`,
-            browser: `${navigator.userAgent.match(/(Chrome|Safari|Firefox|Edge|MSIE|Trident)\/[\d.]+/)?.[0] || 'Unknown'}`
-        };
-        setUserInfo(prev => ({ ...prev, ...deviceInfo }));
-
-        // Get IP address
-        fetch('https://api.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
-                setUserInfo(prev => ({ ...prev, ip: data.ip }));
-            })
-            .catch(error => {
-                console.error('Error fetching IP:', error);
-            });
-
         // Scroll to form on page load - Only if on the Contact page
         if (location.pathname === '/kapcsolat') {
             const timer = setTimeout(() => {
@@ -74,6 +51,24 @@ const ContactSection = () => {
         setError('');
 
         try {
+            const deviceInfo = {
+                device: `${navigator.platform} - ${navigator.userAgent.match(/\((.*?)\)/)?.[1] || 'Unknown'}`,
+                browser: `${navigator.userAgent.match(/(Chrome|Safari|Firefox|Edge|MSIE|Trident)\/[\d.]+/)?.[0] || 'Unknown'}`
+            };
+            let ip = '';
+            try {
+                const controller = new AbortController();
+                const timer = setTimeout(() => controller.abort(), 1500);
+                const ipResponse = await fetch('https://api.ipify.org?format=json', { signal: controller.signal });
+                clearTimeout(timer);
+                if (ipResponse.ok) {
+                    const ipData = await ipResponse.json();
+                    ip = ipData.ip || '';
+                }
+            } catch {
+                ip = '';
+            }
+
             const form = e.target as HTMLFormElement;
             const formData = new FormData(form);
 
@@ -82,9 +77,9 @@ const ContactSection = () => {
             formData.append('_replyto', formState.email);
 
             // Add user information
-            formData.append('ip_address', userInfo.ip);
-            formData.append('device_info', userInfo.device);
-            formData.append('browser_info', userInfo.browser);
+            formData.append('ip_address', ip);
+            formData.append('device_info', deviceInfo.device);
+            formData.append('browser_info', deviceInfo.browser);
 
             // Add source information
             formData.append('source', 'footer_form');

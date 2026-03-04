@@ -26,47 +26,6 @@ const Contact = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [activeSection, setActiveSection] = useState<'form' | 'map'>('form');
-  const [userInfo, setUserInfo] = useState({
-    ip: '',
-    device: '',
-    browser: ''
-  });
-
-  useEffect(() => {
-    // Collect device and browser information
-    const deviceInfo = {
-      device: `${navigator.platform} - ${navigator.userAgent.match(/\((.*?)\)/)?.[1] || 'Unknown'}`,
-      browser: `${navigator.userAgent.match(/(Chrome|Safari|Firefox|Edge|MSIE|Trident)\/[\d.]+/)?.[0] || 'Unknown'}`
-    };
-    setUserInfo(prev => ({ ...prev, ...deviceInfo }));
-
-    // Get IP address using HTTPS
-    const fetchIP = async () => {
-      try {
-        const response = await fetch('https://api.ipify.org?format=json', {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json'
-          },
-          // Add timeout to prevent hanging requests
-          signal: AbortSignal.timeout(5000)
-        });
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        setUserInfo(prev => ({ ...prev, ip: data.ip }));
-      } catch (error) {
-        console.warn('IP cím lekérése sikertelen:', error);
-        // Set a placeholder or null if IP fetch fails
-        setUserInfo(prev => ({ ...prev, ip: 'Nem elérhető' }));
-      }
-    };
-
-    fetchIP();
-  }, []);
 
   const fadeInUp = {
     initial: { y: 20, opacity: 0 },

@@ -43,6 +43,7 @@ const Navbar = () => {
             className="flex items-center"
             aria-label="Vizitor főoldal"
             title="Vizitor főoldal">
+            <span className="sr-only">Vizitor főoldal</span>
             <motion.svg 
               width="64" 
               height="64" 
