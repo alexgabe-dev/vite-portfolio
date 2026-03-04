@@ -16,15 +16,15 @@ body {
 }
 
 .primary-button {
-  @apply px-6 py-3 bg-[#ff5c35] text-white rounded-lg transition-all duration-200 hover:bg-[#ff5c35]/90;
+  @apply px-6 py-3 bg-[#d84a29] text-white rounded-lg font-semibold transition-all duration-200 hover:bg-[#c84324] min-h-[44px];
 }
 
 .secondary-button {
-  @apply px-6 py-3 border border-gray-600 text-white rounded-lg transition-all duration-200 hover:border-[#ff5c35]/50;
+  @apply px-6 py-3 border border-gray-600 text-white rounded-lg font-semibold transition-all duration-200 hover:border-[#ff5c35]/50 min-h-[44px];
 }
 
 .primary-button-mobile {
-  @apply px-6 py-3 bg-[#ff5c35] text-white rounded-lg transition-all duration-200 hover:bg-[#ff5c35]/90 text-center;
+  @apply px-6 py-3 bg-[#d84a29] text-white rounded-lg font-semibold transition-all duration-200 hover:bg-[#c84324] text-center min-h-[44px];
 }
 
 /* Blob Animation */
