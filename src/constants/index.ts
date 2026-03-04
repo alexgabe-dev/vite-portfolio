@@ -10,59 +10,54 @@ export const navigation = [
 
 export const packages = [
     {
-        title: "Starter Csomag",
-        price: "135.000 Ft",
+        title: "Lanuch Web Csomag",
+        price: "189.000 Ft",
         priceSuffix: "-tól",
         type: "Egyszeri díj",
         features: [
-            "Egyedi, modern dizájn",
-            "Reszponzív felület",
-            "Alap CMS integráció",
-            "Gyors oldalbetöltés & cache optimalizáció",
-            "Alap SEO optimalizáció",
-            "Kapcsolati űrlap",
-            "Ingyenes domain (1 év)",
-            "Ingyenes SSL tanúsítvány",
-            "1 hónap ingyenes karbantartás"
+            "1-4 oldalas modern, reszponzív weboldal",
+            "Kulcsoldalak felépítése (Főoldal, Rólunk, Szolgáltatások, Kapcsolat)",
+            "Technikai alap SEO beállítások",
+            "Kapcsolati űrlap és mérési események bekötése",
+            "Google Analytics 4 és Search Console integráció",
+            "Alap sebességoptimalizálás",
+            "Ingyenes SSL tanúsítvány és biztonsági alapbeállítás",
+            "1 hónap garanciális karbantartás"
         ],
         isPopular: false
     },
     {
-        title: "Business Csomag",
-        price: "200.000 Ft",
+        title: "Premium Web Csomag",
+        price: "329.000 Ft",
         priceSuffix: "-tól",
         type: "Egyszeri díj",
         features: [
-            "Minden a Starterből, plusz:",
-            "Többoldalas felépítés (10+ oldal)",
-            "Blog és híroldal integráció",
-            "Kiterjesztett SEO & kulcsszó kutatás",
-            "Social media integráció",
-            "Email hírlevél és automata feliratkozás",
-            "Google Analytics integráció",
-            "Galéria, portfólió és videó szekció",
-            "Prémium design elemek & grafikai illusztrációk",
-            "Egyedi süti banner",
-            "2 hónap ingyenes karbantartás"
+            "Minden a Rajt csomagból, plusz:",
+            "Legfeljebb 12 oldalas weboldal struktúra",
+            "Blog vagy tudástár modul",
+            "Haladó on-page SEO (meta, schema, belső linkelés)",
+            "Hírlevél-feliratkozás és automatizált e-mail indulás",
+            "Egyedi CTA blokkok és konverziós szekciók",
+            "Cookie banner és GDPR finomhangolás",
+            "Alap CRM vagy időpontfoglaló integráció",
+            "2 hónap garanciális karbantartás"
         ],
         isPopular: true
     },
     {
-        title: "Premium Csomag",
-        price: "350.000 Ft",
+        title: "Corporate Web Csomag",
+        price: "549.000 Ft",
         priceSuffix: "-tól",
         type: "Egyszeri díj",
         features: [
-            "Minden a Businessből, plusz:",
-            "Teljes e-commerce rendszer",
-            "Haladó SEO stratégiák & marketing támogatás",
-            "Többnyelvű weboldal kialakítása",
-            "Egyedi plugin és modul fejlesztés",
-            "Fejlett biztonsági megoldások",
-            "Haladó teljesítmény optimalizáció",
-            "CRM integráció & automatizált ügyfélkezelés",
-            "Ecommerce webshop megoldások",
-            "3 hónap ingyenes karbantartás"
+            "Minden a Növekedés csomagból, plusz:",
+            "Webshop vagy komplex szolgáltatói rendszer kialakítás",
+            "Többnyelvű működés és tartalomstruktúra",
+            "Fizetési és számlázási integrációk",
+            "Haladó technikai SEO és Core Web Vitals optimalizáció",
+            "Egyedi automatizmusok (ajánlatkérő, follow-up, lead kezelés)",
+            "Fejlett biztonsági és hozzáférés-kezelési megoldások",
+            "3 hónap garanciális karbantartás"
         ],
         isPopular: false
     }

@@ -1,14 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import {
-  Code, Paintbrush, Rocket, Cog, BarChart, Globe, Shield, 
-  Zap, MessageSquare, Search, Share2, Database, Laptop,
-  MonitorSmartphone, Sparkles, Coffee, Phone, Mail
+  BarChart,
+  ChevronDown,
+  Check,
+  Code,
+  Cog,
+  MessageSquare,
+  Rocket,
+  Search,
+  Share2,
+  Shield,
+  Zap
 } from 'lucide-react';
 import ProgressBar from './ProgressBar';
 
 interface Service {
   id: string;
+  shortTitle: string;
   title: string;
   description: string;
   icon: React.ElementType;
@@ -17,117 +26,134 @@ interface Service {
   technologies?: string[];
 }
 
-const Services = () => {
-  const [activeService, setActiveService] = useState<string | null>(null);
-  const [coffeeCount, setCoffeeCount] = useState(0);
-  const [showEasterEgg, setShowEasterEgg] = useState(false);
+const services: Service[] = [
+  {
+    id: 'webdev',
+    shortTitle: 'Webfejlesztés',
+    title: 'Webfejlesztés és Weboldalkészítés',
+    description:
+      'Modern, gyors és konverzióra épített weboldalak tervezése és fejlesztése, amelyek minden eszközön profi élményt nyújtanak.',
+    icon: Code,
+    features: [
+      'Egyedi dizájn tervezés és kivitelezés',
+      'WordPress és egyedi fejlesztés',
+      'Mobilbarát, reszponzív kialakítás',
+      'Modern UI/UX megoldások',
+      'Teljes körű webfejlesztés',
+      'E-commerce megoldások'
+    ],
+    benefits: [
+      'Egyedi arculat és üzenet kiemelése',
+      'Professzionális, modern megjelenés',
+      'Kiváló felhasználói élmény minden eszközön',
+      'Gyors betöltési idő',
+      'SEO-barát struktúra'
+    ],
+    technologies: ['React', 'Next.js', 'WordPress', 'WooCommerce', 'TailwindCSS', 'TypeScript']
+  },
+  {
+    id: 'marketing',
+    shortTitle: 'Marketing',
+    title: 'Digitális Marketing',
+    description:
+      'Átgondolt marketing stratégiák és kampánykezelés, amelyek mérhetően növelik az elérést, érdeklődőszámot és bevételt.',
+    icon: BarChart,
+    features: [
+      'PPC kampánykezelés',
+      'Social Media Marketing kampányok',
+      'Tartalommarketing stratégia',
+      'Email marketing kampányok',
+      'Remarketing megoldások',
+      'Konverzió optimalizálás'
+    ],
+    benefits: [
+      'Növekvő online láthatóság',
+      'Célzott ügyfélszerzés',
+      'Mérhető eredmények',
+      'Magasabb konverziós ráta',
+      'Erősebb márkaismertség'
+    ],
+    technologies: ['Google Ads', 'Facebook Ads', 'Instagram', 'LinkedIn', 'Google Analytics', 'Meta Business Suite']
+  },
+  {
+    id: 'seo',
+    shortTitle: 'SEO',
+    title: 'Keresőoptimalizálás (SEO)',
+    description:
+      'Technikai és tartalmi SEO folyamatok, amelyek segítenek jobb helyezéseket és stabil, organikus forgalmat elérni.',
+    icon: Search,
+    features: [
+      'Technikai SEO elemzés és optimalizálás',
+      'On-page és Off-page SEO',
+      'Kulcsszókutatás és optimalizálás',
+      'Tartalom SEO',
+      'Linképítési stratégiák',
+      'Teljesítmény monitoring'
+    ],
+    benefits: [
+      'Jobb keresési pozíciók',
+      'Növekvő organikus forgalom',
+      'Minőségi látogatók',
+      'Hosszú távú eredmények',
+      'Költséghatékony megoldás'
+    ],
+    technologies: ['SEMrush', 'Ahrefs', 'Google Search Console', 'Google Analytics', 'Screaming Frog', 'Moz Pro']
+  },
+  {
+    id: 'maintenance',
+    shortTitle: 'Karbantartás',
+    title: 'Weboldal Karbantartás',
+    description:
+      'Folyamatos felügyelet, biztonsági frissítések és teljesítmény-optimalizálás a stabil, üzembiztos működésért.',
+    icon: Cog,
+    features: [
+      'Rendszeres szoftverfrissítések',
+      'Biztonsági mentések készítése',
+      'Teljesítmény optimalizálás',
+      'Biztonsági monitoring',
+      'Hibajavítás és támogatás',
+      '24/7 felügyelet'
+    ],
+    benefits: [
+      'Biztonságos működés',
+      'Gyors betöltési idő',
+      'Minimális állásidő',
+      'Naprakész rendszerek',
+      'Folyamatos támogatás'
+    ],
+    technologies: ['CloudFlare', 'WP Engine', 'Sucuri', 'Google PageSpeed', 'GTmetrix', 'Uptime Robot']
+  }
+];
 
-  const handleCoffeeClick = () => {
-    setCoffeeCount(prev => prev + 1);
-    if (coffeeCount + 1 === 5) {
-      setShowEasterEgg(true);
-      setTimeout(() => setShowEasterEgg(false), 3000);
-    }
+const Services = () => {
+  const [openServiceId, setOpenServiceId] = useState<string>('');
+  const headerRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+
+  const scrollToTarget = (target: HTMLElement | null) => {
+    if (!target) return;
+    const y = window.scrollY + target.getBoundingClientRect().top - 96;
+    window.scrollTo({ top: Math.max(y, 0), behavior: 'smooth' });
   };
 
-  const services: Service[] = [
-    {
-      id: 'webdev',
-      title: 'Webfejlesztés és Weboldalkészítés',
-      description: 'Kreatív és egyedi webfejlesztési szolgáltatásaink keretében olyan weboldalakat készítünk, amelyek a legújabb webdesign trendeket, a reszponzív kialakítást és a modern UI/UX megoldásokat ötvözik.',
-      icon: Code,
-      features: [
-        'Egyedi dizájn tervezés és kivitelezés',
-        'WordPress és egyedi fejlesztés',
-        'Mobilbarát, reszponzív kialakítás',
-        'Modern UI/UX megoldások',
-        'Teljes körű webfejlesztés',
-        'E-commerce megoldások'
-      ],
-      benefits: [
-        'Egyedi arculat és üzenet kiemelése',
-        'Professzionális, modern megjelenés',
-        'Kiváló felhasználói élmény minden eszközön',
-        'Gyors betöltési idő',
-        'SEO-barát struktúra'
-      ],
-      technologies: ['React', 'Next.js', 'WordPress', 'WooCommerce', 'TailwindCSS', 'TypeScript']
-    },
-    {
-      id: 'marketing',
-      title: 'Digitális Marketing',
-      description: 'Digitális marketing szolgáltatásaink segítségével növelheti márkája online láthatóságát, ügyfélkörét és bevételeit. Átfogó megoldásaink között megtalálhatóak a PPC kampányok, social media marketing, tartalommarketing és remarketing stratégiák is.',
-      icon: BarChart,
-      features: [
-        'PPC Express, Pro és Elite csomagok',
-        'Social Media Marketing kampányok',
-        'Tartalommarketing stratégia',
-        'Email marketing kampányok',
-        'Remarketing megoldások',
-        'Konverzió optimalizálás'
-      ],
-      benefits: [
-        'Növekvő online láthatóság',
-        'Célzott ügyfélszerzés',
-        'Mérhető eredmények',
-        'Magasabb konverziós ráta',
-        'Erősebb márkaismertség',
+  const handleToggleService = (serviceId: string) => {
+    const isClosing = openServiceId === serviceId;
 
-      ],
-      technologies: ['Google Ads', 'Facebook Ads', 'Instagram', 'LinkedIn', 'Google Analytics', 'Meta Business Suite']
-    },
-    {
-      id: 'seo',
-      title: 'Keresőoptimalizálás (SEO)',
-      description: 'A keresőoptimalizálás az online siker egyik alappillére. SEO szakértőink átfogó stratégiát dolgoznak ki, hogy weboldala a Google keresőoptimalizálás és a kulcsszavak optimalizálása révén az első találatok között szerepeljen.',
-      icon: Search,
-      features: [
-        'Technikai SEO elemzés és optimalizálás',
-        'On-page és Off-page SEO',
-        'Kulcsszókutatás és optimalizálás',
-        'Tartalom SEO',
-        'Linképítési stratégiák',
-        'Teljesítmény monitoring',
-        'Backlink elemzés',
-        'On-site SEO',
-        'Off-site SEO'
-      ],
-      benefits: [
-        'Jobb keresési pozíciók',
-        'Növekvő organikus forgalom',
-        'Minőségi látogatók',
-        'Hosszú távú eredmények',
-        'Költséghatékony megoldás'
-      ],
-      technologies: ['SEMrush', 'Ahrefs', 'Google Search Console', 'Google Analytics', 'Screaming Frog', 'Moz Pro']
-    },
-    {
-      id: 'maintenance',
-      title: 'Weboldal Karbantartás',
-      description: 'A professzionális weboldal karbantartás elengedhetetlen a zavartalan működés és a biztonságos online jelenlét érdekében. Szolgáltatásunk biztosítja weboldala folyamatos és biztonságos működését.',
-      icon: Cog,
-      features: [
-        'Rendszeres szoftverfrissítések',
-        'Biztonsági mentések készítése',
-        'Teljesítmény optimalizálás',
-        'Biztonsági monitoring',
-        'Hibajavítás és támogatás',
-        '24/7 felügyelet'
-      ],
-      benefits: [
-        'Biztonságos működés',
-        'Gyors betöltési idő',
-        'Minimális állásidő',
-        'Naprakész rendszerek',
-        'Folyamatos támogatás'
-      ],
-      technologies: ['CloudFlare', 'WP Engine', 'Sucuri', 'Google PageSpeed', 'GTmetrix', 'Uptime Robot']
+    if (isClosing) {
+      setOpenServiceId('');
+      requestAnimationFrame(() => {
+        scrollToTarget(headerRefs.current[serviceId]);
+      });
+      return;
     }
-  ];
+
+    setOpenServiceId(serviceId);
+    setTimeout(() => {
+      scrollToTarget(headerRefs.current[serviceId]);
+    }, 220);
+  };
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white py-24 relative overflow-hidden">
-      {/* Modern Background Effect */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#ff5c35] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob"></div>
         <div className="absolute top-[20%] right-0 w-[500px] h-[500px] bg-[#ff8f35] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
@@ -136,139 +162,125 @@ const Services = () => {
 
       <ProgressBar />
 
-      {/* Easter Egg */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: showEasterEgg ? 1 : 0, y: showEasterEgg ? 0 : 20 }}
-        className="fixed bottom-4 right-4 bg-[#ff5c35] text-white p-4 rounded-lg shadow-lg z-50">
-        <p className="text-sm font-medium">☕️ Kávészünet! Megérdemled!</p>
-      </motion.div>
-
-      {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <motion.div 
-          className="text-center mb-16"
+        <motion.div
+          className="text-center mb-10 md:mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}>
-          <h1 className="text-5xl font-bold mb-6">
-            Szolgáltatásaink
-          </h1>
-          <p className="text-gray-400 text-lg max-w-3xl mx-auto mb-8">
-            Fedezd fel átfogó szolgáltatásaimat, amelyek segítenek vállalkozásod digitális növekedésében. Modern megoldásaim révén versenyelőnyhöz juthatsz az online térben.
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 md:mb-6">Szolgáltatásaink</h1>
+          <p className="text-gray-400 text-base md:text-lg max-w-3xl mx-auto mb-6 md:mb-8">
+            Válassz területet, és nézd meg gyorsan, mit kapsz, milyen eredményt várhatsz, és milyen technológiával dolgozom.
           </p>
           <div className="w-24 h-1 bg-[#ff5c35] mx-auto"></div>
         </motion.div>
 
-        {/* Services Grid */}
-        <div className="grid md:grid-cols-2 gap-6 sm:gap-4 mb-12 sm:mb-8">
-          {services.map((service, index) => {
+        <div className="space-y-4 mb-12">
+          {services.map((service) => {
             const Icon = service.icon;
+            const isOpen = openServiceId === service.id;
+
             return (
-              <motion.div
+              <motion.article
                 key={service.id}
-                className={`bg-[#1a1a2e]/80 backdrop-blur-sm p-8 sm:p-4 rounded-2xl border transition-all cursor-pointer ${
-                  activeService === service.id
-                    ? 'border-[#ff5c35] shadow-lg shadow-[#ff5c35]/20'
-                    : 'border-gray-800/50 hover:border-[#ff5c35]/30'
+                className={`bg-[#1a1a2e]/85 backdrop-blur-sm rounded-2xl border transition-all ${
+                  isOpen ? 'border-[#ff5c35]/50 shadow-lg shadow-[#ff5c35]/15' : 'border-gray-800/60'
                 }`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                onClick={() => setActiveService(activeService === service.id ? null : service.id)}
-                whileHover={{ y: -5 }}>
-                <div className="flex items-start space-x-4 sm:space-x-2">
-                  <div className="p-3 sm:p-2 bg-[#ff5c35]/20 rounded-xl">
-                    <Icon className="w-6 h-6 sm:w-5 sm:h-5 text-[#ff5c35]" />
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}>
+                <button
+                  type="button"
+                  ref={(el) => {
+                    headerRefs.current[service.id] = el;
+                  }}
+                  onClick={() => handleToggleService(service.id)}
+                  className="w-full text-left p-5 md:p-6">
+                  <div className="flex items-start gap-4">
+                    <div className={`p-3 rounded-xl ${isOpen ? 'bg-[#ff5c35]/20' : 'bg-[#ff5c35]/10'}`}>
+                      <Icon className={`w-6 h-6 ${isOpen ? 'text-[#ff8f35]' : 'text-[#ff6f45]'}`} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h2 className="text-2xl md:text-3xl font-bold mb-1">{service.title}</h2>
+                      <p className="text-gray-400 text-sm md:text-base pr-4">{service.description}</p>
+                    </div>
+                    <ChevronDown
+                      className={`w-6 h-6 mt-1 text-gray-300 transition-transform duration-300 ${
+                        isOpen ? 'rotate-180 text-[#ff8f35]' : ''
+                      }`}
+                    />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-2xl sm:text-lg font-bold mb-2 sm:mb-1">{service.title}</h3>
-                    <p className="text-gray-400 mb-4 sm:mb-2 text-base sm:text-sm">{service.description}</p>
-                    
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ 
-                        height: activeService === service.id ? 'auto' : 0,
-                        opacity: activeService === service.id ? 1 : 0
-                      }}
-                      className="overflow-hidden">
-                      <div className="grid md:grid-cols-2 grid-cols-1 gap-6 sm:gap-3 mt-6 sm:mt-3">
-                        <div>
-                          <h4 className="font-semibold text-[#ff5c35] mb-3 sm:mb-1 text-base sm:text-sm">Szolgáltatásaim</h4>
-                          <ul className="space-y-2 sm:space-y-1">
-                            {service.features.map((feature, idx) => (
-                              <motion.li
-                                key={idx}
-                                className="flex items-start text-gray-300 text-sm sm:text-xs"
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: idx * 0.1 }}>
-                                <Sparkles className="w-5 h-5 sm:w-4 sm:h-4 text-[#ff5c35] mt-1 mr-2 flex-shrink-0" />
-                                <span>{feature}</span>
-                              </motion.li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-[#ff5c35] mb-3 sm:mb-1 text-base sm:text-sm">Előnyök</h4>
-                          <ul className="space-y-2 sm:space-y-1">
-                            {service.benefits.map((benefit, idx) => (
-                              <motion.li
-                                key={idx}
-                                className="flex items-start text-gray-300 text-sm sm:text-xs"
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: idx * 0.1 }}>
-                                <Rocket className="w-5 h-5 sm:w-4 sm:h-4 text-[#ff5c35] mt-1 mr-2 flex-shrink-0" />
-                                <span>{benefit}</span>
-                              </motion.li>
-                            ))}
-                          </ul>
-                        </div>
+                </button>
+
+                <motion.div
+                  initial={false}
+                  animate={{
+                    height: isOpen ? 'auto' : 0,
+                    opacity: isOpen ? 1 : 0
+                  }}
+                  transition={{ duration: 0.28 }}
+                  className="overflow-hidden">
+                  <div className="px-5 pb-6 md:px-6 md:pb-7 border-t border-white/5">
+                    <div className="grid md:grid-cols-2 gap-6 md:gap-8 pt-5">
+                      <div>
+                        <h3 className="font-semibold text-[#ff8f35] mb-3">Mit tartalmaz?</h3>
+                        <ul className="space-y-2.5">
+                          {service.features.map((feature, idx) => (
+                            <li key={idx} className="flex items-start text-gray-200 text-sm md:text-base">
+                              <Check className="w-4 h-4 text-[#ff8f35] mt-1 mr-2.5 flex-shrink-0" />
+                              <span>{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
-                      
-                      {service.technologies && (
-                        <div className="mt-6 sm:mt-3">
-                          <h4 className="font-semibold text-[#ff5c35] mb-3 sm:mb-1 text-base sm:text-sm">Technológiák</h4>
-                          <div className="flex flex-wrap gap-2 sm:gap-1">
-                            {service.technologies.map((tech, idx) => (
-                              <motion.span
-                                key={idx}
-                                className="px-3 py-1 sm:px-2 sm:py-0.5 bg-[#ff5c35]/10 text-[#ff5c35] rounded-full text-sm sm:text-xs"
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: idx * 0.1 }}>
-                                {tech}
-                              </motion.span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </motion.div>
+
+                      <div>
+                        <h3 className="font-semibold text-[#ff8f35] mb-3">Üzleti előnyök</h3>
+                        <ul className="space-y-2.5 mb-6">
+                          {service.benefits.map((benefit, idx) => (
+                            <li key={idx} className="flex items-start text-gray-200 text-sm md:text-base">
+                              <Rocket className="w-4 h-4 text-[#ff8f35] mt-1 mr-2.5 flex-shrink-0" />
+                              <span>{benefit}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        {!!service.technologies?.length && (
+                          <>
+                            <h3 className="font-semibold text-[#ff8f35] mb-3">Technológiák</h3>
+                            <div className="flex flex-wrap gap-2">
+                              {service.technologies.map((tech, idx) => (
+                                <span
+                                  key={idx}
+                                  className="px-3 py-1 bg-[#ff8f35]/10 text-[#ffb17a] rounded-full text-xs md:text-sm">
+                                  {tech}
+                                </span>
+                              ))}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </motion.article>
             );
           })}
         </div>
 
-        {/* Why Choose Us Section */}
         <motion.div
-          className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 sm:p-4 rounded-2xl border border-gray-800/50 mb-12 sm:mb-8"
+          className="bg-[#1a1a2e]/80 backdrop-blur-sm p-6 md:p-8 rounded-2xl border border-gray-800/50 mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}>
-          <h2 className="text-3xl sm:text-xl font-bold mb-6 sm:mb-3 text-center">Miért válassz engem?</h2>
-          <div className="grid md:grid-cols-2 grid-cols-1 gap-8 sm:gap-4">
-            <div className="space-y-4 sm:space-y-2">
+          transition={{ delay: 0.2 }}>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Miért válassz engem?</h2>
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+            <div className="space-y-4">
               <div className="flex items-start space-x-3">
                 <div className="p-2 bg-[#ff5c35]/20 rounded-lg">
                   <Shield className="w-5 h-5 text-[#ff5c35]" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Professzionális megoldások</h3>
-                  <p className="text-gray-400">A legmodernebb technológiákat alkalmazzom.</p>
+                  <h3 className="font-semibold mb-1">Professzionális megoldások</h3>
+                  <p className="text-gray-400 text-sm md:text-base">A legmodernebb technológiákat alkalmazom.</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
@@ -276,19 +288,19 @@ const Services = () => {
                   <Zap className="w-5 h-5 text-[#ff5c35]" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Teljes körű szolgáltatás</h3>
-                  <p className="text-gray-400">Minden digitális megoldást egy helyen kínálok.</p>
+                  <h3 className="font-semibold mb-1">Teljes körű szolgáltatás</h3>
+                  <p className="text-gray-400 text-sm md:text-base">Minden digitális megoldást egy helyen kínálok.</p>
                 </div>
               </div>
             </div>
-            <div className="space-y-4 sm:space-y-2">
+            <div className="space-y-4">
               <div className="flex items-start space-x-3">
                 <div className="p-2 bg-[#ff5c35]/20 rounded-lg">
                   <MessageSquare className="w-5 h-5 text-[#ff5c35]" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Átlátható kommunikáció</h3>
-                  <p className="text-gray-400">Folyamatos támogatás és gyors válaszidő minden kérdésre.</p>
+                  <h3 className="font-semibold mb-1">Átlátható kommunikáció</h3>
+                  <p className="text-gray-400 text-sm md:text-base">Folyamatos támogatás és gyors válaszidő minden kérdésre.</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
@@ -296,30 +308,29 @@ const Services = () => {
                   <Share2 className="w-5 h-5 text-[#ff5c35]" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Egyedi megközelítés</h3>
-                  <p className="text-gray-400">Személyre szabott megoldások az igényeid szerint.</p>
+                  <h3 className="font-semibold mb-1">Egyedi megközelítés</h3>
+                  <p className="text-gray-400 text-sm md:text-base">Személyre szabott megoldások az igényeid szerint.</p>
                 </div>
               </div>
             </div>
           </div>
         </motion.div>
 
-        {/* CTA Section */}
         <motion.div
-          className="bg-[#1a1a2e]/80 backdrop-blur-sm p-8 sm:p-4 rounded-2xl border border-gray-800/50 text-center"
+          className="bg-[#1a1a2e]/80 backdrop-blur-sm p-6 md:p-8 rounded-2xl border border-gray-800/50 text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}>
-          <h2 className="text-3xl sm:text-xl font-bold mb-4 sm:mb-2">Kezdjük el a közös munkát!</h2>
-          <p className="text-gray-400 mb-8 sm:mb-4 max-w-2xl mx-auto text-base sm:text-sm">
-            Ne várj tovább, kezdd el a digitális sikert még ma! Kérj személyre szabott INGYENES árajánlatot szolgáltatásaimra!
+          transition={{ delay: 0.3 }}>
+          <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">Kezdjük el a közös munkát!</h2>
+          <p className="text-gray-400 mb-6 md:mb-8 max-w-2xl mx-auto text-sm md:text-base">
+            Kérj személyre szabott, ingyenes árajánlatot, és megmutatom, melyik irány hozza a legjobb eredményt a vállalkozásodnak.
           </p>
           <motion.a
             href="/kapcsolat"
-            className="inline-flex items-center px-8 py-4 sm:px-5 sm:py-2 bg-[#ff5c35] text-white rounded-lg font-semibold text-lg sm:text-base hover:bg-[#ff5c35]/90 transition-colors shadow-lg shadow-[#ff5c35]/20"
+            className="inline-flex items-center px-7 py-3 md:px-8 md:py-4 bg-[#ff5c35] text-white rounded-lg font-semibold text-base md:text-lg hover:bg-[#ff5c35]/90 transition-colors shadow-lg shadow-[#ff5c35]/20"
             whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(255, 92, 53, 0.3)' }}
             whileTap={{ scale: 0.98 }}>
-            <Rocket className="w-6 h-6 sm:w-5 sm:h-5 mr-2" />
+            <Rocket className="w-5 h-5 md:w-6 md:h-6 mr-2" />
             Ajánlatkérés
           </motion.a>
         </motion.div>
@@ -328,4 +339,4 @@ const Services = () => {
   );
 };
 
-export default Services; 
+export default Services;
