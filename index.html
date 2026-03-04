@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="hu">
   <head>
+    <!-- Start cookieyes banner -->
+    <script
+      id="cookieyes"
+      type="text/javascript"
+      src="https://cdn-cookieyes.com/client_data/64ceae5ed2ab25cfc6922673/script.js"></script>
+    <!-- End cookieyes banner -->
     <meta charset="UTF-8" />
     <!-- Preconnect to important origins -->
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
@@ -12,34 +18,6 @@
 
     <!-- Content Security Policy -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://safeframe.googlesyndication.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn-cookieyes.com https://*.cdn-cookieyes.com https://cdn-cookieyes.com/client_data/64ceae5ed2ab25cfc6922673/ https://cdn-cookieyes.com/client_data/64ceae5ed2ab25cfc6922673/script.js https://cdn-cookieyes.com/client_data/64ceae5ed2ab25cfc6922673/*.js https://vizitor.hu https://*.googlesyndication.com https://*.doubleclick.net https://doubleclick.net https://www.google.com https://region1.google-analytics.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://www.googletagmanager.com data: 'unsafe-hashes'; img-src 'self' data: https: https://www.google-analytics.com https://*.doubleclick.net https://doubleclick.net https://www.google.com; font-src 'self' data: https: https://fonts.gstatic.com; connect-src 'self' https: ws: wss: https://www.google-analytics.com https://region1.google-analytics.com https://cdn-cookieyes.com https://*.cdn-cookieyes.com https://*.doubleclick.net https://doubleclick.net https://www.google.com; worker-src 'self' blob:; frame-src 'self' https://safeframe.googlesyndication.com https://*.googlesyndication.com https://www.googletagmanager.com https://cdn-cookieyes.com https://*.cdn-cookieyes.com https://vizitor.hu https://*.doubleclick.net https://doubleclick.net https://www.google.com; object-src 'none';">
-    
-     <!-- Google Tag Manager -->
-     <script defer>
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-KGN8CMBL');
-    </script>
-    <!-- End Google Tag Manager -->
-
-    <!-- CookieYes Cookie Consent -->
-    <script defer src="https://cdn-cookieyes.com/client_data/64ceae5ed2ab25cfc6922673/script.js"></script>
-    <!-- End CookieYes Cookie Consent -->
-
-    <!-- Google Analytics -->
-    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-6XTDE9Y48B"></script>
-    <script defer>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-6XTDE9Y48B', {
-        'anonymize_ip': true,
-        'cookie_flags': 'SameSite=None;Secure',
-        'debug_mode': false
-      });
-    </script>
-
     
 
     <!-- SEO - Canonical URL -->
@@ -113,10 +91,7 @@
    
 
     <!-- Font preloading -->
-    <link rel="preconnect" href="/fonts" crossorigin>
-<link rel="preload" href="/fonts/Inter_18pt-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous" fetchpriority="high">
-    <link rel="preload" href="/src/index.css" as="style">
-    <link rel="preload" href="/src/App.css" as="style">
+    <link rel="preload" href="/fonts/Inter_18pt-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous" fetchpriority="high">
     
     <!-- Critical CSS for text -->
     <style>
@@ -178,29 +153,75 @@
     <!-- End Google Tag Manager (noscript) -->
 
     <!-- Skip to main content link for keyboard users -->
-    <a href="#main-content" class="skip-link" style="position: absolute; left: -9999px; z-index: 999; padding: 1em; background: white; text-decoration: none;" tabindex="0">
+    <a href="#root" class="skip-link" style="position: absolute; left: -9999px; z-index: 999; padding: 1em; background: white; text-decoration: none;" tabindex="0">
       Ugrás a fő tartalomhoz
     </a>
 
-    <div id="root" role="application" aria-label="Vizitor webfejlesztés és marketing">
-      <div class="loading-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:white;display:flex;align-items:center;justify-content:center;z-index:9999;">
-        <div class="loader" style="border:4px solid #f3f3f3;border-top:4px solid #ff5c35;border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;"></div>
-      </div>
-      <main id="main-content" role="main" tabindex="-1">
-        <!-- A fő tartalom ide kerül -->
-      </main>
-    </div>
+    <div id="root"></div>
 
     <style>/* Kritikus CSS */
 body{font-family:Inter,sans-serif;line-height:1.6;color:#fff}.text-lg{font-size:1.125rem}.mb-6{margin-bottom:1.5rem}.text-gray-400{color:#9ca3af}.max-w-lg{max-width:32rem}.leading-\[1\.8\]{line-height:1.8}</style>
-<link rel="preload" href="/src/index.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/src/index.css"></noscript>
     <script type="module" src="/src/main.tsx"></script>
 
     <!-- Accessibility announcement for screen readers -->
     <div role="status" aria-live="polite" id="screen-reader-announcements" class="sr-only"></div>
 
     <script>
+      // Load third-party scripts only after interaction or fallback timeout.
+      (function () {
+        var loaded = false;
+
+        function loadScript(src, done) {
+          var s = document.createElement('script');
+          s.src = src;
+          s.async = true;
+          s.onload = done || null;
+          s.onerror = function () {};
+          document.head.appendChild(s);
+        }
+
+        function loadThirdParties() {
+          if (loaded) return;
+          loaded = true;
+
+          // GTM bootstrap
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+          loadScript('https://www.googletagmanager.com/gtm.js?id=GTM-KGN8CMBL');
+
+          // GA (deferred)
+          loadScript('https://www.googletagmanager.com/gtag/js?id=G-6XTDE9Y48B', function () {
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { window.dataLayer.push(arguments); }
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', 'G-6XTDE9Y48B', {
+              anonymize_ip: true,
+              cookie_flags: 'SameSite=None;Secure',
+              debug_mode: false
+            });
+          });
+        }
+
+        function initLazyThirdPartyLoad() {
+          loadThirdParties();
+          window.removeEventListener('pointerdown', initLazyThirdPartyLoad);
+          window.removeEventListener('keydown', initLazyThirdPartyLoad);
+          window.removeEventListener('touchstart', initLazyThirdPartyLoad);
+          window.removeEventListener('scroll', initLazyThirdPartyLoad);
+        }
+
+        window.addEventListener('pointerdown', initLazyThirdPartyLoad, { once: true, passive: true });
+        window.addEventListener('keydown', initLazyThirdPartyLoad, { once: true });
+        window.addEventListener('touchstart', initLazyThirdPartyLoad, { once: true, passive: true });
+        window.addEventListener('scroll', initLazyThirdPartyLoad, { once: true, passive: true });
+
+        // Fallback for no interaction
+        window.addEventListener('load', function () {
+          setTimeout(loadThirdParties, 6500);
+        }, { once: true });
+      })();
+
       // Keyboard navigation enhancement
       document.addEventListener('keydown', function(e) {
         // ESC key handler for modals and popups

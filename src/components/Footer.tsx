@@ -28,7 +28,7 @@ const Footer = () => {
                         <p className="text-gray-400">Modern megoldások a vállalkozásod számára!</p>
                     </motion.div>
                     <motion.div variants={fadeInUp}>
-                        <h4 className="font-semibold mb-4">Szolgáltatások</h4>
+                        <h3 className="font-semibold mb-4 text-base">Szolgáltatások</h3>
                         <ul className="space-y-2">
                             <motion.li whileHover={{ x: 5 }}>
                                 <Link to="/szolgaltatasok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Webfejlesztés</Link>
@@ -42,7 +42,7 @@ const Footer = () => {
                         </ul>
                     </motion.div>
                     <motion.div variants={fadeInUp}>
-                        <h4 className="font-semibold mb-4">Csomagok</h4>
+                        <h3 className="font-semibold mb-4 text-base">Csomagok</h3>
                         <ul className="space-y-2">
                             <motion.li whileHover={{ x: 5 }}>
                                 <Link to="/csomagok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Weboldalkészítés</Link>
@@ -56,7 +56,7 @@ const Footer = () => {
                         </ul>
                     </motion.div>
                     <motion.div variants={fadeInUp}>
-                        <h4 className="font-semibold mb-4">Továbbiak</h4>
+                        <h3 className="font-semibold mb-4 text-base">Továbbiak</h3>
                         <ul className="space-y-2">
                             <motion.li whileHover={{ x: 5 }}>
                                 <Link to="/kapcsolat" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Kapcsolatfelvétel</Link>

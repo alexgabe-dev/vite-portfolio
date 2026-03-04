@@ -56,7 +56,7 @@ const PackagesSection = () => {
                                     {pkg.price}
                                     <span className="text-lg font-normal text-gray-400 ml-1">{pkg.priceSuffix}</span>
                                 </div>
-                                <p className="text-gray-500 mt-2">{pkg.type}</p>
+                                <p className="text-gray-300 mt-2">{pkg.type}</p>
                             </div>
 
                             <ul className="space-y-3 text-gray-400 mb-8">
@@ -116,7 +116,7 @@ const PackagesSection = () => {
                                         {pkg.price}
                                         <span className="text-base font-normal text-gray-400 ml-1">{pkg.priceSuffix}</span>
                                     </div>
-                                    <p className="text-gray-500 mt-1 text-sm">{pkg.type}</p>
+                                    <p className="text-gray-300 mt-1 text-sm">{pkg.type}</p>
                                 </div>
 
                                 <ul className="space-y-2.5 text-gray-400 mb-6 text-sm">
@@ -139,15 +139,17 @@ const PackagesSection = () => {
                         ))}
                     </div>
 
-                    <div className="flex justify-center gap-2 mt-4">
+                    <div className="flex justify-center gap-1 mt-4">
                         {packages.map((_, idx) => (
                             <button
                                 key={idx}
                                 type="button"
                                 onClick={() => setCurrentPackage(idx)}
-                                className={`h-2.5 rounded-full transition-all ${currentPackage === idx ? 'w-6 bg-[#ff5c35]' : 'w-2.5 bg-white/25'}`}
+                                className="h-10 w-10 inline-flex items-center justify-center rounded-full"
                                 aria-label={`Ugrás a(z) ${idx + 1}. csomagra`}
-                            />
+                                aria-current={currentPackage === idx}>
+                                <span className={`h-2.5 rounded-full transition-all ${currentPackage === idx ? 'w-6 bg-[#ff5c35]' : 'w-2.5 bg-white/25'}`} />
+                            </button>
                         ))}
                     </div>
                 </div>

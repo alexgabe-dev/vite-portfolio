@@ -485,7 +485,7 @@ const Packages = () => {
               })}
             </div>
 
-            <div className="flex items-center justify-center gap-2 mt-4 mb-2">
+            <div className="flex items-center justify-center gap-1 mt-4 mb-2">
               {activePackages.map((_, index) => (
                 <button
                   key={`dot-${index}`}
@@ -497,11 +497,15 @@ const Packages = () => {
                     target?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                     setCurrentMobileCard(index);
                   }}
-                  className={`h-2.5 rounded-full transition-all ${
-                    currentMobileCard === index ? 'w-6 bg-[#ff5c35]' : 'w-2.5 bg-white/30'
-                  }`}
+                  className="h-10 w-10 inline-flex items-center justify-center rounded-full"
                   aria-label={`Ugrás a(z) ${index + 1}. csomagra`}
-                />
+                  aria-current={currentMobileCard === index}>
+                  <span
+                    className={`h-2.5 rounded-full transition-all ${
+                      currentMobileCard === index ? 'w-6 bg-[#ff5c35]' : 'w-2.5 bg-white/30'
+                    }`}
+                  />
+                </button>
               ))}
             </div>
             <p className="text-center text-xs text-gray-400">

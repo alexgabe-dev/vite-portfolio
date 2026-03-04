@@ -22,7 +22,7 @@ const Hero = () => {
                     src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=1200&q=80"
                     alt="Background"
                     className="absolute inset-0 w-full h-full object-cover opacity-10"
-                    loading="eager"
+                    loading="lazy" fetchpriority="low"
                     decoding="async"
                 />
             </div>
@@ -66,7 +66,7 @@ const Hero = () => {
                             <motion.button
                                 type="button"
                                 className="primary-button text-base sm:text-lg w-full sm:w-auto px-6 py-3 sm:py-4"
-                                whileHover={{ scale: 1.05, boxShadow: "0 0 8px rgb(255, 92, 53)" }}
+                                whileHover={{ scale: 1.03 }}
                                 whileTap={{ scale: 0.95 }}>
                                 Ajánlatkérés
                             </motion.button>
@@ -121,18 +121,11 @@ const Hero = () => {
                                     ? {
                                         scale: [1.5, 2, 0.5, 1],
                                         opacity: [1, 1, 0.8, 1],
-                                        rotate: [0, 180, 360, 0],
-                                        boxShadow: [
-                                            "0 0 20px rgba(255, 92, 53, 0.4)",
-                                            "0 0 40px rgba(255, 92, 53, 0.6)",
-                                            "0 0 60px rgba(255, 92, 53, 0.2)",
-                                            "0 0 20px rgba(255, 92, 53, 0.2)"
-                                        ]
+                                        rotate: [0, 180, 360, 0]
                                     }
                                     : {
                                         scale: 1 + (clickCount * 0.2),
-                                        y: [0, -20, 0],
-                                        boxShadow: `0 0 ${20 + (clickCount * 10)}px rgba(255, 92, 53, ${0.2 + (clickCount * 0.1)})`
+                                        y: [0, -20, 0]
                                     }
                             }
                             transition={
@@ -159,8 +152,7 @@ const Hero = () => {
                                 setClickCount(prev => (prev + 1) % 5);
                             }}
                             whileHover={{
-                                scale: 1 + (clickCount * 0.2) + 0.05,
-                                boxShadow: `0 0 ${25 + (clickCount * 10)}px rgba(255, 92, 53, ${0.3 + (clickCount * 0.1)})`
+                                scale: 1 + (clickCount * 0.2) + 0.05
                             }}
                         />
                     </div>

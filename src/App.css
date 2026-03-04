@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,8 +15,8 @@ body {
 
 @layer components {
   .primary-button {
-    @apply px-8 py-4 bg-[#ff5c35] text-white rounded-lg font-medium text-lg
-    transition-all duration-300 hover:shadow-lg hover:shadow-[#ff5c35]/20 
+    @apply px-8 py-4 bg-[#d84a29] text-white rounded-lg font-medium text-lg
+    transition-all duration-300 hover:shadow-lg hover:shadow-[#d84a29]/20 
     hover:scale-[1.02] active:scale-[0.98];
   }
 
@@ -86,7 +84,7 @@ input:focus, textarea:focus {
 
 /* Modern button styles */
 .primary-button {
-  background-color: #ff5c35;
+  background-color: #d84a29;
   color: white;
   border-radius: 6px;
   padding: 0.75rem 1.5rem;
@@ -98,10 +96,11 @@ input:focus, textarea:focus {
   justify-content: center;
   border: none;
   cursor: pointer;
+  min-height: 44px;
 }
 
 .primary-button:hover {
-  background-color: #e64d29;
+  background-color: #c84324;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(255, 92, 53, 0.25);
 }
@@ -124,6 +123,7 @@ input:focus, textarea:focus {
   justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
+  min-height: 44px;
 }
 
 .secondary-button:hover {
@@ -137,7 +137,7 @@ input:focus, textarea:focus {
 }
 
 .primary-button-mobile {
-  background-color: #ff5c35;
+  background-color: #d84a29;
   color: white;
   border-radius: 6px;
   padding: 0.75rem 1.5rem;
@@ -149,6 +149,7 @@ input:focus, textarea:focus {
   justify-content: center;
   border: none;
   cursor: pointer;
+  min-height: 44px;
 }
 
 /* Animations */
@@ -287,7 +288,7 @@ input:focus, textarea:focus, button:focus {
 
 .brand-quote-block {
   color: #ff5c35;
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-family: Inter, Arial, Helvetica, sans-serif;
   font-size: 3.2rem;
   width: 80vw;
   max-width: 900px;

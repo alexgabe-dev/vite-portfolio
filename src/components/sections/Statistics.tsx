@@ -16,28 +16,14 @@ const Statistics = () => {
 
     const cards = useMemo(() => stats, []);
 
-    const animateToIndex = (nextIndex: number, duration = 850) => {
+    const animateToIndex = (nextIndex: number) => {
         const slider = sliderRef.current;
         if (!slider) return;
         const firstCard = slider.querySelector('[data-stat-index="0"]') as HTMLElement | null;
         if (!firstCard) return;
 
         const cardWidth = firstCard.offsetWidth + 16;
-        const targetLeft = nextIndex * cardWidth;
-        const startLeft = slider.scrollLeft;
-        const delta = targetLeft - startLeft;
-        const startTime = performance.now();
-
-        const easeInOutCubic = (t: number) =>
-            t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-        const step = (now: number) => {
-            const progress = Math.min((now - startTime) / duration, 1);
-            slider.scrollLeft = startLeft + delta * easeInOutCubic(progress);
-            if (progress < 1) requestAnimationFrame(step);
-        };
-
-        requestAnimationFrame(step);
+        slider.scrollTo({ left: nextIndex * cardWidth, behavior: 'smooth' });
     };
 
     const pauseAutoPlay = () => {
@@ -63,7 +49,7 @@ const Statistics = () => {
             setActiveIndex(next);
             setTimeout(() => {
                 isProgrammaticScroll.current = false;
-            }, 900);
+            }, 700);
         }, 3000);
 
         return () => clearInterval(interval);
@@ -158,12 +144,25 @@ const Statistics = () => {
                         })}
                     </div>
 
-                    <div className="flex items-center justify-center gap-2 mt-4">
+                    <div className="flex items-center justify-center gap-1 mt-4">
                         {cards.map((_, idx) => (
-                            <span
+                            <button
                                 key={idx}
-                                className={`h-2.5 rounded-full ${activeIndex === idx ? 'w-6 bg-[#ff5c35]' : 'w-2.5 bg-white/25'}`}
-                            />
+                                type="button"
+                                onClick={() => {
+                                    pauseAutoPlay();
+                                    isProgrammaticScroll.current = true;
+                                    animateToIndex(idx);
+                                    setActiveIndex(idx);
+                                    setTimeout(() => {
+                                        isProgrammaticScroll.current = false;
+                                    }, 700);
+                                }}
+                                className="h-10 w-10 inline-flex items-center justify-center rounded-full"
+                                aria-label={`Ugrás a(z) ${idx + 1}. statisztikára`}
+                                aria-current={activeIndex === idx}>
+                                <span className={`h-2.5 rounded-full ${activeIndex === idx ? 'w-6 bg-[#ff5c35]' : 'w-2.5 bg-white/25'}`} />
+                            </button>
                         ))}
                     </div>
                 </div>
