@@ -36,7 +36,7 @@ const AnimatedText = () => {
     const initialDelay = setTimeout(() => {
       setIsTyping(true);
       setIsDeleting(true);
-    }, 2000);
+    }, 4500);
 
     return () => clearTimeout(initialDelay);
   }, []);

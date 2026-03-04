@@ -35,18 +35,12 @@ const Hero = () => {
                     className="will-change-transform">
                     <h1
                         className="text-3xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6 leading-tight">
-                        <motion.span
-                            className="md:block leading-[1.2] inline-block py-1"
-                            initial={{ opacity: 1, y: 0 }}
-                            animate={{ opacity: 1, y: 0 }}>
+                        <span className="md:block leading-[1.2] inline-block py-1">
                             Növekedés
-                        </motion.span>{' '}
-                        <motion.span
-                            className="md:block leading-[1.2] inline-block py-1"
-                            initial={{ opacity: 1, y: 0 }}
-                            animate={{ opacity: 1, y: 0 }}>
+                        </span>{' '}
+                        <span className="md:block leading-[1.2] inline-block py-1">
                             minden
-                        </motion.span>{' '}
+                        </span>{' '}
                         <AnimatedText />
                     </h1>
                     <motion.p

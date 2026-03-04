@@ -17,7 +17,7 @@ body {
 }
 
 .primary-button {
-  @apply px-6 py-3 bg-[#d84a29] text-white rounded-lg font-semibold transition-all duration-200 hover:bg-[#c84324] min-h-[44px];
+  @apply px-6 py-3 bg-[#b23a1e] text-white rounded-lg font-semibold transition-all duration-200 hover:bg-[#9e331a] min-h-[44px];
 }
 
 .secondary-button {
@@ -25,7 +25,7 @@ body {
 }
 
 .primary-button-mobile {
-  @apply px-6 py-3 bg-[#d84a29] text-white rounded-lg font-semibold transition-all duration-200 hover:bg-[#c84324] text-center min-h-[44px];
+  @apply px-6 py-3 bg-[#b23a1e] text-white rounded-lg font-semibold transition-all duration-200 hover:bg-[#9e331a] text-center min-h-[44px];
 }
 
 /* Blob Animation */
