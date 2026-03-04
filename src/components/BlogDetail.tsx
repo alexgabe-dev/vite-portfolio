@@ -356,7 +356,7 @@ const BlogDetail: React.FC = () => {
             {/* Trust Indicator */}
             <div className="text-center mt-8">
               <p className="text-gray-500 text-sm">
-                Csatlakozz <span className="text-white font-semibold">500+</span> feliratkozóhoz
+                Kérd <span className="text-white font-semibold">ajánlatodat</span> most!
               </p>
             </div>
           </div>
