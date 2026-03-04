@@ -12,7 +12,7 @@ import SEOProvider from './components/SEOProvider';
 import Footer from './components/Footer';
 
 // Route-level lazy loading to reduce initial JS on homepage.
-const Home = React.lazy(() => import('./pages/Home'));
+import Home from './pages/Home';
 const Packages = React.lazy(() => import('./components/Packages'));
 const About = React.lazy(() => import('./components/About'));
 const Contact = React.lazy(() => import('./components/Contact'));

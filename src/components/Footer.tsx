@@ -6,11 +6,7 @@ import { fadeInUp } from '../utils/animations';
 
 const Footer = () => {
     return (
-        <motion.footer
-            className="bg-[#0a0a0f] border-t border-gray-800/30 py-12 px-4 sm:px-6 lg:px-8"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}>
+        <footer className="bg-[#0a0a0f] border-t border-gray-800/30 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <div className="grid md:grid-cols-4 gap-8">
                     <motion.div variants={fadeInUp} className="flex flex-col items-start">
@@ -76,7 +72,7 @@ const Footer = () => {
                     © {new Date().getFullYear()} Vizitor.hu. Minden jog fenntartva.
                 </motion.div>
             </div>
-        </motion.footer>
+        </footer>
     );
 };
 

@@ -77,9 +77,9 @@ const AnimatedText = () => {
   }, [currentText, currentIndex, isDeleting, isTyping]);
 
   return (
-    <div className="relative h-[1.2em] overflow-hidden">
+    <div className="relative h-[1.2em] overflow-hidden inline-block align-baseline min-w-[16ch]">
       <motion.span
-        className="absolute left-0 text-[#ff5c35]"
+        className="absolute left-0 text-[#ff5c35] whitespace-nowrap"
         initial={{ opacity: 1 }} // Start fully visible
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
