@@ -80,7 +80,7 @@ const ServicesSection = () => {
                 </motion.div>
 
                 <motion.div
-                    className="grid md:grid-cols-3 gap-8"
+                    className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8"
                     variants={staggerChildren}
                     initial="initial"
                     whileInView="animate"
@@ -92,31 +92,24 @@ const ServicesSection = () => {
                             variants={fadeInUp}>
                             <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"
                                 style={{ background: `linear-gradient(to bottom right, ${service.color})` }}></div>
-                            <div className="relative bg-[#1a1a2e] p-8 rounded-xl border border-gray-800/50 group-hover:border-[#ff5c35]/30 transition-all duration-500">
-                                <div className="w-14 h-14 bg-gradient-to-br from-[#ff5c35]/20 to-[#ff5c35]/10 rounded-lg flex items-center justify-center mb-6 text-[#ff5c35] group-hover:scale-110 transition-transform duration-500">
+                            <div className="relative bg-[#1a1a2e] p-5 md:p-8 rounded-xl border border-gray-800/50 group-hover:border-[#ff5c35]/30 transition-all duration-500">
+                                <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-[#ff5c35]/20 to-[#ff5c35]/10 rounded-lg flex items-center justify-center mb-4 md:mb-6 text-[#ff5c35] group-hover:scale-110 transition-transform duration-500">
                                     {service.icon}
                                 </div>
-                                <h3 className="text-2xl font-bold mb-4 group-hover:text-[#ff5c35] transition-colors duration-300">
+                                <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 group-hover:text-[#ff5c35] transition-colors duration-300">
                                     {service.title}
                                 </h3>
-                                <p className="text-gray-400 mb-6 group-hover:text-gray-300 transition-colors duration-300">
+                                <p className="text-gray-400 mb-5 md:mb-6 text-sm md:text-base group-hover:text-gray-300 transition-colors duration-300">
                                     {service.description}
                                 </p>
                                 <ul className="space-y-3">
                                     {service.features.map((feature, idx) => (
-                                        <motion.li
+                                        <li
                                             key={idx}
-                                            className="flex items-center text-gray-400 group-hover:text-gray-300 cursor-pointer"
-                                            initial={{ opacity: 0, x: -10 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: 0.1 * idx }}
-                                            whileHover={{ x: 5 }}
-                                            onClick={() => {
-                                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                                            }}>
+                                            className="flex items-center text-gray-400 text-sm md:text-base group-hover:text-gray-300">
                                             <ChevronRight size={16} className="text-[#ff5c35] mr-2" />
                                             {feature}
-                                        </motion.li>
+                                        </li>
                                     ))}
                                 </ul>
                                 <Link

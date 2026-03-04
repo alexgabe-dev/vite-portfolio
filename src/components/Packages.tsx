@@ -252,84 +252,134 @@ const Packages = () => {
           </p>
         </motion.div>
 
-        {/* Category Selector */}
-        <motion.div 
-          className={`mb-8 md:mb-12 ${
-            isMobile ? 'grid grid-cols-3 gap-2' : 'flex flex-wrap justify-center gap-2 md:gap-4'
-          }`}
-          variants={fadeInUp}
-          initial="initial"
-          animate="animate">
-          {[
-            { id: 'web', name: 'Webfejlesztés', icon: LayoutTemplate },
-            { id: 'marketing', name: 'Marketing', icon: Megaphone },
-            { id: 'maintenance', name: 'Karbantartás', icon: ShieldCheck }
-          ].map((category) => (
-            (() => {
-              const CategoryIcon = category.icon;
-              return (
-            <motion.button
-              type="button"
-              key={category.id}
-              onClick={() => setActiveCategory(category.id)}
-              className={`${
-                isMobile ? 'px-2 py-2.5 text-[12px] leading-tight min-h-[46px]' : 'px-3 md:px-6 py-2.5 md:py-3'
-              } rounded-xl font-semibold transition-all md:text-base ${
-                activeCategory === category.id
-                  ? 'bg-[#ff5c35] text-white shadow-[0_8px_20px_rgba(255,92,53,0.3)]'
-                  : 'bg-[#1a1a2e] text-gray-300 hover:text-white border border-transparent hover:border-[#ff5c35]/30'
-              }`}
-              whileHover={!isMobile ? { scale: 1.05 } : undefined}
-              whileTap={{ scale: 0.97 }}
-              aria-label={`Switch to ${category.name} category`}
-              aria-pressed={activeCategory === category.id}>
-              {isMobile ? (
-                <span>{category.name}</span>
-              ) : (
-                <span className="inline-flex items-center gap-2">
-                  <CategoryIcon className="w-4 h-4" />
-                  {category.name}
-                </span>
-              )}
-            </motion.button>
-              );
-            })()
-          ))}
-        </motion.div>
-
-        {/* Billing Cycle Selector */}
-        {activeCategory !== 'web' && (
-          <motion.div 
-            className="flex justify-center mb-6"
+        {isMobile ? (
+          <motion.div
+            className="sticky top-16 z-20 mb-6 rounded-2xl border border-white/10 bg-[#111326]/90 backdrop-blur-xl p-3 shadow-[0_12px_28px_rgba(0,0,0,0.35)]"
             variants={fadeInUp}
             initial="initial"
             animate="animate">
-            <div className="w-full max-w-[420px] flex items-center justify-center gap-3 sm:gap-4 text-white">
-              <button
-                type="button"
-                onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'annually' : 'monthly')}
-                className="inline-flex items-center gap-3 sm:gap-4"
-                aria-label="Switch billing cycle"
-                aria-pressed={billingCycle === 'annually'}>
-                <span className={`text-lg font-medium transition-colors ${billingCycle === 'monthly' ? 'text-white' : 'text-gray-400'}`}>
-                  Havi
-                </span>
-                <span className="relative inline-flex w-[68px] h-[36px] bg-black rounded-full border border-white/15">
-                  <motion.span
-                    className="absolute top-[3px] left-[3px] w-[28px] h-[28px] rounded-full bg-white shadow-[0_3px_10px_rgba(0,0,0,0.35)]"
-                    animate={{ x: billingCycle === 'annually' ? 32 : 0 }}
-                    transition={{ type: 'spring', stiffness: 380, damping: 28 }}
-                  />
-                </span>
-                <span className={`text-lg font-medium transition-colors ${billingCycle === 'annually' ? 'text-white' : 'text-gray-400'}`}>
-                  Éves
-                </span>
-              </button>
-              <span className="text-xs sm:text-sm font-bold tracking-wide px-3 py-1.5 rounded-full bg-[#d35735] text-white whitespace-nowrap">
-                -20% MEGTAKARÍTÁS
-              </span>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { id: 'web', name: 'Webfejlesztés' },
+                { id: 'marketing', name: 'Marketing' },
+                { id: 'maintenance', name: 'Karbantartás' }
+              ].map((category) => (
+                <button
+                  type="button"
+                  key={category.id}
+                  onClick={() => setActiveCategory(category.id)}
+                  className={`px-2 py-2.5 text-[12px] leading-tight min-h-[44px] rounded-xl font-semibold transition-all ${
+                    activeCategory === category.id
+                      ? 'bg-[#ff5c35] text-white shadow-[0_8px_20px_rgba(255,92,53,0.3)]'
+                      : 'bg-[#1a1a2e] text-gray-300 border border-transparent'
+                  }`}
+                  aria-label={`Switch to ${category.name} category`}
+                  aria-pressed={activeCategory === category.id}>
+                  {category.name}
+                </button>
+              ))}
             </div>
+
+            {activeCategory !== 'web' && (
+              <div className="mt-3 flex items-center justify-between gap-2 text-white">
+                <button
+                  type="button"
+                  onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'annually' : 'monthly')}
+                  className="inline-flex items-center gap-2.5 min-w-0"
+                  aria-label="Switch billing cycle"
+                  aria-pressed={billingCycle === 'annually'}>
+                  <span className={`text-base font-medium transition-colors ${billingCycle === 'monthly' ? 'text-white' : 'text-gray-400'}`}>
+                    Havi
+                  </span>
+                  <span className="relative inline-flex w-[62px] h-[32px] bg-black rounded-full border border-white/15">
+                    <motion.span
+                      className="absolute top-[3px] left-[3px] w-[24px] h-[24px] rounded-full bg-white shadow-[0_3px_10px_rgba(0,0,0,0.35)]"
+                      animate={{ x: billingCycle === 'annually' ? 30 : 0 }}
+                      transition={{ type: 'spring', stiffness: 380, damping: 28 }}
+                    />
+                  </span>
+                  <span className={`text-base font-medium transition-colors ${billingCycle === 'annually' ? 'text-white' : 'text-gray-400'}`}>
+                    Éves
+                  </span>
+                </button>
+                <span className="shrink-0 text-[11px] font-bold tracking-wide px-2.5 py-1 rounded-full bg-[#d35735] text-white whitespace-nowrap">
+                  -20% MEGTAKARÍTÁS
+                </span>
+              </div>
+            )}
           </motion.div>
+        ) : (
+          <>
+            {/* Category Selector */}
+            <motion.div
+              className="mb-8 md:mb-12 flex flex-wrap justify-center gap-2 md:gap-4"
+              variants={fadeInUp}
+              initial="initial"
+              animate="animate">
+              {[
+                { id: 'web', name: 'Webfejlesztés', icon: LayoutTemplate },
+                { id: 'marketing', name: 'Marketing', icon: Megaphone },
+                { id: 'maintenance', name: 'Karbantartás', icon: ShieldCheck }
+              ].map((category) => {
+                const CategoryIcon = category.icon;
+                return (
+                  <motion.button
+                    type="button"
+                    key={category.id}
+                    onClick={() => setActiveCategory(category.id)}
+                    className={`px-3 md:px-6 py-2.5 md:py-3 rounded-xl font-semibold transition-all md:text-base ${
+                      activeCategory === category.id
+                        ? 'bg-[#ff5c35] text-white shadow-[0_8px_20px_rgba(255,92,53,0.3)]'
+                        : 'bg-[#1a1a2e] text-gray-300 hover:text-white border border-transparent hover:border-[#ff5c35]/30'
+                    }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.97 }}
+                    aria-label={`Switch to ${category.name} category`}
+                    aria-pressed={activeCategory === category.id}>
+                    <span className="inline-flex items-center gap-2">
+                      <CategoryIcon className="w-4 h-4" />
+                      {category.name}
+                    </span>
+                  </motion.button>
+                );
+              })}
+            </motion.div>
+
+            {/* Billing Cycle Selector */}
+            {activeCategory !== 'web' && (
+              <motion.div
+                className="flex justify-center mb-6"
+                variants={fadeInUp}
+                initial="initial"
+                animate="animate">
+                <div className="w-full max-w-[420px] flex items-center justify-center gap-3 sm:gap-4 text-white">
+                  <button
+                    type="button"
+                    onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'annually' : 'monthly')}
+                    className="inline-flex items-center gap-3 sm:gap-4"
+                    aria-label="Switch billing cycle"
+                    aria-pressed={billingCycle === 'annually'}>
+                    <span className={`text-lg font-medium transition-colors ${billingCycle === 'monthly' ? 'text-white' : 'text-gray-400'}`}>
+                      Havi
+                    </span>
+                    <span className="relative inline-flex w-[68px] h-[36px] bg-black rounded-full border border-white/15">
+                      <motion.span
+                        className="absolute top-[3px] left-[3px] w-[28px] h-[28px] rounded-full bg-white shadow-[0_3px_10px_rgba(0,0,0,0.35)]"
+                        animate={{ x: billingCycle === 'annually' ? 32 : 0 }}
+                        transition={{ type: 'spring', stiffness: 380, damping: 28 }}
+                      />
+                    </span>
+                    <span className={`text-lg font-medium transition-colors ${billingCycle === 'annually' ? 'text-white' : 'text-gray-400'}`}>
+                      Éves
+                    </span>
+                  </button>
+                  <span className="text-xs sm:text-sm font-bold tracking-wide px-3 py-1.5 rounded-full bg-[#d35735] text-white whitespace-nowrap">
+                    -20% MEGTAKARÍTÁS
+                  </span>
+                </div>
+              </motion.div>
+            )}
+          </>
         )}
         {activeCategory !== 'web' && (
           <motion.p

@@ -1,255 +1,266 @@
-
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import CountUp from '../CountUp';
-import { fadeInUp, staggerChildren } from '../../utils/animations';
-import { stats } from '../../constants';
-// Note: ChevronRight is used in the fallback/carousel logic, need to import it if used.
 import { ChevronRight } from 'lucide-react';
+import { stats } from '../../constants';
 
 const Statistics = () => {
-    // Logic for mobile carousel
-    const carouselRef = useRef<HTMLDivElement>(null);
-    const [isAutoScroll, setIsAutoScroll] = useState(true);
-    const autoScrollTimeout = useRef<NodeJS.Timeout | null>(null);
-    const [statIndex, setStatIndex] = useState(0); // Kept for state compatibility if needed, though used in drag logic
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [isAutoPlay, setIsAutoPlay] = useState(true);
+    const [pulseCta, setPulseCta] = useState(false);
+    const sliderRef = useRef<HTMLDivElement | null>(null);
+    const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const pulseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const isProgrammaticScroll = useRef(false);
+    const previousIndexRef = useRef(0);
 
-    // Fluid automatikus scroll mobilon
+    const cards = useMemo(() => stats, []);
+
+    const animateToIndex = (nextIndex: number, duration = 850) => {
+        const slider = sliderRef.current;
+        if (!slider) return;
+        const firstCard = slider.querySelector('[data-stat-index="0"]') as HTMLElement | null;
+        if (!firstCard) return;
+
+        const cardWidth = firstCard.offsetWidth + 16;
+        const targetLeft = nextIndex * cardWidth;
+        const startLeft = slider.scrollLeft;
+        const delta = targetLeft - startLeft;
+        const startTime = performance.now();
+
+        const easeInOutCubic = (t: number) =>
+            t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+        const step = (now: number) => {
+            const progress = Math.min((now - startTime) / duration, 1);
+            slider.scrollLeft = startLeft + delta * easeInOutCubic(progress);
+            if (progress < 1) requestAnimationFrame(step);
+        };
+
+        requestAnimationFrame(step);
+    };
+
+    const pauseAutoPlay = () => {
+        setIsAutoPlay(false);
+        if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+        resumeTimerRef.current = setTimeout(() => setIsAutoPlay(true), 3000);
+    };
+
     useEffect(() => {
-        if (window.innerWidth >= 768) return;
-        if (!isAutoScroll) return;
-        let frame: number;
-        function step() {
-            if (!isAutoScroll) return;
-            const el = carouselRef.current;
-            if (!el) return;
-            if (el.scrollLeft + el.offsetWidth >= el.scrollWidth - 2) {
-                el.scrollLeft = 0;
-            } else {
-                el.scrollLeft += 2.5; // Folyamatos, gyorsabb scroll
-            }
-            frame = requestAnimationFrame(step);
-        }
-        frame = requestAnimationFrame(step);
-        return () => cancelAnimationFrame(frame);
-    }, [isAutoScroll]);
+        return () => {
+            if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+            if (pulseTimerRef.current) clearTimeout(pulseTimerRef.current);
+        };
+    }, []);
 
-    // User interakció: scroll/drag/nyomás leállítja az automata scrollt 3mp-re
-    function pauseAutoScroll() {
-        setIsAutoScroll(false);
-        if (autoScrollTimeout.current) clearTimeout(autoScrollTimeout.current);
-        autoScrollTimeout.current = setTimeout(() => setIsAutoScroll(true), 3000);
-    }
+    useEffect(() => {
+        if (typeof window === 'undefined' || window.innerWidth >= 768 || !isAutoPlay || !sliderRef.current) return;
+
+        const interval = setInterval(() => {
+            const next = (activeIndex + 1) % cards.length;
+            isProgrammaticScroll.current = true;
+            animateToIndex(next);
+            setActiveIndex(next);
+            setTimeout(() => {
+                isProgrammaticScroll.current = false;
+            }, 900);
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, [activeIndex, cards.length, isAutoPlay]);
+
+    useEffect(() => {
+        const wasLast = previousIndexRef.current === cards.length - 1;
+        const isNowLast = activeIndex === cards.length - 1;
+
+        if (!wasLast && isNowLast) {
+            setPulseCta(true);
+            if (pulseTimerRef.current) clearTimeout(pulseTimerRef.current);
+            pulseTimerRef.current = setTimeout(() => setPulseCta(false), 800);
+        }
+
+        previousIndexRef.current = activeIndex;
+    }, [activeIndex, cards.length]);
 
     return (
         <motion.section
-            className="py-24 px-4 sm:px-6 lg:px-8 bg-[#0f0f17] relative overflow-hidden"
+            className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-[#0f0f17] relative overflow-hidden"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}>
-            {/* Background decoration */}
+            transition={{ duration: 0.5 }}>
             <div className="absolute inset-0">
                 <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-bl from-[#ff5c35]/10 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-[#ff5c35]/10 to-transparent"></div>
             </div>
 
             <div className="max-w-7xl mx-auto relative z-10">
-                <motion.div
-                    className="text-center mb-16"
-                    variants={staggerChildren}
-                    initial="initial"
-                    whileInView="animate"
-                    viewport={{ once: true }}>
-                    <motion.h2
-                        className="text-4xl sm:text-5xl font-bold mb-6"
-                        variants={fadeInUp}>
+                <div className="text-center mb-10 md:mb-16">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6 leading-tight">
                         Miért fontos a
                         <span className="bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"> weboldalad?</span>
-                    </motion.h2>
-                    <motion.p
-                        className="text-gray-400 text-lg max-w-2xl mx-auto"
-                        variants={fadeInUp}>
-                        Sok kisvállalkozás <span className="underline decoration-[#ff5c35] underline-offset-4">alulértékeli</span> weboldalát, ami
-                        <span className="text-[#ff5c35]"> milliós értékű elveszett lehetőségekhez</span> vezethet.
-                    </motion.p>
-                </motion.div>
-                {/* Mobil: fluid scroll-snap carousel */}
-                <div className="block md:hidden w-full max-w-[95vw] mx-auto relative">
-                    <div
-                        ref={carouselRef}
-                        className="flex gap-4 overflow-x-auto scrollbar-none w-full"
-                        style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                        onScroll={pauseAutoScroll}
-                        onTouchStart={pauseAutoScroll}
-                        onMouseDown={pauseAutoScroll}
-                    >
-                        {stats.map((stat, idx) => {
-                            const radius = 44;
-                            const circumference = 2 * Math.PI * radius;
-                            return (
-                                <div
-                                    key={idx}
-                                    className="relative bg-[#1a1a2e] rounded-2xl border border-gray-800/50 shadow-xl py-10 px-4 flex-shrink-0 flex flex-col items-center justify-center transition-all duration-300 min-h-[340px] w-[70vw] max-w-[300px] select-none"
-                                >
-                                    <div className="relative mb-4">
-                                        <svg width="100" height="100" viewBox="0 0 100 100" className="block mx-auto">
-                                            <circle cx="50" cy="50" r={radius} fill="none" stroke="#232336" strokeWidth="7" />
-                                            <motion.circle
-                                                cx="50" cy="50" r={radius} fill="none"
-                                                stroke={`url(#stat-gradient-${idx})`}
-                                                strokeWidth="7"
-                                                strokeDasharray={circumference}
-                                                strokeDashoffset={circumference * (1 - stat.value / 100)}
-                                                strokeLinecap="round"
-                                                initial={{ strokeDashoffset: circumference }}
-                                                animate={{ strokeDashoffset: circumference * (1 - stat.value / 100) }}
-                                                transition={{ duration: 1.5 }}
-                                            />
-                                            <defs>
-                                                <linearGradient id={`stat-gradient-${idx}`} x1="0" y1="0" x2="100" y2="100">
-                                                    <stop offset="0%" stopColor={stat.colorFrom} />
-                                                    <stop offset="100%" stopColor={stat.colorTo} />
-                                                </linearGradient>
-                                            </defs>
-                                        </svg>
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <span className="text-3xl font-extrabold bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent select-none">
-                                                <CountUp end={stat.value} duration={1.5} suffix={stat.suffix} />
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <p className="text-gray-300 text-center text-base font-medium leading-relaxed">
-                                        {stat.label}
-                                    </p>
-                                </div>
-                            );
-                        })}
-                    </div>
-                    {/* Formázott szöveg és gomb a carousel alá */}
-                    <div className="text-center mt-16 mb-12">
-                        <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-                            Több ezer weboldalt elemeztem
-                            <span className="bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"> hogy veled ez ne történhessen meg.</span>
-                        </h2>
-                        <div className="mt-8">
-                            <a href="/kapcsolat" data-discover="true">
-                                <button type="button" className="secondary-button inline-flex items-center" tabIndex={0}>
-                                    Ingyenes konzultációt kérek!
-                                    <ChevronRight className="ml-2" size={20} />
-                                </button>
-                            </a>
-                        </div>
-                    </div>
+                    </h2>
+                    <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
+                        Sok kisvállalkozás alulértékeli a weboldalát, ami komoly üzleti lehetőségeket vesz el.
+                    </p>
                 </div>
-                {/* Desktop grid */}
-                <div className="hidden lg:block max-w-6xl mx-auto mb-16">
-                    <div className="grid grid-cols-3 gap-6 mb-6 items-stretch">
-                        {stats.slice(0, 3).map((stat, idx) => {
-                            const radius = 44;
+
+                <div className="md:hidden -mx-4 px-4">
+                    <div
+                        ref={sliderRef}
+                        className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                        onTouchStart={pauseAutoPlay}
+                        onMouseDown={pauseAutoPlay}
+                        onWheel={pauseAutoPlay}
+                        onScroll={(e) => {
+                            const el = e.currentTarget;
+                            const firstCard = el.querySelector('[data-stat-index="0"]') as HTMLElement | null;
+                            if (!firstCard) return;
+                            const cardWidth = firstCard.offsetWidth + 16;
+                            const idx = Math.round(el.scrollLeft / cardWidth);
+                            const next = Math.min(Math.max(idx, 0), cards.length - 1);
+                            if (next !== activeIndex) setActiveIndex(next);
+                            if (!isProgrammaticScroll.current) pauseAutoPlay();
+                        }}>
+                        {cards.map((stat, idx) => {
+                            const radius = 42;
                             const circumference = 2 * Math.PI * radius;
+
                             return (
-                                <motion.div
+                                <article
                                     key={idx}
-                                    className="relative bg-[#1a1a2e] rounded-3xl border border-gray-800/40 shadow-2xl shadow-[#ff5c35]/10 p-10 flex flex-col items-center justify-center min-h-[320px] h-full w-full transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-[#ff5c35] group"
-                                    whileHover={{ y: -8 }}
-                                    transition={{ duration: 0.2 }}
-                                >
-                                    <div className="relative mb-4">
-                                        <svg width="100" height="100" viewBox="0 0 100 100" className="block mx-auto">
-                                            <circle cx="50" cy="50" r={radius} fill="none" stroke="#28304a" strokeWidth="10" />
-                                            <motion.circle
-                                                cx="50" cy="50" r={radius} fill="none"
-                                                stroke={`url(#stat-gradient-${idx})`}
-                                                strokeWidth="10"
-                                                strokeDasharray={circumference}
-                                                strokeDashoffset={circumference * (1 - stat.value / 100)}
-                                                strokeLinecap="round"
-                                                initial={{ strokeDashoffset: circumference }}
-                                                animate={{ strokeDashoffset: circumference * (1 - stat.value / 100) }}
-                                                transition={{ duration: 1.5, delay: 0.2 * idx }}
-                                            />
-                                            <defs>
-                                                <linearGradient id={`stat-gradient-${idx}`} x1="0" y1="0" x2="100" y2="100">
-                                                    <stop offset="0%" stopColor={stat.colorFrom} />
-                                                    <stop offset="100%" stopColor={stat.colorTo} />
-                                                </linearGradient>
-                                            </defs>
-                                        </svg>
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <span className="text-5xl font-extrabold bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent drop-shadow-lg select-none">
-                                                <CountUp end={stat.value} duration={1.5} suffix={stat.suffix} />
+                                    data-stat-index={idx}
+                                    className="snap-center min-w-[calc(100vw-2rem)] max-w-[calc(100vw-2rem)] bg-[#1a1a2e] rounded-2xl border border-gray-800/50 p-6">
+                                    <div className="flex items-center justify-center mb-4">
+                                        <div className="relative">
+                                            <svg width="100" height="100" viewBox="0 0 100 100">
+                                                <circle cx="50" cy="50" r={radius} fill="none" stroke="#2b2b42" strokeWidth="8" />
+                                                <circle
+                                                    cx="50"
+                                                    cy="50"
+                                                    r={radius}
+                                                    fill="none"
+                                                    stroke={stat.colorFrom}
+                                                    strokeWidth="8"
+                                                    strokeDasharray={circumference}
+                                                    strokeDashoffset={circumference * (1 - stat.value / 100)}
+                                                    strokeLinecap="round"
+                                                />
+                                            </svg>
+                                            <span className="absolute inset-0 flex items-center justify-center text-3xl font-extrabold text-[#ff8f35]">
+                                                <CountUp end={stat.value} duration={2.6} suffix={stat.suffix} />
                                             </span>
                                         </div>
                                     </div>
-                                    <p className="text-gray-200 text-center text-lg font-medium leading-relaxed mt-2">
-                                        {stat.label}
-                                    </p>
-                                </motion.div>
+                                    <p className="text-gray-300 text-center text-base leading-relaxed">{stat.label}</p>
+                                </article>
                             );
                         })}
                     </div>
-                    <div className="flex justify-center gap-6">
-                        {stats.slice(3).map((stat, idx) => {
-                            const radius = 44;
-                            const circumference = 2 * Math.PI * radius;
-                            return (
-                                <motion.div
-                                    key={idx + 3}
-                                    className="relative bg-[#1a1a2e] rounded-3xl border border-gray-800/40 shadow-2xl shadow-[#ff5c35]/10 p-10 flex flex-col items-center justify-center min-h-[320px] h-full w-full max-w-[420px] transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-[#ff5c35] group"
-                                    whileHover={{ y: -8 }}
-                                    transition={{ duration: 0.2 }}
-                                >
-                                    <div className="relative mb-4">
-                                        <svg width="100" height="100" viewBox="0 0 100 100" className="block mx-auto">
-                                            <circle cx="50" cy="50" r={radius} fill="none" stroke="#28304a" strokeWidth="10" />
-                                            <motion.circle
-                                                cx="50" cy="50" r={radius} fill="none"
-                                                stroke={`url(#stat-gradient-${idx + 3})`}
-                                                strokeWidth="10"
-                                                strokeDasharray={circumference}
-                                                strokeDashoffset={circumference * (1 - stat.value / 100)}
-                                                strokeLinecap="round"
-                                                initial={{ strokeDashoffset: circumference }}
-                                                animate={{ strokeDashoffset: circumference * (1 - stat.value / 100) }}
-                                                transition={{ duration: 1.5, delay: 0.2 * (idx + 3) }}
-                                            />
-                                            <defs>
-                                                <linearGradient id={`stat-gradient-${idx + 3}`} x1="0" y1="0" x2="100" y2="100">
-                                                    <stop offset="0%" stopColor={stat.colorFrom} />
-                                                    <stop offset="100%" stopColor={stat.colorTo} />
-                                                </linearGradient>
-                                            </defs>
-                                        </svg>
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <span className="text-5xl font-extrabold bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent drop-shadow-lg select-none">
-                                                <CountUp end={stat.value} duration={1.5} suffix={stat.suffix} />
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <p className="text-gray-200 text-center text-lg font-medium leading-relaxed mt-2">
-                                        {stat.label}
-                                    </p>
-                                </motion.div>
-                            );
-                        })}
+
+                    <div className="flex items-center justify-center gap-2 mt-4">
+                        {cards.map((_, idx) => (
+                            <span
+                                key={idx}
+                                className={`h-2.5 rounded-full ${activeIndex === idx ? 'w-6 bg-[#ff5c35]' : 'w-2.5 bg-white/25'}`}
+                            />
+                        ))}
                     </div>
                 </div>
 
-                {/* Desktopon is: Több ezer weboldalt... szöveg és gomb */}
-                <div className="hidden md:block text-center mt-16 mb-12">
-                    <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-                        Több ezer weboldalt elemeztem
+                <div className="hidden md:grid md:grid-cols-3 gap-6 mb-6">
+                    {cards.slice(0, 3).map((stat, idx) => {
+                        const radius = 42;
+                        const circumference = 2 * Math.PI * radius;
+                        return (
+                            <article key={idx} className="bg-[#1a1a2e] rounded-2xl border border-gray-800/50 p-8">
+                                <div className="flex items-center justify-center mb-4">
+                                    <div className="relative">
+                                        <svg width="100" height="100" viewBox="0 0 100 100">
+                                            <circle cx="50" cy="50" r={radius} fill="none" stroke="#2b2b42" strokeWidth="8" />
+                                            <circle
+                                                cx="50"
+                                                cy="50"
+                                                r={radius}
+                                                fill="none"
+                                                stroke={stat.colorFrom}
+                                                strokeWidth="8"
+                                                strokeDasharray={circumference}
+                                                strokeDashoffset={circumference * (1 - stat.value / 100)}
+                                                strokeLinecap="round"
+                                            />
+                                        </svg>
+                                        <span className="absolute inset-0 flex items-center justify-center text-4xl font-extrabold text-[#ff8f35]">
+                                            <CountUp end={stat.value} duration={2.6} suffix={stat.suffix} />
+                                        </span>
+                                    </div>
+                                </div>
+                                <p className="text-gray-300 text-center text-base leading-relaxed">{stat.label}</p>
+                            </article>
+                        );
+                    })}
+                </div>
+
+                <div className="hidden md:grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                    {cards.slice(3).map((stat, idx) => {
+                        const radius = 42;
+                        const circumference = 2 * Math.PI * radius;
+                        return (
+                            <article key={idx + 3} className="bg-[#1a1a2e] rounded-2xl border border-gray-800/50 p-8">
+                                <div className="flex items-center justify-center mb-4">
+                                    <div className="relative">
+                                        <svg width="100" height="100" viewBox="0 0 100 100">
+                                            <circle cx="50" cy="50" r={radius} fill="none" stroke="#2b2b42" strokeWidth="8" />
+                                            <circle
+                                                cx="50"
+                                                cy="50"
+                                                r={radius}
+                                                fill="none"
+                                                stroke={stat.colorFrom}
+                                                strokeWidth="8"
+                                                strokeDasharray={circumference}
+                                                strokeDashoffset={circumference * (1 - stat.value / 100)}
+                                                strokeLinecap="round"
+                                            />
+                                        </svg>
+                                        <span className="absolute inset-0 flex items-center justify-center text-4xl font-extrabold text-[#ff8f35]">
+                                            <CountUp end={stat.value} duration={2.6} suffix={stat.suffix} />
+                                        </span>
+                                    </div>
+                                </div>
+                                <p className="text-gray-300 text-center text-base leading-relaxed">{stat.label}</p>
+                            </article>
+                        );
+                    })}
+                </div>
+
+                <div className="text-center mt-12">
+                    <h3 className="text-2xl md:text-4xl font-bold mb-5 leading-tight">
+                        Több ezer weboldalt elemeztem,
                         <span className="bg-gradient-to-r from-[#ff5c35] to-[#ff8f35] bg-clip-text text-transparent"> hogy veled ez ne történhessen meg.</span>
-                    </h2>
-                    <div className="mt-8">
-                        <a href="/kapcsolat" data-discover="true">
-                            <button type="button" className="secondary-button inline-flex items-center" tabIndex={0}>
-                                Ingyenes konzultációt kérek!
-                                <ChevronRight className="ml-2" size={20} />
-                            </button>
-                        </a>
-                    </div>
+                    </h3>
+                    <a href="/kapcsolat" data-discover="true" className="inline-flex">
+                        <motion.button
+                            type="button"
+                            className="secondary-button inline-flex items-center"
+                            animate={
+                                pulseCta
+                                    ? {
+                                        scale: [1, 1.14, 0.97, 1],
+                                        boxShadow: [
+                                            '0 0 0 rgba(255,92,53,0)',
+                                            '0 0 34px rgba(255,92,53,0.55)',
+                                            '0 0 12px rgba(255,92,53,0.22)',
+                                            '0 0 0 rgba(255,92,53,0)'
+                                        ]
+                                    }
+                                    : { scale: 1, boxShadow: '0 0 0 rgba(255,92,53,0)' }
+                            }
+                            transition={{ duration: 0.48, ease: 'easeOut' }}>
+                            Ingyenes konzultációt kérek!
+                            <ChevronRight className="ml-2" size={20} />
+                        </motion.button>
+                    </a>
                 </div>
             </div>
         </motion.section>

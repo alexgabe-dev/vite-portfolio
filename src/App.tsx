@@ -29,6 +29,28 @@ function App() {
   const [showCookieConsent, setShowCookieConsent] = useState(false);
   const location = useLocation();
 
+  // Prevent browser from restoring old scroll position on reload.
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
+  // On homepage load/reload always start from top.
+  useEffect(() => {
+    if (location.pathname !== '/') return;
+
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    });
+
+    const timer = window.setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }, 80);
+
+    return () => window.clearTimeout(timer);
+  }, [location.pathname]);
+
   // Cookie consent initialization
   useEffect(() => {
     // Wait for CookieYes to load
@@ -74,6 +96,9 @@ function App() {
         // Reset any necessary state
         setShowPromotion(false);
         setShowCookieConsent(false);
+        if (location.pathname === '/') {
+          window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        }
       }
     };
 
@@ -107,7 +132,7 @@ function App() {
       window.removeEventListener('pagehide', handlePageHide);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, []);
+  }, [location.pathname]);
 
   // Modify popup effect to support bfcache
   React.useEffect(() => {

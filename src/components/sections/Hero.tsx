@@ -11,7 +11,7 @@ const Hero = () => {
     return (
         <motion.section
             id="home"
-            className="relative min-h-screen flex items-center pt-16 overflow-hidden"
+            className="relative min-h-screen flex items-center pt-20 md:pt-16 overflow-hidden"
             initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}>
@@ -27,14 +27,14 @@ const Hero = () => {
                 />
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid md:grid-cols-2 gap-12 items-center">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                 <motion.div
                     variants={staggerChildren}
                     initial="initial"
                     animate="animate"
                     className="will-change-transform">
                     <h1
-                        className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6">
+                        className="text-3xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6 leading-tight">
                         <motion.span
                             className="md:block leading-[1.2] inline-block py-1"
                             initial={{ opacity: 1, y: 0 }}
@@ -50,7 +50,7 @@ const Hero = () => {
                         <AnimatedText />
                     </h1>
                     <motion.p
-                        className="text-lg sm:text-xl mb-6 md:mb-8 text-gray-400 max-w-lg leading-[1.8]"
+                        className="text-base sm:text-xl mb-6 md:mb-8 text-gray-400 max-w-lg leading-relaxed md:leading-[1.8]"
                         initial={{ opacity: 1, y: 0 }}
                         animate={{ opacity: 1, y: 0 }}
                         style={{

@@ -32,7 +32,7 @@ export const packages = [
         priceSuffix: "-tól",
         type: "Egyszeri díj",
         features: [
-            "Minden a Rajt csomagból, plusz:",
+            "Minden a Launch csomagból, plusz:",
             "Legfeljebb 12 oldalas weboldal struktúra",
             "Blog vagy tudástár modul",
             "Haladó on-page SEO (meta, schema, belső linkelés)",
@@ -50,7 +50,7 @@ export const packages = [
         priceSuffix: "-tól",
         type: "Egyszeri díj",
         features: [
-            "Minden a Növekedés csomagból, plusz:",
+            "Minden a Premium csomagból, plusz:",
             "Webshop vagy komplex szolgáltatói rendszer kialakítás",
             "Többnyelvű működés és tartalomstruktúra",
             "Fizetési és számlázási integrációk",
