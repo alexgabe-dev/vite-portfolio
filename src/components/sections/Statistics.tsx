@@ -189,7 +189,7 @@ const Statistics = () => {
                                                 strokeLinecap="round"
                                             />
                                         </svg>
-                                        <span className="absolute inset-0 flex items-center justify-center text-4xl font-extrabold text-[#ff8f35]">
+                                        <span className="absolute inset-0 flex items-center justify-center text-3xl font-bold leading-none tabular-nums text-[#ff8f35]">
                                             <CountUp end={stat.value} duration={2.6} suffix={stat.suffix} />
                                         </span>
                                     </div>
@@ -222,7 +222,7 @@ const Statistics = () => {
                                                 strokeLinecap="round"
                                             />
                                         </svg>
-                                        <span className="absolute inset-0 flex items-center justify-center text-4xl font-extrabold text-[#ff8f35]">
+                                        <span className="absolute inset-0 flex items-center justify-center text-3xl font-bold leading-none tabular-nums text-[#ff8f35]">
                                             <CountUp end={stat.value} duration={2.6} suffix={stat.suffix} />
                                         </span>
                                     </div>
