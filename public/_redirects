@@ -1,0 +1,22 @@
+# Preserve existing navigation URLs when moving to the new site.
+/szolgaltatasok /#szolgaltatasok 301
+/szolgaltatasok/ /#szolgaltatasok 301
+/kapcsolat /#kapcsolat 301
+/kapcsolat/ /#kapcsolat 301
+/csomagok /#csomagok 301
+/csomagok/ /#csomagok 301
+/rolunk /#folyamat 301
+/rolunk/ /#folyamat 301
+/munkak /munkak/ 301
+/adatvedelem /adatvedelem/ 301
+/weboldalkeszites /weboldalkeszites/ 301
+/egyedi-webfejlesztes /egyedi-webfejlesztes/ 301
+/online-marketing /online-marketing/ 301
+/keresooptimalizalas /keresooptimalizalas/ 301
+/wordpress-karbantartas /weboldal-karbantartas/ 301
+/wordpress-karbantartas/ /weboldal-karbantartas/ 301
+/weboldal-karbantartas /weboldal-karbantartas/ 301
+/ai-chatbot-keszites /ai-chatbot-keszites/ 301
+/automatizalas /automatizalas/ 301
+/email-szerver-uzemeltetes /email-szerver-uzemeltetes/ 301
+/webanalitika-meres /webanalitika-meres/ 301

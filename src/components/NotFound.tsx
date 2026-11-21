@@ -1,0 +1,1 @@
+export function NotFound(){return <main id="main" className="wrap not-found"><p className="eyebrow">404 · Ez az oldal nem található</p><h1>Erre nincs oldal.<br/><span>De segítek tovább.</span></h1><p>Lehet, hogy megváltozott a cím. A főoldalon megtalálod a szolgáltatásokat, az árakat és az elérhetőségeket.</p><a className="button orange" href="/">Vissza a főoldalra</a></main>;}

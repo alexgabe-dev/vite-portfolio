@@ -1,79 +1,32 @@
+import { Icon } from './Icon';
+import { useEffect, useRef, useState } from 'react';
+import { serviceLinks } from '../routes';
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { fadeInUp } from '../utils/animations';
+export function Footer({ archive }: { archive: boolean }) {
+  const wordmark = useRef<HTMLDivElement>(null);
+  useEffect(()=>{
+    const host=wordmark.current;
+    if(!host||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    host.classList.add('is-armed');
+    const observer=new IntersectionObserver(entries=>{
+      if(!entries.some(entry=>entry.isIntersecting))return;
+      host.classList.add('is-visible');
+      observer.disconnect();
+    },{threshold:.18});
+    observer.observe(host);
+    return()=>{observer.disconnect();host.classList.remove('is-armed','is-visible');};
+  },[]);
 
-const Footer = () => {
-    return (
-        <footer className="bg-[#0a0a0f] border-t border-gray-800/30 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto">
-                <div className="grid md:grid-cols-4 gap-8">
-                    <motion.div variants={fadeInUp} className="flex flex-col items-start">
-                        <motion.img
-                            src="/vizitor-logo.svg"
-                            alt="Vizitor Logo"
-                            width={64}
-                            height={64}
-                            className="h-32 w-32 object-contain"
-                            loading="lazy"
-                            decoding="async"
-                            whileHover={{ scale: 1.05 }}
-                            transition={{ type: "spring", stiffness: 300 }}
-                        />
-                        <p className="text-gray-400">Modern megoldások a vállalkozásod számára!</p>
-                    </motion.div>
-                    <motion.div variants={fadeInUp}>
-                        <h3 className="font-semibold mb-4 text-base">Szolgáltatások</h3>
-                        <ul className="space-y-2">
-                            <motion.li whileHover={{ x: 5 }}>
-                                <Link to="/szolgaltatasok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Webfejlesztés</Link>
-                            </motion.li>
-                            <motion.li whileHover={{ x: 5 }}>
-                                <Link to="/szolgaltatasok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">PPC kampánykezelés</Link>
-                            </motion.li>
-                            <motion.li whileHover={{ x: 5 }}>
-                                <Link to="/szolgaltatasok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Automatizálás</Link>
-                            </motion.li>
-                        </ul>
-                    </motion.div>
-                    <motion.div variants={fadeInUp}>
-                        <h3 className="font-semibold mb-4 text-base">Csomagok</h3>
-                        <ul className="space-y-2">
-                            <motion.li whileHover={{ x: 5 }}>
-                                <Link to="/csomagok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Weboldalkészítés</Link>
-                            </motion.li>
-                            <motion.li whileHover={{ x: 5 }}>
-                                <Link to="/csomagok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Marketing szolgáltatások</Link>
-                            </motion.li>
-                            <motion.li whileHover={{ x: 5 }}>
-                                <Link to="/csomagok" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Web karbantartás</Link>
-                            </motion.li>
-                        </ul>
-                    </motion.div>
-                    <motion.div variants={fadeInUp}>
-                        <h3 className="font-semibold mb-4 text-base">Továbbiak</h3>
-                        <ul className="space-y-2">
-                            <motion.li whileHover={{ x: 5 }}>
-                                <Link to="/kapcsolat" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Kapcsolatfelvétel</Link>
-                            </motion.li>
-                            <motion.li whileHover={{ x: 5 }}>
-                                <Link to="/adatvedelem" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Adatvédelmi Tájékoztató</Link>
-                            </motion.li>
-                            <motion.li whileHover={{ x: 5 }}>
-                                <Link to="/kapcsolat" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-400 hover:text-white">Elérhetőségek</Link>
-                            </motion.li>
-                        </ul>
-                    </motion.div>
-                </div>
-                <motion.div
-                    className="mt-12 pt-8 border-t border-gray-800/30 text-center text-gray-400"
-                    variants={fadeInUp}>
-                    © {new Date().getFullYear()} Vizitor.hu. Minden jog fenntartva.
-                </motion.div>
-            </div>
-        </footer>
-    );
-};
-
-export default Footer;
+  const [copyState,setCopyState]=useState<'idle'|'copied'|'error'>('idle');
+  const link=(section:string)=>archive?'/#'+section:'#'+section;
+  async function copyEmail(){try{await navigator.clipboard.writeText('info@vizitor.hu');setCopyState('copied');}catch{setCopyState('error');}}
+  return <footer className="signature-footer" id="lablec" aria-label="Vizitor lábléc"><div className="wrap">
+    <details className="footer-services"><summary><span>Szolgáltatások</span><Icon name="plus"/></summary><nav aria-label="Szolgáltatások részletesen"><div>{serviceLinks.map(item=><a key={item.path} href={item.path}>{item.label}</a>)}</div></nav></details><div className="signature-footer-top">
+      <div className="footer-contact-block"><p className="footer-section-label">Maradjunk kapcsolatban</p><div className="footer-address-row"><a className="footer-address" href="mailto:info@vizitor.hu">info@vizitor.hu<span aria-hidden="true"><Icon name="arrow-up-right"/></span></a><button className="footer-copy" type="button" onClick={copyEmail} aria-label="E-mail-cím másolása"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">{copyState==='copied'?<path d="m5 12 4 4 10-10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>:<><rect x="8" y="8" width="11" height="12" rx="2" stroke="currentColor" strokeWidth="1.3"/><path d="M15 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3" stroke="currentColor" strokeWidth="1.3"/></>}</svg></button></div><a className="footer-telephone" href="tel:+36205180921">+36 20 518 0921</a><div className="footer-contact-actions"><a href={link('kapcsolat')} className="footer-inquiry">Írok egy üzenetet<span aria-hidden="true"><Icon name="arrow-up-right"/></span></a><p className="footer-copy-feedback" role="status" aria-live="polite">{copyState==='copied'?'E-mail-cím másolva.':copyState==='error'?'A másolás nem sikerült. A cím kijelölhető.':''}</p></div></div>
+      <nav className="footer-explore" aria-label="Navigáció a láblécben"><p className="footer-section-label">Nézz körül</p>{[['szolgaltatasok','Szolgáltatások'],['folyamat','Így dolgozunk'],['csomagok','Csomagok és árak'],['kerdesek','Kérdések és válaszok']].map(([id,title])=><a href={link(id)} key={id}><span>{title}</span><span aria-hidden="true"><Icon name="arrow-up-right"/></span></a>)}</nav>
+      <nav className="footer-elsewhere" aria-label="Munkák és további információk"><p className="footer-section-label">A többi részlet</p><a href="/munkak/"><span>Projektek</span><span aria-hidden="true"><Icon name="arrow-up-right"/></span></a><a href="https://github.com/alexgabe-dev" target="_blank" rel="noopener noreferrer"><span>GitHub</span><span aria-hidden="true"><Icon name="arrow-up-right"/></span><span className="sr-only"> (új lapon)</span></a><a href="/adatvedelem/" target="_blank" rel="noopener noreferrer"><span>Adatkezelés</span><span aria-hidden="true"><Icon name="arrow-up-right"/></span><span className="sr-only"> (új lapon)</span></a></nav>
+    </div>
+    <div className="signature-footer-bottom"><div className="footer-signoff"><span>©︎ {new Date().getFullYear()} Vizitor</span><span>Weboldal · Marketing · Karbantartás</span></div><a className="footer-return" href="#top"><span>Vissza a tetejére</span><span className="footer-return-disc" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5m-6 6 6-6 6 6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg></span></a></div>
+    <div className="footer-wordmark-stage" ref={wordmark}><img className="footer-logo-front" src="/vizitor-logo.svg" alt="Vizitor" width="328" height="103" decoding="async"/></div>
+  </div></footer>;
+}

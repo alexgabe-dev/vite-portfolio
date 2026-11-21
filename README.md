@@ -1,156 +1,49 @@
-# 🚀 Vizitor - Modern Portfolio & Business Website
+# Vizitor
 
-[![React](https://img.shields.io/badge/React-18.x-blue)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-5.x-646CFF)](https://vitejs.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-38B2AC)](https://tailwindcss.com/)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-10.x-ff69b4)](https://www.framer.com/motion/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+A Vizitor új, reszponzív szolgáltatói weboldala. React 18, TypeScript és Vite, külön betöltött Three.js-grafikákkal. Az eredeti Vizitor-logót és a #ff5c35 márkaszínt használja.
 
-## 📖 About
+## Fejlesztés
 
-A modern, sleek, responsive portfolio and business website built with React, Vite, TypeScript, and Tailwind CSS. Features smooth animations, dark theme, and a professional design.
-
-🎨 **Live Demo**: [vizitor.hu](https://vizitor.hu)
-
-Created by [Alex Gabe](https://github.com/alexgabe-dev) 👨‍💻
-
-## ✨ Features
-
-- 🎯 Modern and responsive design
-- 🌙 Dark theme with elegant UI
-- ⚡ Lightning-fast performance with Vite
-- 🎭 Smooth animations with Framer Motion
-- 📱 Mobile-first approach
-- 🔍 SEO optimized
-- 🛠️ TypeScript for better development experience
-- 🎨 Tailwind CSS for styling
-- 📦 Component-based architecture
-- 🔄 React Router for navigation
-- 💫 Interactive UI elements
-- 📝 Contact form
-- 🎉 Promotional popup system
-
-## 🚀 Quick Start
-
-1. **Clone the repository**
-```bash
-git clone https://github.com/alexgabe-dev/vizitor.git
-cd vizitor
-```
-
-2. **Install dependencies**
-```bash
-npm install
-# or
-yarn install
-```
-
-3. **Start development server**
-```bash
+```sh
+npm ci
 npm run dev
-# or
-yarn dev
 ```
 
-4. **Build for production**
-```bash
+## Build és ellenőrzés
+
+```sh
 npm run build
-# or
-yarn build
+npm run check:seo
+npm run check:worker
+npm run preview
 ```
 
-## 🛠️ Tech Stack
+A preview a http://127.0.0.1:4173 címen fut. Futó preview mellett az HTTP-ellenőrzés: `npm run check:http`.
 
-- [React](https://reactjs.org/) - UI Library
-- [Vite](https://vitejs.dev/) - Build Tool
-- [TypeScript](https://www.typescriptlang.org/) - Programming Language
-- [Tailwind CSS](https://tailwindcss.com/) - CSS Framework
-- [Framer Motion](https://www.framer.com/motion/) - Animation Library
-- [React Router](https://reactrouter.com/) - Routing
-- [Lucide Icons](https://lucide.dev/) - Icons
+A build előrendereli a főoldalt, a projektarchívumot, a kilenc szolgáltatásoldalt, az adatvédelmi oldalt és a 404 oldalt. A Worker valódi 301/404 válaszokat, HEAD-kéréseket és ETag-alapú gyorsítótárazást kezel. A telepíthető kimenet: `dist/server/index.js`; a `dist` a statikus HTML-t és asseteket is tartalmazza.
 
-## 📁 Project Structure
+## Tartalom és arculat
 
-```
-vizitor/
-├── src/
-│   ├── components/     # React components
-│   ├── assets/        # Static assets
-│   ├── App.css        # Global styles
-│   ├── App.tsx        # Main application
-│   └── main.tsx       # Entry point
-├── public/            # Public assets
-├── index.html         # HTML template
-├── package.json       # Dependencies
-├── tsconfig.json      # TypeScript config
-├── vite.config.ts     # Vite config
-└── README.md          # Documentation
-```
+- Szolgáltatások: `src/content/services.ts`
+- Csomagok és éves kedvezmények: `src/content/packages.ts`
+- Referenciák: `src/content/projects.ts`
+- Kérdések és válaszok: `src/components/FAQ.tsx`
+- Megosztási kép: `public/og/vizitor-share-2026.png` (1200 × 630)
+- Szerkeszthető megosztási grafika: `public/og/vizitor.svg`; PNG-generálás: `node scripts/build-social-image.mjs` (Arial rendszerbetűkészletet használ).
 
-## 🎨 Color Palette
+Az űrlapban az e-mail-cím és az üzenet kötelező. A Formspree-végpont a korábbi oldal beállítását követi; valódi tesztüzenet nem lett elküldve, a kézbesítés külön ellenőrzendő.
 
-- Primary: `#ff5c35` (Orange)
-- Background: `#0a0a0f` (Dark)
-- Secondary Background: `#1a1a2e`
-- Text: `#ffffff` (White)
-- Secondary Text: `#9ca3af` (Gray)
+## Telepítés és indexelés
 
-## 📱 Responsive Breakpoints
+A jelenlegi Sites-próbaoldal privát, és szándékosan `noindex`. A GitHub-forrás feltöltése nem módosítja a domain beállításait. A nyilvános vizitor.hu-ra készülő buildnél `VIZITOR_INDEXABLE=true` engedélyezi a keresőindexelést és a végleges megosztási képcímeket. Másik Sites-próbacím esetén a megosztási képek eredete a `VIZITOR_PREVIEW_ORIGIN` változóval állítható.
 
-- Mobile: `< 768px`
-- Tablet: `768px - 1024px`
-- Desktop: `> 1024px`
+A régi blog tartalmának költöztetése és az adatvédelmi szöveg jogi frissítése külön élesítési feladat. Az adatvédelmi szöveg az eredeti változatot őrzi; az új szolgáltatókkal összeegyeztetendő.
 
-## 🔧 Configuration
+## Dokumentáció
 
-### Environment Variables
+- [SEO és élesítési ellenőrzések](docs/SEO.md)
+- [Mobilos UX](docs/MOBILE-UX.md)
+- [Lighthouse-eredmények](docs/LIGHTHOUSE.md)
+- [Felhasznált külső elemek](THIRD_PARTY_NOTICES.md)
 
-Create a `.env` file in the root directory:
-
-```env
-VITE_APP_TITLE=Vizitor
-```
-
-## 🚀 Deployment
-
-### Vercel
-
-1. Push your code to GitHub
-2. Import your repository to Vercel
-3. Deploy!
-
-### Manual Deployment
-
-1. Build the project:
-```bash
-npm run build
-```
-
-2. Deploy the `dist` folder to your hosting provider
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a new branch
-3. Make your changes
-4. Submit a pull request
-
-## 📝 License
-
-This project is licensed under the MIT License. See the [MIT License](https://opensource.org/licenses/MIT) for details.
-
-## 📞 Contact
-
-Alex Gabe
-- 🌐 Website: [vizitor.hu](https://vizitor.hu)
-- 📧 Email: info@vizitor.hu
-- 💼 LinkedIn: [Alex Gabe](https://linkedin.com/company/vizitor)
-- 🐦 Twitter: [@vizitorhu](https://twitter.com/vizitorhu)
-
-## 🙏 Acknowledgments
-
-- [React Documentation](https://reactjs.org/docs)
-- [Vite Guide](https://vitejs.dev/guide/)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [Framer Motion API](https://www.framer.com/motion/) 
+A betűkészlet licence a `public/fonts/OFL.txt` fájlban található.
