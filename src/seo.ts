@@ -19,7 +19,7 @@ export function pageMetadata(input:string,socialOrigin=siteOrigin){
  const archive=route==='/munkak/',legal=route==='/adatvedelem/';
  const service=services.find(item=>item.path===route);
  const notFound=!canonicalRoutes.includes(route);
- const title=notFound?'Az oldal nem található | Vizitor':service?.title||(legal?'Adatkezelési tájékoztató | Vizitor':archive?'Weboldalak és webalkalmazások – Referenciák | Vizitor':'Weboldalkészítés, marketing és karbantartás | Vizitor');
+ const title=notFound?'Az oldal nem található | Vizitor':service?.title||(legal?'Adatkezelési tájékoztató | Vizitor':archive?'Weboldalak és webalkalmazások – Referenciák | Vizitor':'vizitor.hu – Weboldal, marketing, fejlesztés');
  const description=notFound?'A keresett oldal nem található. A Vizitor főoldalán eléred a szolgáltatásokat, árakat és elérhetőségeket.':service?.description||(legal?'A Vizitor adatkezelési tájékoztatója: kezelt adatok, megőrzési idők, sütik, érintetti jogok és az adatkezelő elérhetőségei.':archive?'Nézd meg a Vizitor referenciáit: Palackverseny, Recruit Planner, KÉRA és Kiwi Reels. Weboldalak és egyedi webalkalmazások, rövid projektleírásokkal.':'Weboldalkészítés, egyedi fejlesztés, AI-chatbot, automatizálás, marketing és mérés. Webkarbantartás és e-mail-rendszerek, közvetlen együttműködésben.');
  const url=siteOrigin+(notFound?'/404.html':route);
  const breadcrumbLabel=service?.label||(archive?'Projektek':'Adatvédelem');
