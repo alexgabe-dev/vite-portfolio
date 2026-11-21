@@ -1,0 +1,177 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build:vercel",
+  "outputDirectory": "dist",
+  "trailingSlash": true,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/fonts/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=2592000"
+        }
+      ]
+    },
+    {
+      "source": "/og/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ]
+    },
+    {
+      "source": "/404.html",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.vizitor.hu"
+        }
+      ],
+      "destination": "https://vizitor.hu/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/szolgaltatasok",
+      "destination": "/#szolgaltatasok",
+      "statusCode": 301
+    },
+    {
+      "source": "/szolgaltatasok/",
+      "destination": "/#szolgaltatasok",
+      "statusCode": 301
+    },
+    {
+      "source": "/kapcsolat",
+      "destination": "/#kapcsolat",
+      "statusCode": 301
+    },
+    {
+      "source": "/kapcsolat/",
+      "destination": "/#kapcsolat",
+      "statusCode": 301
+    },
+    {
+      "source": "/csomagok",
+      "destination": "/#csomagok",
+      "statusCode": 301
+    },
+    {
+      "source": "/csomagok/",
+      "destination": "/#csomagok",
+      "statusCode": 301
+    },
+    {
+      "source": "/rolunk",
+      "destination": "/#folyamat",
+      "statusCode": 301
+    },
+    {
+      "source": "/rolunk/",
+      "destination": "/#folyamat",
+      "statusCode": 301
+    },
+    {
+      "source": "/munkak",
+      "destination": "/munkak/",
+      "statusCode": 301
+    },
+    {
+      "source": "/adatvedelem",
+      "destination": "/adatvedelem/",
+      "statusCode": 301
+    },
+    {
+      "source": "/weboldalkeszites",
+      "destination": "/weboldalkeszites/",
+      "statusCode": 301
+    },
+    {
+      "source": "/egyedi-webfejlesztes",
+      "destination": "/egyedi-webfejlesztes/",
+      "statusCode": 301
+    },
+    {
+      "source": "/online-marketing",
+      "destination": "/online-marketing/",
+      "statusCode": 301
+    },
+    {
+      "source": "/keresooptimalizalas",
+      "destination": "/keresooptimalizalas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/wordpress-karbantartas",
+      "destination": "/weboldal-karbantartas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/wordpress-karbantartas/",
+      "destination": "/weboldal-karbantartas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/weboldal-karbantartas",
+      "destination": "/weboldal-karbantartas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/ai-chatbot-keszites",
+      "destination": "/ai-chatbot-keszites/",
+      "statusCode": 301
+    },
+    {
+      "source": "/automatizalas",
+      "destination": "/automatizalas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/email-szerver-uzemeltetes",
+      "destination": "/email-szerver-uzemeltetes/",
+      "statusCode": 301
+    },
+    {
+      "source": "/webanalitika-meres",
+      "destination": "/webanalitika-meres/",
+      "statusCode": 301
+    }
+  ]
+}

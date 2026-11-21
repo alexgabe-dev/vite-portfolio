@@ -47,3 +47,19 @@ A régi blog tartalmának költöztetése és az adatvédelmi szöveg jogi friss
 - [Felhasznált külső elemek](THIRD_PARTY_NOTICES.md)
 
 A betűkészlet licence a `public/fonts/OFL.txt` fájlban található.
+
+
+## Vercel
+
+A `main` az új oldal élesítésre előkészített ága. A korábbi `main` változat a `codex/vizitor-legacy-2026-11-21` ágon maradt meg.
+
+Importáld az `alexgabe-dev/vite-portfolio` repót, a Production Branch legyen `main`, a Root Directory pedig a repó gyökere. A verziókezelt `vercel.json` beállítja a Vite keretrendszert, az `npm ci` telepítést, az `npm run build:vercel` buildet és a `dist` kimenetet. Nincs szükség egyedi SPA catch-all átírásra: mind a 12 oldal saját előrenderelt HTML-t kap, a nem létező útvonalakhoz pedig `404.html` készül.
+
+- `VERCEL_ENV=production` esetén a Vercel-build alapból engedélyezi az indexelést; a canonical és a megosztási kép éles domainje `https://vizitor.hu`.
+- Preview buildnél megmarad a `noindex`, a megosztási kép a Vercel által megadott `VERCEL_URL` címre mutat.
+- A `VIZITOR_INDEXABLE=true` vagy `false` kifejezetten felülírja ezt a választást. Korábbi projektbeállításból megmaradt `false` érték az éles indexelést is letiltja.
+- A `VIZITOR_PREVIEW_ORIGIN` csak explicit előnézeti felülíráshoz kell; korábbi Sites-címet ne hagyj a Vercel-projektben.
+- A `vizitor.hu` és `www.vizitor.hu` domaint a Vercel-projektben hozzá kell rendelni; a DNS-t ez a repó nem módosítja.
+- Az átirányításokat és cache-fejléceket a Vercel natív konfigurációja kezeli. A Sites Worker továbbra is külön építhető az eredeti `npm run build` paranccsal, de nem része a Vercel statikus kimenetének.
+
+Helyi próba: `npm run build:vercel` (előnézet), vagy `VERCEL_ENV=production npm run build:vercel` (éles beállítás, POSIX parancsértelmezőben). A Vercel-build az előrenderelés után lefuttatja a megfelelő SEO-ellenőrzést is.
