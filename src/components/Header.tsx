@@ -1,11 +1,12 @@
+import { sectionPath } from '../routes';
 import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
 
 const mainLinks=[{id:'szolgaltatasok',label:'Szolgáltatások'},{id:'folyamat',label:'Így dolgozunk'},{id:'csomagok',label:'Árak'}];
 const sectionIds=['szolgaltatasok','folyamat','csomagok','kerdesek','kapcsolat'];
 function Arrow(){return <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>;}
-export function Header({archive,legal=false}:{archive:boolean;legal?:boolean}) {
-  const subpage=archive||legal;
-  const [active,setActive]=useState(archive?'projects':'');
+export function Header({archive,legal=false,activeSection}:{archive:boolean;legal?:boolean;activeSection?:string}) {
+  const subpage=archive||legal||!!activeSection;
+  const [active,setActive]=useState(activeSection||(archive?'projects':''));
   const [scrolled,setScrolled]=useState(false);
   const [contactGlint,setContactGlint]=useState(false);
   const contactSeen=useRef(false);
@@ -26,10 +27,10 @@ export function Header({archive,legal=false}:{archive:boolean;legal?:boolean}) {
     return()=>{cancelAnimationFrame(frame);window.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);};
   },[subpage]);
   useEffect(()=>{
-    if(subpage||active!=='kapcsolat'||contactSeen.current)return;
+    if((subpage&&!activeSection)||active!=='kapcsolat'||contactSeen.current)return;
     contactSeen.current=true;
     setContactGlint(true);
-  },[active,subpage]);
+  },[active,subpage,activeSection]);
   useEffect(()=>{
     const nav=desktop.current;
     if(!nav)return;
@@ -61,16 +62,16 @@ export function Header({archive,legal=false}:{archive:boolean;legal?:boolean}) {
       if(url.origin!==location.origin||url.pathname!==location.pathname||url.search!==location.search){location.assign(url.href);return;}
       const target=document.getElementById(decodeURIComponent(url.hash.slice(1)));
       if(!target)return;
-      history.pushState(null,'',url.hash);
+      
       const behavior=window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth';
       if(url.hash==='#top')window.scrollTo({top:0,behavior});else target.scrollIntoView({behavior,block:'start'});
       if(!target.hasAttribute('tabindex'))target.setAttribute('tabindex','-1');target.focus({preventScroll:true});
     });
   }
-  const sectionLink=(id:string)=>subpage?'/#'+id:'#'+id;
+  const sectionLink=sectionPath;
   const menuLinks=[...(subpage?[{id:'home',label:'Főoldal',href:'/'}]:[]),...mainLinks.map(link=>({...link,href:sectionLink(link.id)})),{id:'kerdesek',label:'Kérdések és válaszok',href:sectionLink('kerdesek')},{id:'projects',label:'Projektek',href:'/munkak/'}];
   return <header id="top" className={'navigation-header'+(subpage?' is-archive':' is-home')+(active?' has-section':'')+(scrolled?' is-scrolled':'')}>
-    <div className="nav-shell"><a className="nav-brand" href={subpage?'/':'#top'} aria-label="Vizitor főoldal"><span className={'nav-brand-wordmark'+(contactGlint?' has-contact-glint':'')} onAnimationEnd={()=>setContactGlint(false)}><img src="/vizitor-logo.svg" alt="Vizitor" width="328" height="103"/></span></a>
+    <div className="nav-shell"><a className="nav-brand" href="/" aria-label="Vizitor főoldal"><span className={'nav-brand-wordmark'+(contactGlint?' has-contact-glint':'')} onAnimationEnd={()=>setContactGlint(false)}><img src="/vizitor-logo.svg" alt="Vizitor" width="328" height="103"/></span></a>
       <nav className="nav-desktop" aria-label="Fő navigáció" ref={desktop} onMouseLeave={()=>setHovered(null)} onBlur={event=>{if(!event.currentTarget.contains(event.relatedTarget as Node|null)&&!event.currentTarget.matches(':hover'))setHovered(null);}}><span className="nav-highlight" aria-hidden="true"/>{mainLinks.map(link=><a key={link.id} href={sectionLink(link.id)} data-section={link.id} aria-current={active===link.id?'location':undefined} onMouseEnter={()=>setHovered(link.id)} onFocus={()=>setHovered(link.id)}><span>{link.label}</span></a>)}</nav>
       <div className="nav-actions"><a className="nav-inquiry" href={sectionLink('kapcsolat')} aria-current={active==='kapcsolat'?'location':undefined}><span className="nav-cta-desktop">Ajánlatot kérek</span><span className="nav-cta-mobile">Beszéljünk</span><span className="nav-inquiry-arrow"><Arrow/></span></a><span className="nav-action-divider" aria-hidden="true"/><button type="button" ref={trigger} className={'nav-menu-trigger'+(visible?' is-open':'')} aria-label={visible?'Menü bezárása':'Menü megnyitása'} aria-haspopup="dialog" aria-expanded={visible} aria-controls="navigation-dialog" onClick={()=>{if(visible)closeMenu();else setMenu('open');}}><span className="nav-menu-lines" aria-hidden="true"><i/><i/></span></button></div>
     </div>

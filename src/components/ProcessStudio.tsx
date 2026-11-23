@@ -14,7 +14,9 @@ function Surface() {
 function Launch() {
   return <div className="studio-launch" aria-hidden="true"><div className="launch-desktop"><div className="launch-chrome"><span/><span/><span/></div><img src="/process/desktop.webp" alt="" width="1200" height="680" loading="lazy" decoding="async"/></div><div className="launch-phone"><div className="phone-speaker"/><img src="/process/mobile.webp" alt="" width="360" height="797" loading="lazy" decoding="async"/></div></div>;
 }
-export function ProcessStudio() {
+export function ProcessStudio({standalone=false}:{standalone?:boolean}) {
+  const Heading=standalone?'h1':'h2';
+  const Subheading=standalone?'h2':'h3';
   const [active, setActive] = useState(0);
   const [pinned, setPinned] = useState(false);
   const [horizontal, setHorizontal] = useState(false);
@@ -128,7 +130,7 @@ export function ProcessStudio() {
   };
   return <div ref={track} className={'process-scroll-track' + (pinned ? ' is-pinned' : '')}>
     <div className="process-pin"><div className="process-studio-layout">
-      <div className="process-studio-copy"><p className="eyebrow">Így lesz belőle kész oldal</p><h2 id="process-title">Egy asztalnál.<br/>Az elejétől.</h2><p className="studio-intro">Közvetlenül azzal egyeztetsz, aki megtervezi és megépíti az oldaladat.</p>
+      <div className="process-studio-copy"><p className="eyebrow">Így lesz belőle kész oldal</p><Heading id="process-title">Egy asztalnál.<br/>Az elejétől.</Heading><p className="studio-intro">Közvetlenül azzal egyeztetsz, aki megtervezi és megépíti az oldaladat.</p>
         <div className="process-stage-tabs" role="tablist" aria-label="A közös munka lépései" aria-orientation={horizontal?'horizontal':'vertical'}>{stages.map((stage,i)=><button key={stage.label} id={'process-tab-'+i} ref={el=>{refs.current[i]=el;}} role="tab" aria-selected={active===i} aria-controls="process-stage-panel" tabIndex={active===i?0:-1} onClick={()=>select(i)} onKeyDown={e=>{if(['ArrowDown','ArrowUp','ArrowRight','ArrowLeft','Home','End'].includes(e.key)){e.preventDefault();const next=e.key==='Home'?0:e.key==='End'?2:(i+(['ArrowDown','ArrowRight'].includes(e.key)?1:2))%3;select(next);refs.current[next]?.focus({preventScroll:true});}}}><span className="stage-tab-symbol" aria-hidden="true"><Icon name={(['diamond','grid','spark'] as const)[i]}/></span><span className="stage-tab-copy"><b>{stage.label}</b><span>{stage.title}</span></span><span className="stage-tab-indicator" aria-hidden="true">{String(i+1).padStart(2,'0')}</span></button>)}</div>
         <p className="studio-action-hint">{pinned?<><span className="studio-scroll-cue" aria-hidden="true"><Icon name="arrow-down"/></span> Görgess tovább. Lépésről lépésre.</>:'Válts a lépések között, és nézd meg a részleteket.'}</p>
       </div>
@@ -138,7 +140,7 @@ export function ProcessStudio() {
           <div className="studio-board-bottom"><div className="studio-caption-stack">{stages.map((stage,i)=><span className={'studio-caption studio-caption-'+i} key={i} aria-hidden={active!==i}>{stage.caption}</span>)}</div><span className="studio-counter" aria-hidden="true">0{active+1}<span> / 03</span></span></div>
           <div className="studio-journey-line" aria-hidden="true"><i/></div>
         </div>
-        <div className="studio-description-stack">{stages.map((stage,i)=><div className={'studio-stage-description studio-description-'+i} key={i} aria-hidden={active!==i}><h3>{stage.note}</h3><p>{stage.text}</p></div>)}</div>
+        <div className="studio-description-stack">{stages.map((stage,i)=><div className={'studio-stage-description studio-description-'+i} key={i} aria-hidden={active!==i}><Subheading>{stage.note}</Subheading><p>{stage.text}</p></div>)}</div>
       </div>
     </div></div>
   </div>;

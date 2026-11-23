@@ -49,7 +49,7 @@ ${metadata.canonical?`<link rel="canonical" href="${escape(metadata.canonical)}"
    .replace(/(<meta property="og:description" content=")[^"]*/,'$1'+escape(metadata.description))
    .replace(/(<meta name="robots" content=")[^"]*/,'$1'+indexing)
    .replace('</head>',extra+'</head>');
-  if(route!=='/')html=html.replace(/<link rel="preload" href="\/graphics\/signature.webp"[^>]*>/,'');
+  if(route!=='/')html=html.replace(/<link rel="preload" href="\/graphics\/signature-clean.webp"[^>]*>/,'');
   await mkdir(path.dirname(target),{recursive:true});await writeFile(target,html);
   console.log(`Prerendered ${route}: ${markup.length} characters.`);
  }

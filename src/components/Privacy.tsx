@@ -15,7 +15,7 @@ export function Privacy() {
  },[]);
  function selectChapter(id:string){
   const target=document.getElementById('privacy-'+id);if(!target)return;
-  history.pushState(null,'','#privacy-'+id);
+
   target.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
   target.focus({preventScroll:true});
  }

@@ -6,7 +6,7 @@ const origin='https://vizitor.hu';
 const decode=value=>value.replaceAll('&amp;','&').replaceAll('&quot;','"').replaceAll('&#x27;',"'").replaceAll('&#39;',"'");
 const sitemap=await readFile('dist/sitemap.xml','utf8');
 const urls=[...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(match=>decode(match[1]));
-assert.equal(urls.length,12,'Expected 12 canonical pages');assert.equal(new Set(urls).size,urls.length,'Duplicate sitemap URL');
+assert.equal(urls.length,17,'Expected 17 canonical pages');assert.equal(new Set(urls).size,urls.length,'Duplicate sitemap URL');
 const pages=new Map();const titles=new Set(),descriptions=new Set();
 for(const url of urls){
  assert.equal(new URL(url).origin,origin);assert.ok(url.endsWith('/'));assert.ok(!url.includes('?')&&!url.includes('#'));

@@ -20,7 +20,7 @@ npm run preview
 
 A preview a http://127.0.0.1:4173 címen fut. Futó preview mellett az HTTP-ellenőrzés: `npm run check:http`.
 
-A build előrendereli a főoldalt, a projektarchívumot, a kilenc szolgáltatásoldalt, az adatvédelmi oldalt és a 404 oldalt. A Worker valódi 301/404 válaszokat, HEAD-kéréseket és ETag-alapú gyorsítótárazást kezel. A telepíthető kimenet: `dist/server/index.js`; a `dist` a statikus HTML-t és asseteket is tartalmazza.
+A build előrendereli a főoldalt, a projektarchívumot, a kilenc szolgáltatásoldalt, öt önálló navigációs oldalt, az adatvédelmi oldalt és a 404 oldalt. A Worker valódi 301/404 válaszokat, HEAD-kéréseket és ETag-alapú gyorsítótárazást kezel. A telepíthető kimenet: `dist/server/index.js`; a `dist` a statikus HTML-t és asseteket is tartalmazza.
 
 ## Tartalom és arculat
 
@@ -53,7 +53,7 @@ A betűkészlet licence a `public/fonts/OFL.txt` fájlban található.
 
 A `main` az új oldal élesítésre előkészített ága. A korábbi `main` változat a `codex/vizitor-legacy-2026-11-21` ágon maradt meg.
 
-Importáld az `alexgabe-dev/vite-portfolio` repót, a Production Branch legyen `main`, a Root Directory pedig a repó gyökere. A verziókezelt `vercel.json` beállítja a Vite keretrendszert, az `npm ci` telepítést, az `npm run build:vercel` buildet és a `dist` kimenetet. Nincs szükség egyedi SPA catch-all átírásra: mind a 12 oldal saját előrenderelt HTML-t kap, a nem létező útvonalakhoz pedig `404.html` készül.
+Importáld az `alexgabe-dev/vite-portfolio` repót, a Production Branch legyen `main`, a Root Directory pedig a repó gyökere. A verziókezelt `vercel.json` beállítja a Vite keretrendszert, az `npm ci` telepítést, az `npm run build:vercel` buildet és a `dist` kimenetet. Nincs szükség egyedi SPA catch-all átírásra: mind a 17 oldal saját előrenderelt HTML-t kap, a nem létező útvonalakhoz pedig `404.html` készül.
 
 - `VERCEL_ENV=production` esetén a Vercel-build alapból engedélyezi az indexelést; a canonical és a megosztási kép éles domainje `https://vizitor.hu`.
 - Preview buildnél megmarad a `noindex`, a megosztási kép a Vercel által megadott `VERCEL_URL` címre mutat.
@@ -63,3 +63,12 @@ Importáld az `alexgabe-dev/vite-portfolio` repót, a Production Branch legyen `
 - Az átirányításokat és cache-fejléceket a Vercel natív konfigurációja kezeli. A Sites Worker továbbra is külön építhető az eredeti `npm run build` paranccsal, de nem része a Vercel statikus kimenetének.
 
 Helyi próba: `npm run build:vercel` (előnézet), vagy `VERCEL_ENV=production npm run build:vercel` (éles beállítás, POSIX parancsértelmezőben). A Vercel-build az előrenderelés után lefuttatja a megfelelő SEO-ellenőrzést is.
+
+
+## Tiszta navigációs útvonalak
+
+A főmenü és az ajánlatkérés önálló, előrenderelt oldalakat nyit: `/szolgaltatasok/`, `/igy-dolgozunk/`, `/arak/`, `/gyakori-kerdesek/`, `/kapcsolat/`. Mindegyik saját H1-et, címet, leírást és canonical URL-t kap. A főoldal továbbra is tartalmazza az áttekintő szekciókat. A csomagválasztás személyes adatok nélkül, egyszer felhasználható sessionStorage-bejegyzéssel jut az ajánlatkérő oldalra.
+
+A korábbi `/csomagok/`, `/rolunk/`, `/folyamat/` és `/kerdesek/` címek 301-gyel az új oldalakra irányítanak. A régi főoldali `#` szakaszlinkeket a kliens az új oldalra vezeti; a Vercel és a Worker a 17 canonical oldalt valóban kiszolgálja.
+
+A hero tartalékképe `public/graphics/signature-clean.webp`, közvetlenül a Three.js-jelenetből készült, felirat vagy mozgáskapcsoló nélkül. A mozgást a látogató rendszerbeállítása és az automatikus láthatóságkezelés vezérli; nincs külön kapcsoló.

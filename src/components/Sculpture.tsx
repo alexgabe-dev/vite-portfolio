@@ -53,6 +53,6 @@ export function Sculpture({ kind = 'signature', paused = false }: { kind?: Sculp
     return () => { disposed = true; clearTimeout(timer); element.removeEventListener('sculpture-pause', resumeAfterSwipe); observer.disconnect(); motion.removeEventListener('change', observe); teardown?.(); };
   }, [kind]);
   return <div className={'sculpture sculpture-' + kind + (ready ? ' ready' : '') + (failed ? ' unavailable' : '')} ref={host} aria-hidden="true" data-ready={ready}>
-    <div className="sculpture-fallback" aria-hidden="true"><picture>{kind==='signature'&&<source media="(max-width: 600px)" srcSet="/vizitor-logo.svg"/>}<img src={'/graphics/'+kind+(kind==='architecture'?'.svg':'.webp')} alt="" width={kind==='signature'?660:400} height={kind==='signature'?600:235} loading={kind==='signature'?'eager':'lazy'} {...{fetchpriority:kind==='signature'?'high':'low'}} decoding="async"/></picture></div>
+    <div className="sculpture-fallback" aria-hidden="true"><picture>{kind==='signature'&&<source media="(max-width: 600px)" srcSet="/vizitor-logo.svg"/>}<img src={kind==='signature'?'/graphics/signature-clean.webp':'/graphics/'+kind+(kind==='architecture'?'.svg':'.webp')} alt="" width={kind==='signature'?660:400} height={kind==='signature'?600:235} loading={kind==='signature'?'eager':'lazy'} {...{fetchpriority:kind==='signature'?'high':'low'}} decoding="async"/></picture></div>
   </div>;
 }

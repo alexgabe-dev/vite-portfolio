@@ -78,3 +78,8 @@ The current share card is `/og/vizitor-share-2026.png` (1200 × 630 PNG). Its ed
 Open Graph and Twitter metadata are prerendered on every route. Private preview builds point image URLs to the current Sites preview origin; override with `VIZITOR_PREVIEW_ORIGIN` if that origin changes. With `VIZITOR_INDEXABLE=true`, image URLs use `https://vizitor.hu` alongside the public SEO configuration.
 
 The current owner-private hosting audience prevents unauthenticated social crawlers from reading the page or image. The card can appear in Facebook/Messenger previews after the intended public launch; preparing metadata does not change sharing permissions. Existing platform caches may need a refresh after launch.
+
+
+## Navigációs oldalak – 2026. november 23.
+
+Öt külön canonical oldal váltotta fel a főmenü fragmentumait: `/szolgaltatasok/`, `/igy-dolgozunk/`, `/arak/`, `/gyakori-kerdesek/`, `/kapcsolat/`. A sitemap összesen 17 oldalt tartalmaz. Ezek önálló tartalmi nézetek, nem a teljes főoldalt másoló URL-aliasok. A kapcsolatoldal ContactPage típust és saját morzsamenüt kap.

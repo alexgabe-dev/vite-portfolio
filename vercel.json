@@ -70,52 +70,27 @@
     },
     {
       "source": "/szolgaltatasok",
-      "destination": "/#szolgaltatasok",
+      "destination": "/szolgaltatasok/",
       "statusCode": 301
     },
     {
-      "source": "/szolgaltatasok/",
-      "destination": "/#szolgaltatasok",
+      "source": "/igy-dolgozunk",
+      "destination": "/igy-dolgozunk/",
+      "statusCode": 301
+    },
+    {
+      "source": "/arak",
+      "destination": "/arak/",
+      "statusCode": 301
+    },
+    {
+      "source": "/gyakori-kerdesek",
+      "destination": "/gyakori-kerdesek/",
       "statusCode": 301
     },
     {
       "source": "/kapcsolat",
-      "destination": "/#kapcsolat",
-      "statusCode": 301
-    },
-    {
-      "source": "/kapcsolat/",
-      "destination": "/#kapcsolat",
-      "statusCode": 301
-    },
-    {
-      "source": "/csomagok",
-      "destination": "/#csomagok",
-      "statusCode": 301
-    },
-    {
-      "source": "/csomagok/",
-      "destination": "/#csomagok",
-      "statusCode": 301
-    },
-    {
-      "source": "/rolunk",
-      "destination": "/#folyamat",
-      "statusCode": 301
-    },
-    {
-      "source": "/rolunk/",
-      "destination": "/#folyamat",
-      "statusCode": 301
-    },
-    {
-      "source": "/munkak",
-      "destination": "/munkak/",
-      "statusCode": 301
-    },
-    {
-      "source": "/adatvedelem",
-      "destination": "/adatvedelem/",
+      "destination": "/kapcsolat/",
       "statusCode": 301
     },
     {
@@ -136,16 +111,6 @@
     {
       "source": "/keresooptimalizalas",
       "destination": "/keresooptimalizalas/",
-      "statusCode": 301
-    },
-    {
-      "source": "/wordpress-karbantartas",
-      "destination": "/weboldal-karbantartas/",
-      "statusCode": 301
-    },
-    {
-      "source": "/wordpress-karbantartas/",
-      "destination": "/weboldal-karbantartas/",
       "statusCode": 301
     },
     {
@@ -171,6 +136,66 @@
     {
       "source": "/webanalitika-meres",
       "destination": "/webanalitika-meres/",
+      "statusCode": 301
+    },
+    {
+      "source": "/munkak",
+      "destination": "/munkak/",
+      "statusCode": 301
+    },
+    {
+      "source": "/adatvedelem",
+      "destination": "/adatvedelem/",
+      "statusCode": 301
+    },
+    {
+      "source": "/csomagok",
+      "destination": "/arak/",
+      "statusCode": 301
+    },
+    {
+      "source": "/csomagok/",
+      "destination": "/arak/",
+      "statusCode": 301
+    },
+    {
+      "source": "/rolunk",
+      "destination": "/igy-dolgozunk/",
+      "statusCode": 301
+    },
+    {
+      "source": "/rolunk/",
+      "destination": "/igy-dolgozunk/",
+      "statusCode": 301
+    },
+    {
+      "source": "/folyamat",
+      "destination": "/igy-dolgozunk/",
+      "statusCode": 301
+    },
+    {
+      "source": "/folyamat/",
+      "destination": "/igy-dolgozunk/",
+      "statusCode": 301
+    },
+    {
+      "source": "/kerdesek",
+      "destination": "/gyakori-kerdesek/",
+      "statusCode": 301
+    },
+    {
+      "source": "/kerdesek/",
+      "destination": "/gyakori-kerdesek/",
+      "statusCode": 301
+    },
+    {
+      "source": "/wordpress-karbantartas",
+      "destination": "/weboldal-karbantartas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/wordpress-karbantartas/",
+      "destination": "/weboldal-karbantartas/",
       "statusCode": 301
     }
   ]

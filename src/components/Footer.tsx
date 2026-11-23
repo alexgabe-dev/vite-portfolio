@@ -1,6 +1,6 @@
 import { Icon } from './Icon';
 import { useEffect, useRef, useState } from 'react';
-import { serviceLinks } from '../routes';
+import { serviceLinks, sectionPath } from '../routes';
 
 export function Footer({ archive }: { archive: boolean }) {
   const wordmark = useRef<HTMLDivElement>(null);
@@ -18,7 +18,7 @@ export function Footer({ archive }: { archive: boolean }) {
   },[]);
 
   const [copyState,setCopyState]=useState<'idle'|'copied'|'error'>('idle');
-  const link=(section:string)=>archive?'/#'+section:'#'+section;
+  const link=sectionPath;
   async function copyEmail(){try{await navigator.clipboard.writeText('info@vizitor.hu');setCopyState('copied');}catch{setCopyState('error');}}
   return <footer className="signature-footer" id="lablec" aria-label="Vizitor lábléc"><div className="wrap">
     <details className="footer-services"><summary><span>Szolgáltatások</span><Icon name="plus"/></summary><nav aria-label="Szolgáltatások részletesen"><div>{serviceLinks.map(item=><a key={item.path} href={item.path}>{item.label}</a>)}</div></nav></details><div className="signature-footer-top">
@@ -26,7 +26,7 @@ export function Footer({ archive }: { archive: boolean }) {
       <nav className="footer-explore" aria-label="Navigáció a láblécben"><p className="footer-section-label">Nézz körül</p>{[['szolgaltatasok','Szolgáltatások'],['folyamat','Így dolgozunk'],['csomagok','Csomagok és árak'],['kerdesek','Kérdések és válaszok']].map(([id,title])=><a href={link(id)} key={id}><span>{title}</span><span aria-hidden="true"><Icon name="arrow-up-right"/></span></a>)}</nav>
       <nav className="footer-elsewhere" aria-label="Munkák és további információk"><p className="footer-section-label">A többi részlet</p><a href="/munkak/"><span>Projektek</span><span aria-hidden="true"><Icon name="arrow-up-right"/></span></a><a href="https://github.com/alexgabe-dev" target="_blank" rel="noopener noreferrer"><span>GitHub</span><span aria-hidden="true"><Icon name="arrow-up-right"/></span><span className="sr-only"> (új lapon)</span></a><a href="/adatvedelem/" target="_blank" rel="noopener noreferrer"><span>Adatkezelés</span><span aria-hidden="true"><Icon name="arrow-up-right"/></span><span className="sr-only"> (új lapon)</span></a></nav>
     </div>
-    <div className="signature-footer-bottom"><div className="footer-signoff"><span>©︎ {new Date().getFullYear()} Vizitor</span><span>Weboldal · Marketing · Karbantartás</span></div><a className="footer-return" href="#top"><span>Vissza a tetejére</span><span className="footer-return-disc" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5m-6 6 6-6 6 6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg></span></a></div>
+    <div className="signature-footer-bottom"><div className="footer-signoff"><span>©︎ {new Date().getFullYear()} Vizitor</span><span>Weboldal · Marketing · Karbantartás</span></div><button className="footer-return" type="button" onClick={()=>window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})}><span>Vissza a tetejére</span><span className="footer-return-disc" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5m-6 6 6-6 6 6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg></span></button></div>
     <div className="footer-wordmark-stage" ref={wordmark}><img className="footer-logo-front" src="/vizitor-logo.svg" alt="Vizitor" width="328" height="103" decoding="async"/></div>
   </div></footer>;
 }

@@ -33,12 +33,12 @@ function studioEnvironment() {
   return texture;
 }
 
-export async function createSculpture(host: HTMLDivElement, kind: SculptureKind, isPaused: () => boolean) {
+export async function createSculpture(host: HTMLDivElement, kind: SculptureKind, isPaused: () => boolean, capture = false) {
   const prepared = kind === 'signature' ? await loadLogoMesh() : undefined;
   const compact = window.matchMedia('(max-width: 600px)');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: capture, powerPreference: 'low-power' });
   renderer.setPixelRatio(1);
   renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -139,7 +139,7 @@ export async function createSculpture(host: HTMLDivElement, kind: SculptureKind,
   function resize() {
     const { width, height } = host.getBoundingClientRect(); if (!width || !height) return;
     const pixelBudget = kind === 'signature' ? (compact.matches ? 210000 : 760000) : 160000;
-    const ratio = Math.min(window.devicePixelRatio, compact.matches ? 1.6 : 1.7, Math.sqrt(pixelBudget / (width * height)));
+    const ratio = capture ? 2 : Math.min(window.devicePixelRatio, compact.matches ? 1.6 : 1.7, Math.sqrt(pixelBudget / (width * height)));
     renderer.setSize(Math.round(width * ratio), Math.round(height * ratio), false);
     camera.aspect = width / height;
     if (kind === 'signature') {
