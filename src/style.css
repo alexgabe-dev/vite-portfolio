@@ -505,3 +505,18 @@ html,body,*{scrollbar-width:none;-ms-overflow-style:none}*::-webkit-scrollbar{wi
 
 .section-page h1{font-size:clamp(2.4rem,4.1vw,3.9rem)}
 .capability-copy :is(h2,h3) a:hover{color:#bd3d21}
+
+/* Local SVG marks keep social links crisp without external scripts or icon fonts. */
+.footer-socials{display:flex;align-items:center;gap:10px;width:max-content;margin-top:24px}
+.footer-socials>a{position:relative;display:grid;place-items:center;width:48px;min-height:48px;border:1px solid #51241750;border-radius:14px;background:#ffffff0d;color:#341b12;transition:transform .3s cubic-bezier(.22,1,.36,1),background .25s,color .25s,border-color .25s,box-shadow .3s}
+.footer-socials svg{display:block;width:21px;height:21px;transition:transform .3s cubic-bezier(.22,1,.36,1)}
+.footer-social-label{position:absolute;top:calc(100% + 9px);left:50%;transform:translate(-50%,-4px);padding:4px 8px;border-radius:5px;background:#321c15;color:#fff1e7;white-space:nowrap;font-size:.6875rem;line-height:1.5;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:3}
+.footer-socials>a:focus-visible{background:#321c15;border-color:#321c15;color:#fff1e7}
+.footer-socials>a:focus-visible .footer-social-label{opacity:1;transform:translate(-50%,0)}
+.footer-socials>a:active{background:#321c15;border-color:#321c15;color:#fff1e7}
+@media(hover:hover) and (pointer:fine){
+ .footer-socials>a:hover{transform:translateY(-3px);background:#321c15;border-color:#321c15;color:#fff1e7;box-shadow:0 6px 12px #69291a16}
+ .footer-socials>a:hover svg{transform:scale(1.04)}
+ .footer-socials>a:hover .footer-social-label{opacity:1;transform:translate(-50%,0)}
+}
+@media(prefers-reduced-motion:reduce){.footer-socials>a,.footer-socials svg,.footer-social-label{transition:none}.footer-socials>a:hover,.footer-socials>a:hover svg{transform:none}}
