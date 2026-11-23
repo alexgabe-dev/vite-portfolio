@@ -9,5 +9,5 @@ function SocialMark({name}:{name:typeof socials[number]['icon']}){
 }
 
 export function FooterSocials(){
- return <nav className="footer-socials" aria-label="Közösségi oldalak">{socials.map(social=><a key={social.icon} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.name+' (új lapon)'}><SocialMark name={social.icon}/><span className="footer-social-label" aria-hidden="true">{social.name}</span></a>)}</nav>;
+ return <nav className="footer-socials" aria-label="Közösségi oldalak">{socials.map(social=><a key={social.icon} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.name+' (új lapon)'}><SocialMark name={social.icon}/></a>)}</nav>;
 }
