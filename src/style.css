@@ -513,3 +513,56 @@ html,body,*{scrollbar-width:none;-ms-overflow-style:none}*::-webkit-scrollbar{wi
 .footer-socials>a:focus-visible,.footer-socials>a:active{color:#301b14}
 @media(hover:hover) and (pointer:fine){.footer-socials>a:hover{color:#301b14}}
 @media(prefers-reduced-motion:reduce){.footer-socials>a{transition:none}}
+
+/* First-party consent: lightweight, equal choices, no overlay on the first layer. */
+.consent-banner,.consent-dialog{color:#f5f5f0;background:#19232c;font-family:inherit;border:1px solid #ffffff24;border-radius:20px;box-shadow:0 18px 70px #0005;color-scheme:dark}
+.consent-banner{position:fixed;z-index:150;bottom:max(20px,env(safe-area-inset-bottom));left:max(24px,env(safe-area-inset-left));width:min(430px,calc(100vw - 48px));padding:24px;animation:consent-enter .5s cubic-bezier(.2,.7,.2,1) both;max-height:calc(100dvh - 32px);overflow:auto}
+.consent-heading{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.consent-heading>svg{width:30px;height:30px;color:#ff795a}
+.consent-kicker{font-size:.625rem;letter-spacing:.13em;text-transform:uppercase;color:#c3cbc9}
+.consent-banner h2,.consent-dialog h2{font-size:1.75rem;font-weight:400;letter-spacing:-.045em;line-height:1.12;margin:0 0 12px}
+.consent-banner p,.consent-dialog p{font-size:.8125rem;line-height:1.65;color:#c5cdcf;margin:0 0 12px}
+.consent-policy{display:inline-block;font-size:.75rem;color:#e0e4e2;text-decoration:underline;text-underline-offset:4px;padding-block:4px}
+.consent-actions{display:flex;gap:10px;margin-top:20px}
+.consent-actions>button{flex:1;min-height:46px;padding:10px 16px;border:1px solid #eff0ed;background:#eff0ed;color:#19232c;font:inherit;font-size:.8125rem;font-weight:600;border-radius:8px;cursor:pointer;transition:background .2s,border-color .2s}
+.consent-customize,.consent-save{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:44px;border:0;background:transparent;color:#e0e4e2;font:inherit;font-size:.75rem;cursor:pointer;padding:14px 0 0}
+.consent-customize>span{font-size:1.1rem;color:#ff795a}
+.consent-dialog{position:fixed;inset:0;width:min(540px,calc(100% - 32px));max-height:min(780px,calc(100dvh - 40px));margin:auto;padding:0;overflow:auto;overscroll-behavior:contain}
+.consent-dialog[open]{display:flex;flex-direction:column;animation:consent-enter .3s cubic-bezier(.2,.7,.2,1)}
+.consent-dialog::backdrop{background:#080c11b8}
+.consent-dialog-top{display:flex;justify-content:space-between;align-items:center;padding:12px 20px 0 28px}
+.consent-close{display:grid;place-items:center;width:44px;height:44px;padding:10px;border:0;background:transparent;color:#eff0ed;cursor:pointer;border-radius:8px}
+.consent-close svg{width:24px;height:24px}
+.consent-dialog-content{padding:12px 28px 8px;overflow:auto;overscroll-behavior:contain;min-height:0}
+.consent-dialog h2{font-size:2rem}
+.consent-category{padding-block:20px;border-top:1px solid #ffffff22}
+.consent-category:first-of-type{margin-top:24px}
+.consent-category-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.consent-category h3,.consent-category label{font:inherit;font-size:.875rem;font-weight:600;margin:0;color:#f5f5f0}
+.consent-category label{cursor:pointer;min-height:32px;display:flex;align-items:center;flex:1}
+.consent-required,.consent-inactive{font-size:.625rem;color:#b9c4c7;white-space:nowrap}
+.consent-required{color:#ff9b80}
+.consent-category input{appearance:none;position:relative;flex:none;inline-size:44px;block-size:26px;border:1px solid #819098;border-radius:20px;background:#33414a;cursor:pointer;transition:background .2s;margin:0}
+.consent-category input:before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;border-radius:50%;background:#eff0ed;transition:transform .22s cubic-bezier(.2,.7,.2,1)}
+.consent-category input:checked{background:#ff5c35;border-color:#ff5c35}
+.consent-category input:checked:before{transform:translateX(18px);background:#19232c}
+.consent-category input:disabled{opacity:.4;cursor:default}
+.consent-category details{font-size:.75rem;line-height:1.6;color:#c5cdcf}
+.consent-category summary{cursor:pointer;padding-block:8px;min-height:36px;color:#eff0ed}
+.consent-category details p{font-size:.75rem;margin:10px 0}
+.consent-category details a{color:#ff9b80;text-decoration:underline;text-underline-offset:3px}
+.consent-category code{font-size:.7rem;overflow-wrap:anywhere;color:#eff0ed}
+.consent-dialog-bottom{padding:0 28px 20px;border-top:1px solid #ffffff22;flex:none}
+.consent-save{color:#ff9b80;min-height:48px;padding-top:10px}
+.consent-storage-message{position:fixed;z-index:160;left:16px;bottom:16px;max-width:430px;padding:18px;border-radius:12px;background:#19232c;border:1px solid #ffffff40;color:#eff0ed;font-size:.8125rem;line-height:1.6}
+.consent-banner :focus-visible,.consent-dialog :focus-visible{outline:2px solid #ff9b80;outline-offset:4px}
+.footer-consent{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:44px;width:100%;border:0;padding:0;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer}
+.footer-consent>.ui-icon{width:16px;height:16px}
+@media(hover:hover){.consent-actions>button:hover{background:#ff9b80;border-color:#ff9b80}.consent-customize:hover,.consent-close:hover{color:#ff9b80}.consent-save:hover{color:#ffd2c6}}
+@media(max-width:600px){.consent-banner{left:12px;bottom:max(12px,env(safe-area-inset-bottom));width:calc(100vw - 24px);padding:20px;border-radius:16px}.consent-heading{margin-bottom:10px}.consent-banner h2{font-size:1.5rem}.consent-banner p{font-size:.8125rem}.consent-actions{margin-top:16px}.consent-dialog{width:calc(100% - 24px);max-height:calc(100dvh - 24px);border-radius:16px}.consent-dialog-content{padding-inline:20px}.consent-dialog-top{padding-left:20px}.consent-dialog-bottom{padding-inline:20px}}
+@keyframes consent-enter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.consent-banner,.consent-dialog[open]{animation:none}.consent-actions>button,.consent-category input,.consent-category input:before{transition:none}}
+
+.privacy-consent-button{min-height:48px;border:1px solid #273139;border-radius:8px;background:transparent;color:#273139;padding:12px 18px;font:inherit;font-size:.875rem;cursor:pointer}
+
+.consent-category label{min-height:44px}

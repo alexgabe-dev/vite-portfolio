@@ -3,6 +3,9 @@ import { createRoot, hydrateRoot } from 'react-dom/client';
 import App from './App';
 import { normalizePath, isServicePath } from './routes';
 import './style.css';
+import { initConsent } from './consent';
+import { consentConfig } from './consent-config';
+initConsent(consentConfig);
 async function start() {
  const page=normalizePath(window.location.pathname);
  const Privacy=/^\/adatvedelem\/?$/.test(page) ? (await import('./components/Privacy')).Privacy : null;

@@ -1,3 +1,4 @@
+import { ConsentBanner } from './components/ConsentBanner';
 import { Icon } from './components/Icon';
 export { pageMetadata } from './seo';
 export { Privacy } from './components/Privacy';
@@ -88,5 +89,5 @@ export default function App({page='/',privacyContent,serviceContent}:{page?:stri
     {(!sectionPage||sectionPage.id==='csomagok')&&<Pricing onRequest={request} category={pricingCategory} onCategoryChange={setPricingCategory} standalone={!!sectionPage}/>}
     {(!sectionPage||sectionPage.id==='kerdesek')&&<FAQ onShowPackages={showPackages} standalone={!!sectionPage}/>}
     {(!sectionPage||sectionPage.id==='kapcsolat')&&<ContactSection intent={intent} standalone={!!sectionPage}/>}
-  </main>}<Footer archive={archive||legal||service||missing}/></>;
+  </main>}<Footer archive={archive||legal||service||missing}/><ConsentBanner/></>;
 }

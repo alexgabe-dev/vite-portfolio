@@ -37,7 +37,7 @@ Az űrlapban az e-mail-cím és az üzenet kötelező. A Formspree-végpont a ko
 
 A jelenlegi Sites-próbaoldal privát, és szándékosan `noindex`. A GitHub-forrás feltöltése nem módosítja a domain beállításait. A nyilvános vizitor.hu-ra készülő buildnél `VIZITOR_INDEXABLE=true` engedélyezi a keresőindexelést és a végleges megosztási képcímeket. Másik Sites-próbacím esetén a megosztási képek eredete a `VIZITOR_PREVIEW_ORIGIN` változóval állítható.
 
-A régi blog tartalmának költöztetése és az adatvédelmi szöveg jogi frissítése külön élesítési feladat. Az adatvédelmi szöveg az eredeti változatot őrzi; az új szolgáltatókkal összeegyeztetendő.
+A régi blog tartalmának költöztetése külön feladat. Az adatvédelmi tájékoztató webes szolgáltatókról és sütikezelésről szóló fejezetei frissültek; a többi, eredeti üzleti adatkezelési fejezet jogi felülvizsgálata még szükséges.
 
 ## Dokumentáció
 
@@ -72,3 +72,8 @@ A főmenü és az ajánlatkérés önálló, előrenderelt oldalakat nyit: `/szo
 A korábbi `/csomagok/`, `/rolunk/`, `/folyamat/` és `/kerdesek/` címek 301-gyel az új oldalakra irányítanak. A régi főoldali `#` szakaszlinkeket a kliens az új oldalra vezeti; a Vercel és a Worker a 17 canonical oldalt valóban kiszolgálja.
 
 A hero tartalékképe `public/graphics/signature-clean.webp`, közvetlenül a Three.js-jelenetből készült, felirat vagy mozgáskapcsoló nélkül. A mozgást a látogató rendszerbeállítása és az automatikus láthatóságkezelés vezérli; nincs külön kapcsoló.
+
+
+## Sütibeállítások és Google Consent Mode v2
+
+Saját, a Vizitor arculatához igazított banner, egyenrangú elfogadással és elutasítással, külön analitikai kapcsolóval és láblécből elérhető visszavonással. A GA4 (`G-6XTDE9Y48B`) kizárólag engedély után töltődik be. A régi CookieYes-es GTM-konténert nem töltjük be. Részletek, működés, megőrzés és ellenőrzés: [docs/CONSENT.md](docs/CONSENT.md).

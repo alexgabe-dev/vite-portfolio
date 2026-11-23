@@ -10,7 +10,8 @@
     "check:seo": "node scripts/check-seo.mjs",
     "check:http": "node scripts/check-http.mjs",
     "check:worker": "node scripts/check-worker.mjs",
-    "build:vercel": "node scripts/build-vercel.mjs"
+    "build:vercel": "node scripts/build-vercel.mjs",
+    "check:consent": "node scripts/check-consent.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

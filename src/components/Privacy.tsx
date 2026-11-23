@@ -1,3 +1,4 @@
+import { openConsentSettings } from '../consent';
 import { useEffect, useState } from 'react';
 
 const chapters = [["alapelvek", "Alapelvek"], ["adatkezelo", "Az adatkezelő"], ["adatkezelesek", "Kezelt adatok"], ["adatfeldolgozok", "Adatfeldolgozók"], ["sutik", "Sütik"], ["jogaid", "Az érintett jogai"], ["adatbiztonsag", "Adatbiztonság"], ["jogorvoslat", "Jogorvoslat"], ["jogszabalyok", "Jogszabályok"], ["modositasok", "Módosítások"], ["zaro-rendelkezesek", "Záró rendelkezések"], ["kapcsolat", "Kapcsolat"]];
@@ -326,75 +327,30 @@ export function Privacy() {
           
 </section>
 <section className="privacy-section" id="privacy-adatfeldolgozok" tabIndex={-1}>
-            <h2>
-              4. Adatfeldolgozók és harmadik fél szolgáltatók
-            </h2>
-            <div>
-              <p>Az adatkezelési műveletek során az alábbi adatfeldolgozókat és harmadik fél szolgáltatókat vesszük igénybe:</p>
-              <ul>
-                <li>
-                  <div>
-                    <strong>Tárhelyszolgáltatók:</strong>
-                    <span> Rackhost Informatikai Zártkörűen Működő Részvénytársaság, Székhely: 6722 Szeged, Tisza Lajos körút 41., Honlap: www.rackhost.hu, E-mail: info@rackhost.hu.</span>
-                  </div>
-                </li>
-                <li>
-                  <div>
-                    <strong>Analitikai szolgáltatók:</strong>
-                    <span> A weboldal használatának elemzéséhez és a felhasználói élmény javításához.</span>
-                  </div>
-                </li>
-                <li>
-                  <div>
-                    <strong>Marketing szolgáltatók:</strong>
-                    <span> Hirdetések megjelenítéséhez és célzott marketing tevékenységekhez.</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          
+ <h2>4. A weboldalon igénybe vett szolgáltatók</h2>
+ <ul><li><strong>Vercel Inc.</strong> – a weboldal tárhelye és kiszolgálása. A technikai működéshez kapcsolódó hálózati adatokhoz és naplóadatokhoz férhet hozzá. <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Adatvédelmi tájékoztató (új lapon)</a>.</li>
+ <li><strong>Formspree, Inc.</strong> – az ajánlatkérő űrlap feldolgozása. Az elküldött névhez (ha megadod), e-mail-címhez, üzenethez és a kiválasztott szolgáltatáshoz férhet hozzá, valamint a feldolgozáshoz szükséges technikai adatokhoz. Csak az űrlap elküldésekor kapcsolódunk a szolgáltatáshoz. <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener noreferrer">Adatvédelmi tájékoztató (új lapon)</a>.</li>
+ <li><strong>Google Ireland Limited</strong> – hozzájárulás esetén látogatottságmérés, az 5. fejezetben részletezettek szerint.</li></ul>
+ <p>A szolgáltatók az EGT-n kívül is kezelhetnek adatokat. Az adattovábbítás kereteit és garanciáit a hivatkozott szolgáltatói tájékoztatók és az adatfeldolgozási feltételek ismertetik. A kapcsolatfelvételhez szükséges adatkezelés és az opcionális analitika egymástól független; az űrlap analitikai hozzájárulás nélkül is használható.</p>
 </section>
 <section className="privacy-section" id="privacy-sutik" tabIndex={-1}>
-            <h2>
-              5. Sütik (Cookie-k) és technikai azonosítók
-            </h2>
-            <div>
-              <h3>
-                  5.1. A weboldal megfelelő működéséhez elengedhetetlen sütik
-                </h3>
-              <ul>
-                <li>
-                  <div>
-                    <strong>Munkamenet sütik:</strong>
-                    <span> A weboldal alapvető funkcióinak biztosításához szükségesek.</span>
-                  </div>
-                </li>
-                <li>
-                  <div>
-                    <strong>Biztonsági sütik:</strong>
-                    <span> A felhasználói fiók védelmét szolgálják.</span>
-                  </div>
-                </li>
-                <li>
-                  <div>
-                    <strong>Teljesítmény sütik:</strong>
-                    <span> A weboldal teljesítményének méréséhez és javításához használatosak.</span>
-                  </div>
-                </li>
-              </ul>
-              <div>
-                <h3>
-                  5.2. Sütik kezelése és felhasználói lehetőségek
-                </h3>
-                <p>
-                  <strong>Cookie banner:</strong> Az első látogatáskor megjelenő áttekinthető cookie banner tájékoztatja a látogatót a sütik típusairól és céljairól, valamint lehetőséget biztosít az összes sütik elfogadására vagy a nem létfontosságú sütik (analitikai, marketing) elutasítására.
-                </p>
-                <p>
-                  <strong>Részletes beállítások:</strong> A cookie banner egy részletes adatkezelési tájékoztatóhoz vezet, ahol a látogatók módosíthatják sütik beállításaikat, illetve a böngésző beállításaiban is módosíthatják a sütik kezelését.
-                </p>
-              </div>
-            </div>
-          
+ <h2>5. Sütik és böngészőtárhely</h2>
+ <p>A böngészőben tárolt információk közül az alapvető működéshez szükségeseket hozzájárulás nélkül használjuk. A látogatottságmérés kizárólag az előzetes, önkéntes hozzájárulásoddal indul el (GDPR 6. cikk (1) a) pont). Az elutasítás nem korlátozza az oldal használatát. A görgetés vagy a további böngészés nem jelent hozzájárulást.</p>
+ <h3>5.1. Alapvető működés</h3>
+ <ul><li><strong>vizitor.consent.v1</strong> – a saját domain helyi tárhelyén (localStorage) tárolt döntés, időpont és tájékoztatóverzió. Legfeljebb 180 napig érvényes, elfogadás és elutasítás esetén egyaránt. Nem tartalmaz nevet vagy e-mail-címet; nem küldjük analitikai szolgáltatónak.</li>
+ <li><strong>vizitor.inquiry-selection</strong> – a kiválasztott szolgáltatás vagy csomag továbbvitele az ajánlatkérő oldalra. Saját munkamenet-tárhely (sessionStorage), egyszeri felhasználás után töröljük; 15 perc után nem használjuk fel.</li>
+ <li><strong>vizitor.package-category</strong> – a kiválasztott csomagkategória továbbvitele az ároldalra. Saját munkamenet-tárhely, egyszeri felhasználás után töröljük. A munkamenet-tárhely a munkamenet végén törlődik.</li></ul>
+ <h3>5.2. Google Analytics 4 – csak engedéllyel</h3>
+ <p>Szolgáltató: Google Ireland Limited (Gordon House, Barrow Street, Dublin 4, Írország). A GA4 a látogatottságot és az oldal használatát méri: megtekintett oldalak, interakciók, böngésző- és eszközadatok, hivatkozó oldal, hozzávetőleges földrajzi hely. A böngésző a hozzájárulás után közvetlenül kapcsolódik a Google szervereihez. Az ajánlatkérőben megadott nevet, e-mail-címet és üzenetet nem továbbítjuk a GA4 felé.</p>
+ <p>A <strong>_ga</strong> és <strong>_ga_*</strong> sütik látogatói és munkamenet-azonosítókat tárolhatnak, legfeljebb 180 napig, automatikus élettartam-hosszabbítás nélkül. Ez a böngészőben tárolt sütik ideje; a Google szerveroldali eseményadat-megőrzését a GA4-fiók külön beállítása határozza meg. A Google az EGT-n kívül, így az Egyesült Államokban is kezelhet adatokat; az alkalmazott adattovábbítási garanciákat a Google tájékoztatói ismertetik.</p>
+ <p><a href="https://policies.google.com/privacy?hl=hu" target="_blank" rel="noopener noreferrer">A Google adatvédelmi tájékoztatója (új lapon)</a> · <a href="https://policies.google.com/privacy/frameworks?hl=hu" target="_blank" rel="noopener noreferrer">Nemzetközi adattovábbítás (új lapon)</a></p>
+ <h3>5.3. Hirdetési követés és Consent Mode v2</h3>
+ <p>Az oldal nem tölt be Google Ads- vagy Meta Pixel-követőt. A Google Signals és a hirdetési személyre szabás kikapcsolva marad. A Google Consent Mode v2 alapváltozatát használjuk: a Google mérőkódja a hozzájárulásig nem töltődik be, így elutasításkor sütimentes mérési jelzést sem küldünk a Google felé. Az analitikai, hirdetési tárolási, hirdetési adatküldési és személyre szabási engedélyek alapállapota tiltott.</p>
+ <h3>5.4. Módosítás és visszavonás</h3>
+ <p>A lábléc „Sütibeállítások” gombjával vagy az alábbi gombbal bármikor módosíthatod a döntésedet, illetve az „Elutasítom” gombbal visszavonhatod a hozzájárulásodat. Visszavonáskor leállítjuk a mérést, eltávolítjuk az elérhető analitikai sütiket, és újratöltjük az oldalt, hogy a már futó mérőkód se maradjon aktív. A visszavonás nem érinti a korábbi adatkezelés jogszerűségét.</p>
+ <p>180 nap után vagy a célok, szolgáltatók változásakor új döntést kérünk. Ha a böngésződ tiltja a helyi tárhelyet, a döntés csak az aktuális oldalon érvényes; új megnyitáskor ismét megjelenik a banner. JavaScript nélkül nem töltődik be az analitika.</p>
+ <button type="button" className="privacy-consent-button" onClick={openConsentSettings}>Sütibeállítások megnyitása ↗</button>
+ <p><small>A sütikezelésről szóló fejezet frissítve: 2026. november 23.</small></p>
 </section>
 <section className="privacy-section" id="privacy-jogaid" tabIndex={-1}>
             <h2>
