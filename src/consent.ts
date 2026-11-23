@@ -73,6 +73,8 @@ export function createConsentManager(win: ConsentWindow, config: ConsentConfig) 
   win.document.head.appendChild(script);
  }
  function apply() {
+  // Retired CookieYes / marketing identifiers must not revive an older advertising grant.
+  clearCookies(/^(cookieyes-consent|_gcl_[a-z]+|_fbp|_fbc)$/);
   applyClarity();
   const allowed = Boolean(analyticsId && choice?.analytics);
   if (analyticsId) (win as unknown as Record<string, unknown>)['ga-disable-' + analyticsId] = !allowed;

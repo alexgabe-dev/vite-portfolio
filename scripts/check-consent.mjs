@@ -19,7 +19,7 @@ function fake(raw = null, storageFails = false) {
   reloads: 0, setInterval: () => 1, clearInterval() {},
   addEventListener: (name, fn) => listeners.set(name, fn), removeEventListener: name => listeners.delete(name), dispatchEvent: event => { listeners.get(event.type)?.(event); return true; },
  };
- Object.defineProperty(win.document, 'cookie', { get: () => '_ga=old; _ga_6XTDE9Y48B=old; session=keep', set: v => cookieWrites.push(v) });
+ Object.defineProperty(win.document, 'cookie', { get: () => '_ga=old; _ga_6XTDE9Y48B=old; cookieyes-consent=old; _gcl_au=old; _fbp=old; session=keep', set: v => cookieWrites.push(v) });
  return { win, scripts, store, cookieWrites, listeners };
 }
 for (const raw of [null, '{', '{}', record(true, Date.now() - CONSENT_MAX_AGE), record(true, Date.now() + 10000), record(true, Date.now(), 'old-version'), JSON.stringify({ analytics: 'true', savedAt: Date.now(), revision })]) assert.equal(parseConsent(raw, revision), null);
@@ -27,6 +27,7 @@ assert.equal(parseConsent(record(false), revision).analytics, false);
 assert.equal(parseConsent(record(true), revision).analytics, true);
 const fresh = fake(); const manager = createConsentManager(fresh.win, config);
 assert.equal(fresh.scripts.length, 0); assert.equal(manager.getChoice(), null);
+for(const name of ['cookieyes-consent','_gcl_au','_fbp']) assert.ok(fresh.cookieWrites.some(value=>value.startsWith(name+'=')));
 assert.deepEqual([...fresh.win.dataLayer[0]].slice(0, 2), ['consent', 'default']);
 assert.deepEqual(fresh.win.dataLayer[0][2], consentSignals(false));
 manager.save(false); assert.equal(fresh.scripts.length, 0); assert.equal(JSON.parse(fresh.store.get(CONSENT_KEY)).analytics, false);

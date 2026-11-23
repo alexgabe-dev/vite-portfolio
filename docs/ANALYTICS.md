@@ -73,3 +73,5 @@ A GTM-ben később Custom Event trigger: `vizitor_analytics`, Data Layer Variabl
 - https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-consent-api-v2
 - https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-api
 - https://learn.microsoft.com/en-us/clarity/data-retention
+
+Az éles átálláskor észlelt, korábbról maradt `cookieyes-consent` és `_gcl_au` sütiket is eltávolítjuk (a további `_gcl_*`, `_fbp`, `_fbc` nevekkel együtt). A régi engedélyeket nem olvassuk át az új rekordba. Más szolgáltató domainjén tárolt sütit a Vizitor domain nem törölhet.
