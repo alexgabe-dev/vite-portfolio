@@ -7,15 +7,15 @@ await build({ entryPoints: ['src/consent.ts'], outfile: '.cache/check-consent-mo
 const { CONSENT_KEY, CONSENT_MAX_AGE, parseConsent, consentSignals, consentRevision, createConsentManager } = await import(pathToFileURL(process.cwd() + '/.cache/check-consent-module.mjs'));
 const config = { analyticsId: 'G-6XTDE9Y48B' };
 const revision = consentRevision(config);
-const record = (analytics, savedAt = Date.now(), version = revision) => JSON.stringify({ analytics, savedAt, revision: version });
+const record = (analytics, savedAt = Date.now(), version = revision) => JSON.stringify({ analytics, experience: false, savedAt, revision: version });
 function fake(raw = null, storageFails = false) {
  const store = new Map(raw ? [[CONSENT_KEY, raw]] : []);
  const listeners = new Map(); const scripts = []; const cookieWrites = [];
  const win = {
   Event, dataLayer: [],
   localStorage: { getItem: k => { if (storageFails) throw Error('blocked'); return store.get(k) || null; }, setItem: (k, v) => { if (storageFails) throw Error('blocked'); store.set(k, v); }, removeItem: k => store.delete(k) },
-  location: { hostname: 'vizitor.hu', pathname: '/kapcsolat/', reload: () => { win.reloads++; } },
-  document: { visibilityState: 'visible', head: { appendChild: s => scripts.push(s) }, createElement: () => ({ dataset: {} }), addEventListener() {}, removeEventListener() {} },
+  location: { href: 'https://vizitor.hu/kapcsolat/', hostname: 'vizitor.hu', pathname: '/kapcsolat/', reload: () => { win.reloads++; } },
+  document: { title: 'Vizitor', referrer: '', visibilityState: 'visible', head: { appendChild: s => scripts.push(s) }, createElement: () => ({ dataset: {} }), addEventListener() {}, removeEventListener() {} },
   reloads: 0, setInterval: () => 1, clearInterval() {},
   addEventListener: (name, fn) => listeners.set(name, fn), removeEventListener: name => listeners.delete(name), dispatchEvent: event => { listeners.get(event.type)?.(event); return true; },
  };
@@ -55,13 +55,28 @@ async function checkPages(directory) {
    assert.ok(page.indexOf("gtag('consent','default'") >= 0, name + ': missing default');
    assert.ok(page.indexOf("gtag('consent','default'") < page.indexOf('type="module"'), name + ': late default');
    assert.ok(page.includes('Sütibeállítások'), name + ': missing settings');
-   assert.ok(!/<script[^>]+src=["'][^"']*(googletagmanager|google-analytics|cookieyes)/i.test(page), name + ': ungated tag');
+   assert.ok(!/<script[^>]+src=["'][^"']*(googletagmanager|google-analytics|cookieyes|clarity\.ms)/i.test(page), name + ': ungated tag');
   }
  }
 }
 await checkPages('dist');
+const withClarity = { ...config, clarityId: 'zi62e7q2g4' };
+const clarityOnly = fake(); const clarityManager = createConsentManager(clarityOnly.win, withClarity);
+assert.equal(clarityOnly.scripts.length, 0);
+clarityManager.save(false, true);
+assert.deepEqual(clarityOnly.scripts.map(s => s.src), ['https://www.clarity.ms/tag/zi62e7q2g4']);
+assert.deepEqual([...clarityOnly.win.clarity.q[0]], ['consentv2', { analytics_Storage: 'granted', ad_Storage: 'denied' }]);
+clarityManager.save(false, true); assert.equal(clarityOnly.scripts.length, 1);
+clarityManager.save(false, false); assert.equal(clarityOnly.win.reloads, 1);
+assert.deepEqual([...clarityOnly.win.clarity.q.at(-1)], ['stop']);
+const both = fake(); const bothManager = createConsentManager(both.win, withClarity);
+bothManager.save(true, true); assert.equal(both.scripts.length, 2); bothManager.save(true, true); assert.equal(both.scripts.length, 2);
+const privateUrl = fake(); privateUrl.win.location.href = 'https://vizitor.hu/kapcsolat/?email=visitor@example.com';
+createConsentManager(privateUrl.win, withClarity).save(false, true); assert.equal(privateUrl.scripts.length, 0);
+assert.equal(parseConsent(record(true), consentRevision(withClarity)), null);
+
 assert.ok(html.indexOf("gtag('consent','default'") < html.indexOf('type="module"'));
-assert.ok(!/<script[^>]+src=["'][^"']*(googletagmanager|google-analytics|cookieyes)/i.test(html));
+assert.ok(!/<script[^>]+src=["'][^"']*(googletagmanager|google-analytics|cookieyes|clarity\.ms)/i.test(html));
 assert.ok(html.includes('Sütibeállítások'));
 assert.ok(!/GTM-KGN8CMBL|cdn-cookieyes/.test(html));
 console.log('Consent checks passed: denied defaults, all v2 signals, no pre-consent tags, valid/expired/changed records, equal persistence, single loader, withdrawal + cookie cleanup, cross-tab withdrawal, blocked storage, absent IDs and HTML ordering.');

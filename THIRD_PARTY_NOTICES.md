@@ -60,3 +60,8 @@ THE SOFTWARE.
 ## Inter font
 
 The site uses locally served WOFF2 subsets of the Inter font files already present in the original Vizitor repository. Copyright 2020 The Inter Project Authors. Licensed under SIL Open Font License 1.1; the full license is included at public/fonts/OFL.txt. Source: https://github.com/rsms/inter
+
+
+## web-vitals 6.2.3
+
+GoogleChrome/web-vitals, Copyright Google LLC. Apache License 2.0. Forrás: https://github.com/GoogleChrome/web-vitals . A teljes licenc a public/licenses/web-vitals.txt fájlban, élesben a /licenses/web-vitals.txt címen érhető el.

@@ -1,3 +1,4 @@
+import { track } from '../analytics';
 import { Icon } from './Icon';
 import { Children, useEffect, useRef, useState, type ReactNode } from 'react';
 
@@ -5,6 +6,7 @@ import { Children, useEffect, useRef, useState, type ReactNode } from 'react';
 export function SwipeDeck({ children, className, label, resetKey = '' }: { children: ReactNode; className: string; label: string; resetKey?: string }) {
   const rail = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
+  const lastMeasured = useRef(0);
   const count = Children.count(children);
   useEffect(() => {
     const element = rail.current;
@@ -22,6 +24,7 @@ export function SwipeDeck({ children, className, label, resetKey = '' }: { child
       if (!positions.length) return;
       let closest = 0, distance = Infinity;
       positions.forEach((position, index) => { const next = Math.abs(position - element.scrollLeft); if (next < distance) { closest = index; distance = next; } });
+      if(closest!==lastMeasured.current){track('card_swipe',{deck_id:className==='capability-grid'?'services':'packages_'+resetKey,card_index:closest});lastMeasured.current=closest;}
       setActive(closest);
     };
     const settle = () => { clearTimeout(settleTimer); setMoving(false); update(); };
@@ -52,8 +55,8 @@ export function SwipeDeck({ children, className, label, resetKey = '' }: { child
       element.removeEventListener('scroll', onScroll); element.removeEventListener('scrollend', settle);
       element.removeEventListener('touchstart', onTouchStart); element.removeEventListener('touchend', onTouchEnd); element.removeEventListener('touchcancel', onTouchEnd);
     };
-  }, [count]);
-  useEffect(() => { if (rail.current) rail.current.scrollLeft = 0; setActive(0); }, [resetKey]);
+  }, [count, className, resetKey]);
+  useEffect(() => { if (rail.current) rail.current.scrollLeft = 0; setActive(0); lastMeasured.current=0; }, [resetKey]);
   function select(index: number) {
     const element = rail.current;
     if (!element) return;

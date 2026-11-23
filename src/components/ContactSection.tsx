@@ -1,3 +1,5 @@
+import { track } from '../analytics';
+import { serviceIds } from '../analytics-schema';
 import { Icon } from './Icon';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 
@@ -109,7 +111,7 @@ export function ContactSection({ intent, standalone=false }: { intent?: ContactI
     if(busy.current)return;
     const next={email:fieldError('email'),message:fieldError('message')};
     setErrors(next);
-    if(next.email||next.message){(next.email?emailRef:messageRef).current?.focus();return;}
+    if(next.email||next.message){if(next.email)track('inquiry_validation',{form_id:'inquiry',error_type:email.trim()?'email_invalid':'email_required'});if(next.message)track('inquiry_validation',{form_id:'inquiry',error_type:'message_required'});(next.email?emailRef:messageRef).current?.focus();return;}
     const form=event.currentTarget;
     const data=new FormData(form);
     // Trim contact details; preserve the visitor's message and intentional line breaks.
@@ -118,6 +120,7 @@ export function ContactSection({ intent, standalone=false }: { intent?: ContactI
     if(plan)data.set('package',plan);
     data.set('_subject','Vizitor megkeresés — '+(service||'Új üzenet'));
     data.set('_replyto',email.trim());
+    track('inquiry_submit',{form_id:'inquiry',service_count:services.length,has_package:!!plan});
     busy.current=true;setStatus('sending');setFailure('');
     const controller=new AbortController();abort.current=controller;
     const timeout=window.setTimeout(()=>controller.abort(),20000);
@@ -125,11 +128,14 @@ export function ContactSection({ intent, standalone=false }: { intent?: ContactI
       const response=await fetch(CONTACT_ENDPOINT,{method:'POST',body:data,headers:{Accept:'application/json'},signal:controller.signal});
       const result=await response.json().catch(()=>null) as {ok?:boolean;errors?:{field?:string;message?:string}[]}|null;
       if(!response.ok||result?.ok!==true){
+        track('inquiry_error',{form_id:'inquiry',error_type:response.status===429?'rate_limited':'server',http_status:response.status});
         setFailure(response.status===429?'Most túl sok kérés érkezett. Próbáld újra később, vagy írj közvetlenül e-mailt.':'Az üzenet nem ment el. Az adataid megmaradtak; próbáld újra, vagy írj közvetlenül e-mailt.');
         setStatus('error');return;
       }
+      track('generate_lead',{form_id:'inquiry',service_count:services.length,has_package:!!plan,lead_source:'website_inquiry'});
       setSubmittedEmail(email.trim());setStatus('success');setMessage('');setErrors({});
     } catch(error) {
+      track('inquiry_error',{form_id:'inquiry',error_type:error instanceof DOMException&&error.name==='AbortError'?'timeout':'network'});
       setFailure(error instanceof DOMException&&error.name==='AbortError'?'Nem érkezett visszaigazolás a küldésről. Az adataid megmaradtak; írj közvetlenül e-mailt, vagy próbáld újra később.':'Nem sikerült kapcsolódni. A kitöltött adataid megmaradtak; ellenőrizd az internetkapcsolatot, és próbáld újra.');
       setStatus('error');
     } finally {window.clearTimeout(timeout);busy.current=false;abort.current=null;}
@@ -138,16 +144,16 @@ export function ContactSection({ intent, standalone=false }: { intent?: ContactI
   const fallbackBody=`Szia!\n\n${name.trim()?'Név: '+name.trim()+'\n':''}Válaszcím: ${email.trim()}\n${service?'Amiben segítséget kérek: '+service+'\n':''}${plan?'Csomag: '+plan+'\n':''}\n${message.trim()}`;
   return <section className="inquiry-section section" id="kapcsolat" aria-labelledby="contact-title"><div className="wrap inquiry-layout">
     <div className="inquiry-intro"><p className="eyebrow">Kapcsolat</p><Heading id="contact-title">Beszéljük<br/>meg<span>.</span></Heading><p className="inquiry-lead">Írd meg, mire van szükséged.<br/>A többit átbeszéljük.</p><MessageArtwork active={pending} sent={status==='success'}/><div className="inquiry-direct"><p>Inkább közvetlenül?</p><a href="mailto:info@vizitor.hu"><span>info@vizitor.hu</span><span aria-hidden="true"><Icon name="arrow-up-right"/></span></a><a href="tel:+36205180921" className="inquiry-phone">+36 20 518 0921</a></div></div>
-    <div className={'inquiry-card'+(status==='success'?' inquiry-complete':'')}>
+    <div data-clarity-mask="true" className={'inquiry-card'+(status==='success'?' inquiry-complete':'')}>
       {status==='success'?<div className="inquiry-success" ref={successRef} tabIndex={-1} role="status"><span className="inquiry-success-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><path d="m17 33 10 10 21-23" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="32" cy="32" r="29" stroke="currentColor" strokeOpacity=".2"/></svg></span><p className="eyebrow">Köszönöm a megkeresést</p><Subheading>Üzenet elküldve<span>.</span></Subheading><p>Erre a címre fogok válaszolni:<br/><strong>{submittedEmail}</strong></p><p className="inquiry-success-next">Elolvasom az üzeneted, és e-mailben válaszolok.</p><button type="button" onClick={()=>{setStatus('idle');setPlan('');requestAnimationFrame(()=>emailRef.current?.focus());}}>Másik üzenetet írok<span aria-hidden="true"><Icon name="arrow-up-right"/></span></button></div>:<form id="inquiry-form" className="inquiry-form" aria-label="Kapcsolatfelvétel a Vizitorral" action={CONTACT_ENDPOINT} method="POST" noValidate onSubmit={submit} aria-busy={pending}>
         <div className="inquiry-form-heading"><Subheading>Miben segíthetek?</Subheading><p>Elég az e-mail-címed és néhány mondat.</p></div>
         {plan&&<div className="inquiry-context"><div><span>Erről érdeklődsz</span><p>{plan}</p></div><button type="button" disabled={pending} aria-label="Csomagválasztás törlése" onClick={()=>setPlan('')}><Icon name="close"/></button></div>}
         <div className="inquiry-field"><label htmlFor="inquiry-email">E-mail-címed</label><input ref={emailRef} id="inquiry-email" name="email" type="email" inputMode="email" autoComplete="email" autoCapitalize="none" spellCheck={false} required maxLength={254} placeholder="nev@pelda.hu" value={email} disabled={pending} aria-invalid={!!errors.email} aria-describedby={errors.email?'inquiry-email-error':undefined} onChange={event=>{setEmail(event.target.value);if(errors.email)setErrors(previous=>({...previous,email:undefined}));}} onBlur={()=>{if(email.trim())setErrors(previous=>({...previous,email:fieldError('email')}));}}/>{errors.email&&<p className="inquiry-field-error" id="inquiry-email-error" role="alert">{errors.email}</p>}</div>
         <div className="inquiry-field"><label htmlFor="inquiry-name">Hogy szólíthatlak? <span>nem kötelező</span></label><input id="inquiry-name" name="name" autoComplete="name" maxLength={100} placeholder="Neved" value={name} disabled={pending} onChange={event=>setName(event.target.value)}/></div>
-        <fieldset className="inquiry-services" disabled={pending}><legend>Ez érdekel <span>nem kötelező</span></legend><div>{['Weboldal','Egyedi fejlesztés','AI és automatizálás','Marketing és mérés','Karbantartás','E-mail-rendszer'].map(item=><label key={item}><input type="checkbox" name="interest" value={item} checked={services.includes(item)} onChange={()=>{setServices(previous=>previous.includes(item)?previous.filter(value=>value!==item):[...previous,item]);setPlan('');}}/><span>{item}</span></label>)}</div></fieldset>
+        <fieldset className="inquiry-services" disabled={pending}><legend>Ez érdekel <span>nem kötelező</span></legend><div>{['Weboldal','Egyedi fejlesztés','AI és automatizálás','Marketing és mérés','Karbantartás','E-mail-rendszer'].map(item=><label key={item}><input type="checkbox" name="interest" value={item} checked={services.includes(item)} onChange={()=>{track('inquiry_interest',{service_id:serviceIds[item],selection:services.includes(item)?'removed':'selected'});setServices(previous=>previous.includes(item)?previous.filter(value=>value!==item):[...previous,item]);setPlan('');}}/><span>{item}</span></label>)}</div></fieldset>
         <div className="inquiry-field"><label htmlFor="inquiry-message">Mire van szükséged?</label><textarea ref={messageRef} id="inquiry-message" name="message" rows={4} maxLength={5000} required placeholder="Például: van már weboldalam, de több érdeklődőt szeretnék elérni." value={message} disabled={pending} aria-invalid={!!errors.message} aria-describedby={'inquiry-message-hint'+(errors.message?' inquiry-message-error':'')} onChange={event=>{setMessage(event.target.value);if(errors.message)setErrors(previous=>({...previous,message:undefined}));}}/>{errors.message&&<p className="inquiry-field-error" id="inquiry-message-error" role="alert">{errors.message}</p>}<p className="inquiry-field-hint" id="inquiry-message-hint">Ha van weboldalad, a linkjét is elküldheted.</p></div>
         <div className="inquiry-trap" aria-hidden="true"><label htmlFor="inquiry-website">Ezt hagyd üresen</label><input id="inquiry-website" name="_gotcha" tabIndex={-1} autoComplete="off"/></div>
-        {status==='error'&&<div className="inquiry-send-error" role="alert"><p>{failure}</p><a href={'mailto:info@vizitor.hu?subject='+encodeURIComponent('Vizitor megkeresés')+'&body='+encodeURIComponent(fallbackBody)}>Megnyitom e-mailben<span aria-hidden="true"><Icon name="arrow-up-right"/></span></a></div>}
+        {status==='error'&&<div className="inquiry-send-error" role="alert"><p>{failure}</p><button type="button" onClick={()=>{track('contact_click',{method:'email',location:'contact'});window.location.href='mailto:info@vizitor.hu?subject='+encodeURIComponent('Vizitor megkeresés')+'&body='+encodeURIComponent(fallbackBody);}}>Megnyitom e-mailben<span aria-hidden="true"><Icon name="arrow-up-right"/></span></button></div>}
         <button className="inquiry-submit" type="submit" disabled={pending}>{pending?<><span className="inquiry-spinner" aria-hidden="true"/>Küldés folyamatban…</>:<>Üzenet küldése<span className="inquiry-submit-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m4 11 16-7-7 16-2-7-7-2Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><path d="m11 13 9-9" stroke="currentColor" strokeWidth="1.4"/></svg></span></>}</button>
         <p className="inquiry-privacy">Az adataidat a megkeresés megválaszolásához használom. <a href="/adatvedelem/" target="_blank" rel="noopener noreferrer">Adatkezelési tájékoztató<span className="sr-only"> (új lapon)</span></a></p>
       </form>}

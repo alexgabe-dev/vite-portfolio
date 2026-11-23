@@ -1,3 +1,4 @@
+import { track as trackEvent } from '../analytics';
 import { Icon } from './Icon';
 import { useEffect, useRef, useState } from 'react';
 const stages = [
@@ -110,6 +111,7 @@ export function ProcessStudio({standalone=false}:{standalone?:boolean}) {
     };
   }, []);
   const select = (index: number) => {
+    trackEvent('process_step',{card_index:index});
     if (pinned && track.current) {
       const root = track.current;
       const pin = root.firstElementChild as HTMLElement;

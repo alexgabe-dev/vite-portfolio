@@ -5,7 +5,21 @@ import { normalizePath, isServicePath } from './routes';
 import './style.css';
 import { initConsent } from './consent';
 import { consentConfig } from './consent-config';
-initConsent(consentConfig);
+const consent = initConsent(consentConfig);
+let analyticsEnabled = false, analyticsGeneration = 0;
+let stopAnalytics: (() => void) | undefined;
+function syncAnalytics() {
+ const next = Boolean(consent.hasAnalytics && consent.getChoice()?.analytics);
+ if (next === analyticsEnabled) return;
+ analyticsEnabled = next;
+ const generation = ++analyticsGeneration;
+ if (!next) { stopAnalytics?.(); stopAnalytics = undefined; return; }
+ void import('./analytics-observer').then(({ startAnalytics }) => {
+  if (analyticsEnabled && generation === analyticsGeneration) stopAnalytics = startAnalytics();
+ }).catch(() => { /* Analytics failure must never break navigation or the form. */ });
+}
+window.addEventListener('vizitor:consent-change', syncAnalytics);
+syncAnalytics();
 async function start() {
  const page=normalizePath(window.location.pathname);
  const Privacy=/^\/adatvedelem\/?$/.test(page) ? (await import('./components/Privacy')).Privacy : null;

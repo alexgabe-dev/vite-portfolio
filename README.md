@@ -77,3 +77,8 @@ A hero tartalékképe `public/graphics/signature-clean.webp`, közvetlenül a Th
 ## Sütibeállítások és Google Consent Mode v2
 
 Saját, a Vizitor arculatához igazított banner, egyenrangú elfogadással és elutasítással, külön analitikai kapcsolóval és láblécből elérhető visszavonással. A GA4 (`G-6XTDE9Y48B`) kizárólag engedély után töltődik be. A régi CookieYes-es GTM-konténert nem töltjük be. Részletek, működés, megőrzés és ellenőrzés: [docs/CONSENT.md](docs/CONSENT.md).
+
+
+## Részletes analitika és Clarity
+
+A GA4-üzleti események, a hozzájáruláshoz kötött hőtérképek/visszajátszások, az adatréteg GTM-előkészítése és a még fiókon belül beállítandó riportok dokumentációja: [docs/ANALYTICS.md](docs/ANALYTICS.md). Ellenőrzés: `npm run check:analytics` és `npm run check:consent`.

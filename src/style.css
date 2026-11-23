@@ -566,3 +566,5 @@ html,body,*{scrollbar-width:none;-ms-overflow-style:none}*::-webkit-scrollbar{wi
 .privacy-consent-button{min-height:48px;border:1px solid #273139;border-radius:8px;background:transparent;color:#273139;padding:12px 18px;font:inherit;font-size:.875rem;cursor:pointer}
 
 .consent-category label{min-height:44px}
+
+.inquiry-send-error>button{display:inline-flex;align-items:center;gap:12px;border:0;background:transparent;padding:8px 0;color:inherit;font:inherit;text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
