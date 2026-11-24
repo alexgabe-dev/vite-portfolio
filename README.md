@@ -53,7 +53,7 @@ A betűkészlet licence a `public/fonts/OFL.txt` fájlban található.
 
 A `main` az új oldal élesítésre előkészített ága. A korábbi `main` változat a `codex/vizitor-legacy-2026-11-21` ágon maradt meg.
 
-Importáld az `alexgabe-dev/vite-portfolio` repót, a Production Branch legyen `main`, a Root Directory pedig a repó gyökere. A verziókezelt `vercel.json` beállítja a Vite keretrendszert, az `npm ci` telepítést, az `npm run build:vercel` buildet és a `dist` kimenetet. Nincs szükség egyedi SPA catch-all átírásra: mind a 17 oldal saját előrenderelt HTML-t kap, a nem létező útvonalakhoz pedig `404.html` készül.
+Importáld az `alexgabe-dev/vite-portfolio` repót, a Production Branch legyen `main`, a Root Directory pedig a repó gyökere. A verziókezelt `vercel.json` beállítja a Vite keretrendszert, az `npm ci` telepítést, az `npm run build:vercel` buildet és a `dist` kimenetet. Nincs szükség egyedi SPA catch-all átírásra: mind a 18 oldal saját előrenderelt HTML-t kap, a nem létező útvonalakhoz pedig `404.html` készül.
 
 - `VERCEL_ENV=production` esetén a Vercel-build alapból engedélyezi az indexelést; a canonical és a megosztási kép éles domainje `https://vizitor.hu`.
 - Preview buildnél megmarad a `noindex`, a megosztási kép a Vercel által megadott `VERCEL_URL` címre mutat.
@@ -69,7 +69,7 @@ Helyi próba: `npm run build:vercel` (előnézet), vagy `VERCEL_ENV=production n
 
 A főmenü és az ajánlatkérés önálló, előrenderelt oldalakat nyit: `/szolgaltatasok/`, `/igy-dolgozom/`, `/arak/`, `/gyakori-kerdesek/`, `/kapcsolat/`. Mindegyik saját H1-et, címet, leírást és canonical URL-t kap. A főoldal továbbra is tartalmazza az áttekintő szekciókat. A csomagválasztás személyes adatok nélkül, egyszer felhasználható sessionStorage-bejegyzéssel jut az ajánlatkérő oldalra.
 
-A korábbi `/csomagok/`, `/rolunk/`, `/folyamat/` és `/kerdesek/` címek 301-gyel az új oldalakra irányítanak. A régi főoldali `#` szakaszlinkeket a kliens az új oldalra vezeti; a Vercel és a Worker a 17 canonical oldalt valóban kiszolgálja.
+A korábbi `/csomagok/`, `/rolunk/`, `/folyamat/` és `/kerdesek/` címek 301-gyel az új oldalakra irányítanak. A régi főoldali `#` szakaszlinkeket a kliens az új oldalra vezeti; a Vercel és a Worker a 18 canonical oldalt valóban kiszolgálja.
 
 A hero tartalékképe `public/graphics/signature-clean.webp`, közvetlenül a Three.js-jelenetből készült, felirat vagy mozgáskapcsoló nélkül. A mozgást a látogató rendszerbeállítása és az automatikus láthatóságkezelés vezérli; nincs külön kapcsoló.
 

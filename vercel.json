@@ -159,6 +159,11 @@
       "statusCode": 301
     },
     {
+      "source": "/impresszum",
+      "destination": "/impresszum/",
+      "statusCode": 301
+    },
+    {
       "source": "/csomagok",
       "destination": "/arak/",
       "statusCode": 301

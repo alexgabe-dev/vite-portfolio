@@ -34,4 +34,5 @@ Fontos tudnivalók:
 
 ## Optional
 
+- [Impresszum](https://vizitor.hu/impresszum/): Szolgáltatói, tárhely- és domainregisztrátor-adatok.
 - [Adatkezelési tájékoztató](https://vizitor.hu/adatvedelem/)

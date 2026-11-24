@@ -46,4 +46,4 @@ export const sectionPages = [
  { path:'/kapcsolat/', id:'kapcsolat', label:'Kapcsolat', title:'Kapcsolat és ajánlatkérés | vizitor.hu', description:'Írd meg, milyen weboldalra, fejlesztésre vagy marketinges segítségre van szükséged. Egyszerű kapcsolatfelvétel a Vizitorral: e-mail-cím és néhány mondat elég.' },
 ];
 export const sectionPath = (id:string) => sectionPages.find(page=>page.id===id)?.path || '/';
-export const canonicalRoutes=['/','/munkak/','/adatvedelem/',...sectionPages.map(item=>item.path),...serviceLinks.map(item=>item.path)];
+export const canonicalRoutes=['/','/munkak/','/adatvedelem/','/impresszum/',...sectionPages.map(item=>item.path),...serviceLinks.map(item=>item.path)];

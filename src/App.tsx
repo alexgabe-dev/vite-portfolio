@@ -3,6 +3,7 @@ import { ConsentBanner } from './components/ConsentBanner';
 import { Icon } from './components/Icon';
 export { pageMetadata } from './seo';
 export { Privacy } from './components/Privacy';
+import { Impressum } from './components/Impressum';
 export { ServicePage } from './components/ServicePage';
 import { NotFound } from './components/NotFound';
 import { takeInquiry, rememberSelection, rememberPackageCategory, takePackageCategory } from './contact-intent';
@@ -74,7 +75,8 @@ export default function App({page='/',privacyContent,serviceContent}:{page?:stri
   const sectionPage=sectionPages.find(item=>item.path===page);
   const missing=!canonicalRoutes.includes(page);
   const archive=/^\/munkak\/?$/.test(page);
-  const legal=/^\/adatvedelem\/?$/.test(page);
+  const imprint=page==='/impresszum/';
+  const legal=/^\/adatvedelem\/?$/.test(page)||imprint;
 
   const [intent,setIntent]=useState<ContactIntent>();
   const [pricingCategory,setPricingCategory]=useState<PackageCategory>('web');
@@ -82,7 +84,7 @@ export default function App({page='/',privacyContent,serviceContent}:{page?:stri
   usePageExperience();
   const request=(service:string,plan?:string)=>{rememberSelection(service,plan);setIntent({service,plan,key:Date.now()});};
   const showPackages=(category:PackageCategory)=>{rememberPackageCategory(category);setPricingCategory(category);};
-  return <><a href="#main" className="skip-link">Ugrás a tartalomhoz</a><Header archive={archive} legal={legal||service||missing} activeSection={sectionPage?.id}/>{missing?<NotFound/>:service?serviceContent:legal?privacyContent:archive?<ProjectArchive/>:<main id="main" className={sectionPage?'section-page section-page-'+sectionPage.id:undefined}>
+  return <><a href="#main" className="skip-link">Ugrás a tartalomhoz</a><Header archive={archive} legal={legal||service||missing} activeSection={sectionPage?.id}/>{missing?<NotFound/>:service?serviceContent:imprint?<Impressum/>:legal?privacyContent:archive?<ProjectArchive/>:<main id="main" className={sectionPage?'section-page section-page-'+sectionPage.id:undefined}>
     {sectionPage&&<nav className="page-breadcrumb wrap section-breadcrumb" aria-label="Morzsamenü"><a href="/">Főoldal</a><span aria-hidden="true">/</span><span aria-current="page">{sectionPage.label}</span></nav>}
     {!sectionPage&&<Hero/>}
     {(!sectionPage||sectionPage.id==='szolgaltatasok')&&<ServicesSection request={request} setPricingCategory={showPackages} standalone={!!sectionPage}/>}

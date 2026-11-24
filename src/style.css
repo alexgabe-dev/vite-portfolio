@@ -568,3 +568,32 @@ html,body,*{scrollbar-width:none;-ms-overflow-style:none}*::-webkit-scrollbar{wi
 .consent-category label{min-height:44px}
 
 .inquiry-send-error>button{display:inline-flex;align-items:center;gap:12px;border:0;background:transparent;padding:8px 0;color:inherit;font:inherit;text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.imprint-layout{padding-block:76px 90px}
+.imprint-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.imprint-card{position:relative;background:#e6e8e5;border:1px solid #d9ded9;border-radius:10px;padding:34px 34px 30px;min-width:0;transition:border-color .3s,background .3s}
+.imprint-card:hover{border-color:#c4cdc5;background:#e9ebe8}
+.imprint-card header{position:relative;padding-right:56px;margin-bottom:22px}
+.imprint-card .eyebrow{color:#6b7479;margin-bottom:12px}
+.imprint-card h2{font-size:clamp(1.6rem,2.4vw,2.1rem);letter-spacing:-.045em;line-height:1.15;color:#18272f}
+.imprint-index{position:absolute;top:0;right:0;font-size:.75rem;letter-spacing:.08em;color:#e5502e}
+.imprint-note{font-size:.9375rem;line-height:1.8;color:#536168;margin-bottom:18px}
+.imprint-note a{color:#b23820;text-decoration:underline;text-underline-offset:4px}
+.imprint-note a:hover{color:#e34a27}
+.imprint-card dl{margin:0;border-top:1px solid #23323a1f}
+.imprint-card dl>div{display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;padding-block:13px;border-bottom:1px solid #23323a14}
+.imprint-card dt{font-size:.75rem;letter-spacing:.04em;color:#6b767c;line-height:1.7;padding-top:2px}
+.imprint-card dd{margin:0;font-size:.9375rem;line-height:1.65;color:#1d2b33;overflow-wrap:anywhere}
+.imprint-card dd a{color:#1d2b33;text-decoration:underline;text-decoration-color:#ff5c3580;text-underline-offset:4px;transition:color .2s}
+.imprint-card dd a:hover{color:#c33e20}
+.imprint-szolgaltato{background:#18272f;border-color:#18272f}
+.imprint-szolgaltato:hover{background:#1b2c35;border-color:#1b2c35}
+.imprint-szolgaltato h2,.imprint-szolgaltato dd{color:#f1f1ec}
+.imprint-szolgaltato .eyebrow,.imprint-szolgaltato dt{color:#93a0a7}
+.imprint-szolgaltato dl{border-color:#ffffff1f}
+.imprint-szolgaltato dl>div{border-color:#ffffff14}
+.imprint-copyright{display:flex;flex-direction:column}
+.imprint-copyright .imprint-note{max-width:860px}
+.imprint-legal{margin-top:34px;max-width:760px;font-size:.8125rem;line-height:1.8;color:#6b767c}
+@media(max-width:900px){.imprint-grid{grid-template-columns:1fr}.imprint-card dl>div{grid-template-columns:130px minmax(0,1fr)}}
+@media(max-width:600px){.imprint-layout{padding-block:40px 60px}.imprint-card{padding:26px 20px 22px}.imprint-card dl>div{grid-template-columns:1fr;gap:2px;padding-block:11px}.imprint-card dt{padding-top:0}}
+@media print{.imprint-card{break-inside:avoid;background:none!important;border-color:#ccc!important}.imprint-szolgaltato *{color:#111!important}}

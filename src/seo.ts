@@ -17,14 +17,14 @@ function offerCatalog(categoryId:string,planNames:string[]=[]){
 export function pageMetadata(input:string,socialOrigin=siteOrigin){
  const image=new URL('/og/vizitor-share-2026.png',socialOrigin).href;
  const route=normalizePath(input);
- const archive=route==='/munkak/',legal=route==='/adatvedelem/';
+ const archive=route==='/munkak/',legal=route==='/adatvedelem/',imprint=route==='/impresszum/';
  const service=services.find(item=>item.path===route);
  const sectionPage=sectionPages.find(item=>item.path===route);
  const notFound=!canonicalRoutes.includes(route);
- const title=notFound?'Az oldal nem található | Vizitor':service?.title||sectionPage?.title||(legal?'Adatkezelési tájékoztató | Vizitor':archive?'Weboldalak és webalkalmazások – Referenciák | Vizitor':'vizitor.hu – Weboldal, marketing, fejlesztés');
- const description=notFound?'A keresett oldal nem található. A Vizitor főoldalán eléred a szolgáltatásokat, árakat és elérhetőségeket.':service?.description||sectionPage?.description||(legal?'A Vizitor adatkezelési tájékoztatója: kezelt adatok, megőrzési idők, sütik, érintetti jogok és az adatkezelő elérhetőségei.':archive?'Nézd meg a Vizitor referenciáit: Palackverseny, Budafoki Zarándokház, Recruit Planner, KÉRA és Kiwi Reels. Weboldalak és egyedi webalkalmazások, rövid projektleírásokkal.':'Weboldalkészítés, egyedi fejlesztés, AI-chatbot, automatizálás, marketing és mérés. Webkarbantartás és e-mail-rendszerek, közvetlen együttműködésben.');
+ const title=notFound?'Az oldal nem található | Vizitor':service?.title||sectionPage?.title||(imprint?'Impresszum | Vizitor':legal?'Adatkezelési tájékoztató | Vizitor':archive?'Weboldalak és webalkalmazások – Referenciák | Vizitor':'vizitor.hu – Weboldal, marketing, fejlesztés');
+ const description=notFound?'A keresett oldal nem található. A Vizitor főoldalán eléred a szolgáltatásokat, árakat és elérhetőségeket.':service?.description||sectionPage?.description||(imprint?'A Vizitor impresszuma: Gábor Sándor egyéni vállalkozó adatai, elérhetőségek, a tárhelyszolgáltató (Vercel) és a domainregisztrátor (Rackhost) adatai.':legal?'A Vizitor adatkezelési tájékoztatója: kezelt adatok, megőrzési idők, sütik, érintetti jogok és az adatkezelő elérhetőségei.':archive?'Nézd meg a Vizitor referenciáit: Palackverseny, Budafoki Zarándokház, Recruit Planner, KÉRA és Kiwi Reels. Weboldalak és egyedi webalkalmazások, rövid projektleírásokkal.':'Weboldalkészítés, egyedi fejlesztés, AI-chatbot, automatizálás, marketing és mérés. Webkarbantartás és e-mail-rendszerek, közvetlen együttműködésben.');
  const url=siteOrigin+(notFound?'/404.html':route);
- const breadcrumbLabel=service?.label||sectionPage?.label||(archive?'Projektek':'Adatvédelem');
+ const breadcrumbLabel=service?.label||sectionPage?.label||(archive?'Projektek':imprint?'Impresszum':'Adatvédelem');
  const serviceNodes=services.filter(item=>route==='/'||route==='/szolgaltatasok/'||item.path===route).map(item=>({'@type':'Service','@id':siteOrigin+item.path+'#service',name:item.label,serviceType:item.label,url:siteOrigin+item.path,description:item.lead,provider:{'@id':organizationId},areaServed:{'@type':'Country',name:'Magyarország'},...(item.category?{hasOfferCatalog:offerCatalog(item.category,item.planNames)}:{})}));
  return {title,description,url,canonical:notFound?null:url,image,imageAlt:'Vizitor — Weboldal. Rád tervezve. Weboldal, marketing és karbantartás.',notFound,breadcrumbLabel,schema:{
   '@context':'https://schema.org','@graph':[
