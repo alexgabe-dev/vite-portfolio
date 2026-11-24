@@ -1,0 +1,42 @@
+# Vizitor CMS on the VPS. Usage: docs/BLOG-CMS.md → "Telepítés a VPS-re".
+name: ${COMPOSE_PROJECT_NAME:-vizitor-cms}
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-vizitor_cms}
+      POSTGRES_USER: ${POSTGRES_USER:-vizitor_cms}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    # No published ports: the database is reachable only from the cms container.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    logging: { driver: json-file, options: { max-size: "10m", max-file: "5" } }
+    mem_limit: 768m
+
+  cms:
+    build: .
+    image: vizitor-cms:latest
+    restart: unless-stopped
+    depends_on:
+      db: { condition: service_healthy }
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-vizitor_cms}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-vizitor_cms}
+      MEDIA_DIR: /data/media
+    volumes:
+      - media:/data/media
+    # Bound to localhost only; the host's reverse proxy (nginx) terminates HTTPS.
+    ports:
+      - "127.0.0.1:${CMS_PORT:-3010}:3000"
+    logging: { driver: json-file, options: { max-size: "10m", max-file: "5" } }
+    mem_limit: 1g
+
+volumes:
+  pgdata:
+  media:

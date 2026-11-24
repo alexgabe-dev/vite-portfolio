@@ -1,0 +1,14 @@
+# Install: sudo cp deploy/systemd/vizitor-cms-backup.* /etc/systemd/system/ && sudo systemctl daemon-reload
+#          sudo systemctl enable --now vizitor-cms-backup.timer
+# Adjust User and WorkingDirectory to where the repository's cms/ folder lives on the server.
+[Unit]
+Description=Vizitor CMS backup (database + media)
+Wants=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+User=alexgabe
+WorkingDirectory=/home/alexgabe/vizitor/cms
+ExecStart=/home/alexgabe/vizitor/cms/deploy/backup.sh
+ExecStartPost=/home/alexgabe/vizitor/cms/deploy/verify-backup.sh

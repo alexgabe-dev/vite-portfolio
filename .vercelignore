@@ -1,0 +1,2 @@
+# The CMS is deployed separately on the VPS; it is not part of the public Vercel build.
+cms/

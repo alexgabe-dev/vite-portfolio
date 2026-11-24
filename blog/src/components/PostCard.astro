@@ -1,0 +1,18 @@
+---
+import { type Post, authorOf, categoryOf, categoryUrl, formatDate, mediaOf, postUrl } from '../lib/data';
+import { imageAttrs } from '../lib/images';
+interface Props { post: Post; eager?: boolean; headingLevel?: 2 | 3 }
+const { post, eager = false, headingLevel = 2 } = Astro.props;
+const cover = mediaOf(post.coverImage);
+const category = categoryOf(post);
+const Heading = `h${headingLevel}`;
+---
+<article class="post-card">
+  {cover && <a class="post-card-media" href={postUrl(post)} tabindex="-1" aria-hidden="true"><Fragment set:html={`<img ${imageAttrs(cover, { sizes: '(min-width: 1100px) 400px, (min-width: 700px) 50vw, calc(100vw - 32px)', eager })}>`} /></a>}
+  <div class="post-card-body">
+    <p class="post-card-meta"><a href={categoryUrl(category)}>{category.name}</a><span aria-hidden="true">·</span><time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time></p>
+    <Heading class="post-card-title"><a href={postUrl(post)}>{post.title}</a></Heading>
+    <p class="post-card-excerpt">{post.excerpt}</p>
+    <p class="post-card-author">{authorOf(post).name}</p>
+  </div>
+</article>

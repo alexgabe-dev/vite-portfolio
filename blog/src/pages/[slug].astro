@@ -1,0 +1,112 @@
+---
+import BlogLayout from '../layouts/BlogLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { type Post, SITE, absolute, baseGraph, authorOf, categoryOf, categoryUrl, formatDate, mediaOf, modifiedAt, posts, postUrl, relatedTo, serviceLabels } from '../lib/data';
+import { renderPost } from '../lib/render';
+import { imageAttrs } from '../lib/images';
+
+export function getStaticPaths() {
+  const live = posts.map(post => ({ params: { slug: post.slug }, props: { post, redirectTo: undefined as string | undefined } }));
+  // Former slugs of a published article keep working (see docs/BLOG-CMS.md: redirects).
+  const moved = posts.flatMap(post => post.previousSlugs.map(slug => ({ params: { slug }, props: { post, redirectTo: postUrl(post) } })));
+  return [...live, ...moved];
+}
+const { post, redirectTo } = Astro.props as { post: Post; redirectTo?: string };
+const target = redirectTo ? absolute(redirectTo) : '';
+const author = authorOf(post);
+const category = categoryOf(post);
+const cover = mediaOf(post.coverImage);
+const share = mediaOf(post.shareImage) || cover;
+const photo = mediaOf(author.photo);
+const modified = modifiedAt(post);
+const rendered = redirectTo ? null : await renderPost(post);
+const related = relatedTo(post);
+const service = post.services.find(s => serviceLabels[s]);
+const path = postUrl(post);
+const coverSizes = '(min-width: 1200px) 1120px, calc(100vw - 32px)';
+const preload = cover ? { href: (cover.variants.find(v => v.width >= 800) || cover.variants[cover.variants.length - 1]).src, srcset: cover.variants.map(v => `${v.src} ${v.width}w`).join(', '), sizes: coverSizes } : undefined;
+const title = `${post.metaTitle || post.title} | Vizitor blog`;
+const description = post.metaDescription || post.excerpt;
+const authorNode = { '@type': 'Person', '@id': SITE + '/blog/#author-' + author.slug, name: author.name, ...(author.jobTitle ? { jobTitle: author.jobTitle } : {}), ...(author.sameAs.length ? { sameAs: author.sameAs } : {}), worksFor: { '@id': SITE + '/#vizitor' } };
+const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
+  ...baseGraph,
+  {
+    '@type': 'BlogPosting', '@id': absolute(path) + '#article', mainEntityOfPage: absolute(path), url: absolute(path),
+    headline: post.title, description, inLanguage: 'hu-HU', datePublished: post.publishedAt, dateModified: modified || post.publishedAt,
+    author: authorNode, publisher: { '@id': SITE + '/#vizitor' }, isPartOf: { '@id': SITE + '/#website' },
+    articleSection: category.name, wordCount: rendered.words,
+    ...(share ? { image: [absolute(share.og), ...(cover ? [absolute(cover.variants[cover.variants.length - 1].src)] : [])] } : {}),
+    ...(post.sources.length ? { citation: post.sources.map(s => ({ '@type': 'CreativeWork', name: s.title, url: s.url, ...(s.publisher ? { publisher: s.publisher } : {}) })) } : {}),
+  },
+  { '@type': 'BreadcrumbList', itemListElement: [['Főoldal', '/'], ['Blog', '/blog/'], [category.name, categoryUrl(category)], [post.title, path]].map(([name, url], i) => ({ '@type': 'ListItem', position: i + 1, name, item: absolute(url) })) },
+] };
+---
+{redirectTo ? (
+  <html lang="hu"><head><meta charset="utf-8" /><title>Átirányítás: {post.title}</title><meta name="robots" content="noindex, follow" /><link rel="canonical" href={target} /><meta http-equiv="refresh" content={`0; url=${redirectTo}`} /></head>
+  <body><p>A cikk új címe: <a href={redirectTo}>{post.title}</a></p></body></html>
+) : (
+<BlogLayout title={title} description={description} path={path} type="article" image={share?.og} imageAlt={share?.alt} jsonLd={jsonLd}
+  article={{ published: post.publishedAt, modified, section: category.name, author: author.name }} preload={preload}>
+  <article class="post">
+    <div class="blog-shell">
+      <nav class="page-breadcrumb blog-breadcrumb" aria-label="Morzsamenü"><a href="/">Főoldal</a><span aria-hidden="true">/</span><a href="/blog/">Blog</a><span aria-hidden="true">/</span><a href={categoryUrl(category)}>{category.name}</a></nav>
+      <header class="post-header">
+        <p class="eyebrow"><span class="copper-rule"></span><a href={categoryUrl(category)}>{category.name}</a></p>
+        <h1>{post.title}</h1>
+        <p class="post-lead">{post.excerpt}</p>
+        <p class="post-meta">
+          <a href="#szerzo">{author.name}</a>
+          <span aria-hidden="true">·</span><span>Publikálva: <time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time></span>
+          {modified && <><span aria-hidden="true">·</span><span>Frissítve: <time datetime={modified}>{formatDate(modified)}</time></span></>}
+          <span aria-hidden="true">·</span><span>{rendered!.readingMinutes} perc olvasás</span>
+        </p>
+      </header>
+      {cover && <figure class="post-cover"><Fragment set:html={`<img ${imageAttrs(cover, { sizes: coverSizes, eager: true })}>`} />{(cover.caption || cover.credit) && <figcaption>{[cover.caption, cover.credit].filter(Boolean).join(' · ')}</figcaption>}</figure>}
+      <div class={'post-layout' + (rendered!.toc.length >= 3 ? ' has-toc' : '')}>
+        {rendered!.toc.length >= 3 && (
+          <nav class="post-toc" aria-labelledby="toc-title">
+            <p id="toc-title" class="eyebrow">Tartalom</p>
+            <ol>{rendered!.toc.map(e => <li class={'toc-' + e.level}><a href={'#' + e.id}>{e.text}</a></li>)}</ol>
+          </nav>
+        )}
+        <div class="post-body">
+          <div class="prose" set:html={rendered!.html} />
+          {post.sources.length > 0 && (
+            <section class="post-sources" aria-labelledby="sources-title">
+              <h2 id="sources-title">Források</h2>
+              <ol>{post.sources.map(s => <li><a href={s.url} rel="noopener">{s.title}</a>{s.publisher && <span> — {s.publisher}</span>}</li>)}</ol>
+            </section>
+          )}
+          <section class="post-author" id="szerzo" aria-labelledby="author-title">
+            {photo && <Fragment set:html={`<img class="post-author-photo" ${imageAttrs(photo, { sizes: '96px', eager: false })}>`} />}
+            <div>
+              <p class="eyebrow">A szerzőről</p>
+              <h2 id="author-title">{author.name}</h2>
+              {author.jobTitle && <p class="post-author-role">{author.jobTitle}</p>}
+              {author.bio && <p>{author.bio}</p>}
+              {author.sameAs.length > 0 && <p class="post-author-links">{author.sameAs.map(u => <a href={u} rel="noopener me">{new URL(u).hostname.replace(/^www\./, '')}</a>)}</p>}
+            </div>
+          </section>
+          <aside class="post-cta" aria-labelledby="cta-title">
+            <p class="eyebrow">{service ? 'Kapcsolódó szolgáltatás' : 'Beszéljünk'}</p>
+            <h2 id="cta-title">{service ? serviceLabels[service] : 'Van egy hasonló feladatod?'}</h2>
+            <p>{service ? 'Ha a cikk témája nálad is aktuális, nézd meg, hogyan dolgozom, vagy írd meg röviden, mire van szükséged.' : 'Írd meg röviden, mire van szükséged. Közvetlenül velem egyeztetsz, és még a munka előtt tudni fogod a díjat és a határidőt.'}</p>
+            <div class="post-cta-actions">
+              <a class="button orange" href="/kapcsolat/">Ajánlatot kérek</a>
+              {service && <a class="text-link" href={service}>{serviceLabels[service]} részletei</a>}
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+    {related.length > 0 && (
+      <section class="post-related" aria-labelledby="related-title">
+        <div class="blog-shell">
+          <h2 id="related-title">Kapcsolódó cikkek</h2>
+          <div class="post-grid">{related.map(p => <PostCard post={p} headingLevel={3} />)}</div>
+        </div>
+      </section>
+    )}
+  </article>
+</BlogLayout>
+)}

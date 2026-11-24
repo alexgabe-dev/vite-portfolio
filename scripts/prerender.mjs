@@ -11,7 +11,7 @@ const indexable=process.env.VIZITOR_INDEXABLE==='true';
 const socialOrigin=indexable?'https://vizitor.hu':(process.env.VIZITOR_PREVIEW_ORIGIN||'https://vizitor-portfolio-nov26.delego-munka-1424.chatgpt.site');
 const escape=value=>String(value).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 try{
- await build({entryPoints:['src/App.tsx'],outfile:temporary,bundle:true,platform:'node',format:'esm',packages:'external',loader:{'.svg':'text'},jsx:'automatic',logLevel:'silent'});
+ await build({entryPoints:['src/App.tsx'],outfile:temporary,bundle:true,platform:'node',format:'esm',packages:'external',loader:{'.svg':'text'},jsx:'automatic',logLevel:'silent',define:{__VIZITOR_BLOG__:JSON.stringify(process.env.VIZITOR_BLOG==='true')}});
  const {default:App,pageMetadata,Privacy,ServicePage}=await import(pathToFileURL(temporary).href);
  // Read the same route registry used in the client, without a separate URL list.
  const routeBundle=path.resolve('.cache/routes.mjs');

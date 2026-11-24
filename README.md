@@ -41,6 +41,7 @@ A régi blog tartalmának költöztetése külön feladat. Az adatvédelmi táj�
 
 ## Dokumentáció
 
+- [Blog és CMS: architektúra, telepítés, publikálás, mentés](docs/BLOG-CMS.md)
 - [SEO és élesítési ellenőrzések](docs/SEO.md)
 - [Mobilos UX](docs/MOBILE-UX.md)
 - [Lighthouse-eredmények](docs/LIGHTHOUSE.md)

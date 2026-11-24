@@ -1,0 +1,10 @@
+---
+import ListPage from '../../../components/ListPage.astro';
+import { usedCategories, paginate } from '../../../lib/data';
+export function getStaticPaths() {
+  return usedCategories.map(({ category, posts }) => ({ params: { category: category.slug }, props: { category, posts } }));
+}
+const { category, posts } = Astro.props;
+const first = paginate(posts)[0];
+---
+<ListPage posts={first.items} page={1} pages={first.pages} total={posts.length} category={category} />
