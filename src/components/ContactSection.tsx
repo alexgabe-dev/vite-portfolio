@@ -1,6 +1,5 @@
 import { track } from '../analytics';
 import { Icon } from './Icon';
-import { useInquiryKeyboard } from './useInquiryKeyboard';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 
 export type ContactIntent = { service: string; plan?: string; key: number };
@@ -89,8 +88,6 @@ export function ContactSection({ intent, standalone=false }: { intent?: ContactI
   const [failure,setFailure]=useState('');
 
   const [submittedEmail,setSubmittedEmail]=useState('');
-  const cardRef=useRef<HTMLDivElement>(null);
-  useInquiryKeyboard(cardRef);
   const emailRef=useRef<HTMLInputElement>(null);
   const messageRef=useRef<HTMLTextAreaElement>(null);
   const successRef=useRef<HTMLDivElement>(null);
@@ -116,7 +113,6 @@ export function ContactSection({ intent, standalone=false }: { intent?: ContactI
     const fields=new FormData(form);
     const data=JSON.stringify({name:name.trim(),email:email.trim(),message:message.trim(),service:service||'Egyeztetést kérek',package:plan,_gotcha:String(fields.get('_gotcha')||'')});
     track('inquiry_submit',{form_id:'inquiry',service_count:service?1:0,has_package:!!plan});
-    if(document.activeElement instanceof HTMLElement&&form.contains(document.activeElement))document.activeElement.blur();
     busy.current=true;setStatus('sending');setFailure('');
     const controller=new AbortController();abort.current=controller;
     const timeout=window.setTimeout(()=>controller.abort(),20000);
@@ -140,7 +136,7 @@ export function ContactSection({ intent, standalone=false }: { intent?: ContactI
   const fallbackBody=`Szia!\n\n${name.trim()?'Név: '+name.trim()+'\n':''}Válaszcím: ${email.trim()}\n${service?'Amiben segítséget kérek: '+service+'\n':''}${plan?'Csomag: '+plan+'\n':''}\n${message.trim()}`;
   return <section className="inquiry-section section" id="kapcsolat" aria-labelledby="contact-title"><div className="wrap inquiry-layout">
     <div className="inquiry-intro"><p className="eyebrow">Kapcsolat</p><Heading id="contact-title">Beszéljük<br/>meg<span>.</span></Heading><p className="inquiry-lead">Írd meg, mire van szükséged.<br/>A többit átbeszéljük.</p><MessageArtwork active={pending} sent={status==='success'}/><div className="inquiry-direct"><p>Inkább közvetlenül?</p><a href="mailto:info@vizitor.hu"><span>info@vizitor.hu</span><span aria-hidden="true"><Icon name="arrow-up-right"/></span></a><a href="tel:+36205180921" className="inquiry-phone">+36 20 518 0921</a></div></div>
-    <div ref={cardRef} data-clarity-mask="true" className={'inquiry-card'+(status==='success'?' inquiry-complete':'')}>
+    <div data-clarity-mask="true" className={'inquiry-card'+(status==='success'?' inquiry-complete':'')}>
       {status==='success'?<div className="inquiry-success" ref={successRef} tabIndex={-1} role="status"><span className="inquiry-success-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><path d="m17 33 10 10 21-23" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="32" cy="32" r="29" stroke="currentColor" strokeOpacity=".2"/></svg></span><p className="eyebrow">Köszönöm a megkeresést</p><Subheading>Üzenet elküldve<span>.</span></Subheading><p>Erre a címre fogok válaszolni:<br/><strong>{submittedEmail}</strong></p><p className="inquiry-success-next">Elolvasom az üzeneted, és e-mailben válaszolok.</p><button type="button" onClick={()=>{setStatus('idle');setPlan('');requestAnimationFrame(()=>emailRef.current?.focus());}}>Másik üzenetet írok<span aria-hidden="true"><Icon name="arrow-up-right"/></span></button></div>:<form id="inquiry-form" className="inquiry-form" aria-label="Kapcsolatfelvétel a Vizitorral" action={CONTACT_ENDPOINT} method="POST" noValidate onSubmit={submit} aria-busy={pending}>
         <div className="inquiry-form-heading"><Subheading>Miben segíthetek?</Subheading><p>Elég az e-mail-címed és néhány mondat.</p></div>
         {plan&&<div className="inquiry-context"><div><span>Erről érdeklődsz</span><p>{plan}</p></div><button type="button" disabled={pending} aria-label="Csomagválasztás törlése" onClick={()=>setPlan('')}><Icon name="close"/></button></div>}
@@ -149,7 +145,7 @@ export function ContactSection({ intent, standalone=false }: { intent?: ContactI
         <div className="inquiry-field"><label htmlFor="inquiry-name">Hogy szólíthatlak? <span>nem kötelező</span></label><input id="inquiry-name" name="name" enterKeyHint="done" onKeyDown={event=>{if(event.key==='Enter'){event.preventDefault();event.currentTarget.blur();}}} autoComplete="name" maxLength={100} placeholder="Neved" value={name} disabled={pending} onChange={event=>setName(event.target.value)}/></div>
         <div className="inquiry-trap" aria-hidden="true"><label htmlFor="inquiry-website">Ezt hagyd üresen</label><input id="inquiry-website" name="_gotcha" tabIndex={-1} autoComplete="off"/></div>
         {status==='error'&&<div className="inquiry-send-error" role="alert"><p>{failure}</p><button type="button" onClick={()=>{track('contact_click',{method:'email',location:'contact'});window.location.href='mailto:info@vizitor.hu?subject='+encodeURIComponent('Vizitor megkeresés')+'&body='+encodeURIComponent(fallbackBody);}}>Megnyitom e-mailben<span aria-hidden="true"><Icon name="arrow-up-right"/></span></button></div>}
-        <div className="inquiry-action-space"><div className="inquiry-actions"><button className="inquiry-submit" type="submit" disabled={pending} onPointerDown={event=>{if(cardRef.current?.hasAttribute('data-keyboard-open'))event.preventDefault();}}>{pending?<><span className="inquiry-spinner" aria-hidden="true"/>Küldés folyamatban…</>:<>Üzenet küldése<span className="inquiry-submit-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m4 11 16-7-7 16-2-7-7-2Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><path d="m11 13 9-9" stroke="currentColor" strokeWidth="1.4"/></svg></span></>}</button></div></div>
+        <button className="inquiry-submit" type="submit" disabled={pending}>{pending?<><span className="inquiry-spinner" aria-hidden="true"/>Küldés folyamatban…</>:<>Üzenet küldése<span className="inquiry-submit-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m4 11 16-7-7 16-2-7-7-2Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><path d="m11 13 9-9" stroke="currentColor" strokeWidth="1.4"/></svg></span></>}</button>
         <p className="inquiry-privacy">Az adataidat a megkeresés megválaszolásához használom. <a href="/adatvedelem/" target="_blank" rel="noopener noreferrer">Adatkezelési tájékoztató<span className="sr-only"> (új lapon)</span></a></p>
       </form>}
     </div>
