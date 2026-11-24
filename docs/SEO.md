@@ -82,4 +82,4 @@ The current owner-private hosting audience prevents unauthenticated social crawl
 
 ## Navigációs oldalak – 2026. november 23.
 
-Öt külön canonical oldal váltotta fel a főmenü fragmentumait: `/szolgaltatasok/`, `/igy-dolgozunk/`, `/arak/`, `/gyakori-kerdesek/`, `/kapcsolat/`. A sitemap összesen 17 oldalt tartalmaz. Ezek önálló tartalmi nézetek, nem a teljes főoldalt másoló URL-aliasok. A kapcsolatoldal ContactPage típust és saját morzsamenüt kap.
+Öt külön canonical oldal váltotta fel a főmenü fragmentumait: `/szolgaltatasok/`, `/igy-dolgozom/`, `/arak/`, `/gyakori-kerdesek/`, `/kapcsolat/`. A sitemap összesen 17 oldalt tartalmaz. Ezek önálló tartalmi nézetek, nem a teljes főoldalt másoló URL-aliasok. A kapcsolatoldal ContactPage típust és saját morzsamenüt kap.

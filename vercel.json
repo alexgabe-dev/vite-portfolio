@@ -74,8 +74,8 @@
       "statusCode": 301
     },
     {
-      "source": "/igy-dolgozunk",
-      "destination": "/igy-dolgozunk/",
+      "source": "/igy-dolgozom",
+      "destination": "/igy-dolgozom/",
       "statusCode": 301
     },
     {
@@ -149,6 +149,16 @@
       "statusCode": 301
     },
     {
+      "source": "/igy-dolgozunk",
+      "destination": "/igy-dolgozom/",
+      "statusCode": 301
+    },
+    {
+      "source": "/igy-dolgozunk/",
+      "destination": "/igy-dolgozom/",
+      "statusCode": 301
+    },
+    {
       "source": "/csomagok",
       "destination": "/arak/",
       "statusCode": 301
@@ -160,22 +170,22 @@
     },
     {
       "source": "/rolunk",
-      "destination": "/igy-dolgozunk/",
+      "destination": "/igy-dolgozom/",
       "statusCode": 301
     },
     {
       "source": "/rolunk/",
-      "destination": "/igy-dolgozunk/",
+      "destination": "/igy-dolgozom/",
       "statusCode": 301
     },
     {
       "source": "/folyamat",
-      "destination": "/igy-dolgozunk/",
+      "destination": "/igy-dolgozom/",
       "statusCode": 301
     },
     {
       "source": "/folyamat/",
-      "destination": "/igy-dolgozunk/",
+      "destination": "/igy-dolgozom/",
       "statusCode": 301
     },
     {

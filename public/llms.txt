@@ -1,0 +1,37 @@
+# Vizitor
+
+> A Vizitor (vizitor.hu) Gábor Sándor egyéni vállalkozása. Weboldalakat, webshopokat és egyedi webalkalmazásokat tervez és fejleszt magyar vállalkozásoknak, emellett Google Ads- és Meta-hirdetéskezelést, keresőoptimalizálást (SEO), webanalitikát, AI-chatbotokat, automatizálást, webkarbantartást és e-mail-rendszer-üzemeltetést vállal. Az ügyfél végig közvetlenül azzal egyeztet, aki az oldalt megtervezi és megépíti.
+
+Fontos tudnivalók:
+
+- Nyelv: magyar. Szolgáltatási terület: Magyarország, online együttműködésben.
+- A weboldalak egyszeri díjasak, induló árak: Landing 219 000 Ft-tól, céges weboldal 349 000 Ft-tól, webshop (WooCommerce) 599 000 Ft-tól. A pontos díjat egyedi ajánlat rögzíti.
+- Havidíjas szolgáltatások: hirdetéskezelés 59 000 Ft/hó-tól (egy csatorna) és 99 000 Ft/hó (Google Ads + Meta), SEO 69 000 Ft/hó, WordPress-karbantartás 14 900 Ft/hó-tól. Éves előrefizetéssel 20% kedvezmény. A hirdetési költés nincs benne a kezelési díjban.
+- Egyedi alkalmazásra, AI-chatbotra, automatizálásra és e-mail-szerverre felmérés után készül ajánlat.
+- Kapcsolat: info@vizitor.hu, +36 20 518 0921, https://vizitor.hu/kapcsolat/
+- Alapító: Gábor Sándor — https://www.linkedin.com/in/sandor-gabor/
+
+## Szolgáltatások
+
+- [Weboldalkészítés](https://vizitor.hu/weboldalkeszites/): Bemutatkozó oldal, céges honlap vagy webshop, egyedi dizájnnal, mobilra tervezve.
+- [Egyedi webfejlesztés](https://vizitor.hu/egyedi-webfejlesztes/): Ügyfélportál, belső kezelőfelület, API-integrációk és összekötött rendszerek.
+- [Hirdetéskezelés](https://vizitor.hu/online-marketing/): Google Ads, Facebook- és Instagram-hirdetések, konverziómérés és havi riport.
+- [Keresőoptimalizálás](https://vizitor.hu/keresooptimalizalas/): Technikai SEO, kulcsszókutatás, on-page optimalizálás és Search Console-riport.
+- [Weboldal-karbantartás](https://vizitor.hu/weboldal-karbantartas/): WordPress, egyedi weboldal és webalkalmazás frissítése, mentése és felügyelete.
+- [AI-chatbot készítés](https://vizitor.hu/ai-chatbot-keszites/): Weboldalba épített vagy belső tudásanyagra épülő asszisztens.
+- [Üzleti automatizálás](https://vizitor.hu/automatizalas/): Űrlapok, CRM, e-mailek és más rendszerek összekötése.
+- [E-mail-szerverek](https://vizitor.hu/email-szerver-uzemeltetes/): Céges levelezés beállítása, költöztetése, üzemeltetése és DNS-hitelesítése.
+- [Webanalitika és MarTech](https://vizitor.hu/webanalitika-meres/): GA4, Google Tag Manager, Meta Pixel és konverziómérés.
+
+## Áttekintő oldalak
+
+- [Szolgáltatások](https://vizitor.hu/szolgaltatasok/): A teljes kínálat egy helyen.
+- [Csomagok és árak](https://vizitor.hu/arak/): Weboldal-, marketing- és karbantartási csomagok tartalommal és árakkal.
+- [Így dolgozom](https://vizitor.hu/igy-dolgozom/): A közös munka menete a tervezéstől az élesítésig.
+- [Gyakori kérdések](https://vizitor.hu/gyakori-kerdesek/): Indulás, közös munka, díjak és havidíjak.
+- [Referenciák](https://vizitor.hu/munkak/): Elkészült weboldalak és webalkalmazások.
+- [Kapcsolat és ajánlatkérés](https://vizitor.hu/kapcsolat/)
+
+## Optional
+
+- [Adatkezelési tájékoztató](https://vizitor.hu/adatvedelem/)

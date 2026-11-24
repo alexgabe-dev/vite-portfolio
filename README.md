@@ -67,7 +67,7 @@ Helyi próba: `npm run build:vercel` (előnézet), vagy `VERCEL_ENV=production n
 
 ## Tiszta navigációs útvonalak
 
-A főmenü és az ajánlatkérés önálló, előrenderelt oldalakat nyit: `/szolgaltatasok/`, `/igy-dolgozunk/`, `/arak/`, `/gyakori-kerdesek/`, `/kapcsolat/`. Mindegyik saját H1-et, címet, leírást és canonical URL-t kap. A főoldal továbbra is tartalmazza az áttekintő szekciókat. A csomagválasztás személyes adatok nélkül, egyszer felhasználható sessionStorage-bejegyzéssel jut az ajánlatkérő oldalra.
+A főmenü és az ajánlatkérés önálló, előrenderelt oldalakat nyit: `/szolgaltatasok/`, `/igy-dolgozom/`, `/arak/`, `/gyakori-kerdesek/`, `/kapcsolat/`. Mindegyik saját H1-et, címet, leírást és canonical URL-t kap. A főoldal továbbra is tartalmazza az áttekintő szekciókat. A csomagválasztás személyes adatok nélkül, egyszer felhasználható sessionStorage-bejegyzéssel jut az ajánlatkérő oldalra.
 
 A korábbi `/csomagok/`, `/rolunk/`, `/folyamat/` és `/kerdesek/` címek 301-gyel az új oldalakra irányítanak. A régi főoldali `#` szakaszlinkeket a kliens az új oldalra vezeti; a Vercel és a Worker a 17 canonical oldalt valóban kiszolgálja.
 

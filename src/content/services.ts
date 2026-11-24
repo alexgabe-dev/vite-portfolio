@@ -159,13 +159,13 @@ export const services:ServiceDetail[] = [
     ],
     "detailTitle": "Miből látszik, hogy haladunk?",
     "details": [
-      "A keresőből érkező megjelenéseket, kattintásokat, keresőkifejezéseket és a fontos oldalak állapotát a Search Console alapján követjük. A riport a módosításokat és a következő lépéseket is tartalmazza. Ehhez hozzáférésre van szükség a megfelelő fiókokhoz.",
-      "A pontos címek, címsorok, belső linkek és az érthető tartalom a látogatót is segítik. A strukturált adatokkal a valóban megjelenő szolgáltatásokat és információkat írjuk le; nem adunk az oldalhoz kitalált értékeléseket vagy eredményígéreteket."
+      "A keresőből érkező megjelenéseket, kattintásokat, keresőkifejezéseket és a fontos oldalak állapotát a Search Console alapján követem. A riport a módosításokat és a következő lépéseket is tartalmazza. Ehhez hozzáférésre van szükség a megfelelő fiókokhoz.",
+      "A pontos címek, címsorok, belső linkek és az érthető tartalom a látogatót is segítik. A strukturált adatokkal a valóban megjelenő szolgáltatásokat és információkat írom le; nem adok az oldalhoz kitalált értékeléseket vagy eredményígéreteket."
     ],
     "faq": [
       [
         "Mikor leszek első a Google-ben?",
-        "Konkrét helyezést vagy határidőt nem lehet garantálni. A kiinduló állapot, a verseny és a tartalom is számít; a havi munkát és a mérhető változásokat tudjuk követni."
+        "Konkrét helyezést vagy határidőt nem lehet garantálni. A kiinduló állapot, a verseny és a tartalom is számít; a havi munkát és a mérhető változásokat tudom követni."
       ],
       [
         "A szövegírás is benne van a havi díjban?",
@@ -255,7 +255,7 @@ export const services:ServiceDetail[] = [
       ],
       [
         "Összeköthető a meglévő rendszeremmel?",
-        "Akkor, ha a rendszer megfelelő csatlakozást és jogosultságokat biztosít. A lekérdezéseket és az adatot módosító műveleteket külön kezeljük a tervezés során."
+        "Akkor, ha a rendszer megfelelő csatlakozást és jogosultságokat biztosít. A lekérdezéseket és az adatot módosító műveleteket külön kezelem a tervezés során."
       ],
       [
         "Fix havidíja van?",
@@ -374,7 +374,7 @@ export const services:ServiceDetail[] = [
     ],
     "detailTitle": "A beállítás után ellenőrizhető adat kell.",
     "details": [
-      "A címkék, események és paraméterek működését teszteljük. Az egyeztetett mérési pontokról és a használt beállításokról áttekinthető dokumentáció készülhet, így később is látszik, mi miért került a rendszerbe. Szükség esetén szerveroldali mérés lehetőségét is megvizsgáljuk.",
+      "A címkék, események és paraméterek működését tesztelem. Az egyeztetett mérési pontokról és a használt beállításokról áttekinthető dokumentáció készülhet, így később is látszik, mi miért került a rendszerbe. Szükség esetén szerveroldali mérés lehetőségét is megvizsgálom.",
       "A mérésnek illeszkednie kell az oldal hozzájáruláskezeléséhez és adatkezeléséhez. A böngészők, a látogatói döntések és az egyes rendszerek eltérő feldolgozása miatt nem ígérek teljesen azonos számokat minden felületen. A pontos beállítási és fenntartási díj a felmérés alapján készül."
     ],
     "faq": [

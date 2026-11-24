@@ -1,6 +1,6 @@
 # Canonical pages and legacy navigation aliases.
 /szolgaltatasok /szolgaltatasok/ 301
-/igy-dolgozunk /igy-dolgozunk/ 301
+/igy-dolgozom /igy-dolgozom/ 301
 /arak /arak/ 301
 /gyakori-kerdesek /gyakori-kerdesek/ 301
 /kapcsolat /kapcsolat/ 301
@@ -15,12 +15,14 @@
 /webanalitika-meres /webanalitika-meres/ 301
 /munkak /munkak/ 301
 /adatvedelem /adatvedelem/ 301
+/igy-dolgozunk /igy-dolgozom/ 301
+/igy-dolgozunk/ /igy-dolgozom/ 301
 /csomagok /arak/ 301
 /csomagok/ /arak/ 301
-/rolunk /igy-dolgozunk/ 301
-/rolunk/ /igy-dolgozunk/ 301
-/folyamat /igy-dolgozunk/ 301
-/folyamat/ /igy-dolgozunk/ 301
+/rolunk /igy-dolgozom/ 301
+/rolunk/ /igy-dolgozom/ 301
+/folyamat /igy-dolgozom/ 301
+/folyamat/ /igy-dolgozom/ 301
 /kerdesek /gyakori-kerdesek/ 301
 /kerdesek/ /gyakori-kerdesek/ 301
 /wordpress-karbantartas /weboldal-karbantartas/ 301

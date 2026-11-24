@@ -1,7 +1,7 @@
 import { sectionPath } from '../routes';
 import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
 
-const mainLinks=[{id:'szolgaltatasok',label:'Szolgáltatások'},{id:'folyamat',label:'Így dolgozunk'},{id:'csomagok',label:'Árak'}];
+const mainLinks=[{id:'szolgaltatasok',label:'Szolgáltatások'},{id:'folyamat',label:'Így dolgozom'},{id:'csomagok',label:'Árak'}];
 const sectionIds=['szolgaltatasok','folyamat','csomagok','kerdesek','kapcsolat'];
 function Arrow(){return <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>;}
 export function Header({archive,legal=false,activeSection}:{archive:boolean;legal?:boolean;activeSection?:string}) {
