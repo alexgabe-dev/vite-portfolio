@@ -32,7 +32,7 @@ const rules: Record<string, (value: unknown) => boolean> = {
  service_id: oneOf('website', 'development', 'ai', 'automation', 'marketing', 'seo', 'analytics', 'maintenance', 'email'),
  location: oneOf('header', 'footer', 'hero', 'services', 'pricing', 'faq', 'contact', 'projects', 'other'),
  method: oneOf('email', 'phone', 'copy_email'),
- link_domain: oneOf('facebook.com', 'www.facebook.com', 'linkedin.com', 'www.linkedin.com', 'github.com', 'www.palackverseny.hu', 'palackverseny.hu', 'magyar-ertekmentes.hu', 'kiwireels.vercel.app', 'bfzh.hu', 'www.bfzh.hu', 'policies.google.com', 'vercel.com', 'formspree.io'),
+ link_domain: oneOf('facebook.com', 'www.facebook.com', 'linkedin.com', 'www.linkedin.com', 'github.com', 'www.palackverseny.hu', 'palackverseny.hu', 'magyar-ertekmentes.hu', 'kiwireels.vercel.app', 'bfzh.hu', 'www.bfzh.hu', 'policies.google.com', 'vercel.com'),
  question_id: oneOf('first', 'existing', 'content', 'timing', 'contact', 'preview', 'edit', 'handover', 'annual', 'adspend', 'extra', 'maintenance'),
  topic_id: oneOf('start', 'work', 'fees'), card_index: integer(2),
  deck_id: oneOf('services', 'packages_web', 'packages_marketing', 'packages_care'),

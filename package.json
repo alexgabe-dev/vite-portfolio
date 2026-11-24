@@ -12,7 +12,9 @@
     "check:worker": "node scripts/check-worker.mjs",
     "build:vercel": "node scripts/build-vercel.mjs",
     "check:consent": "node scripts/check-consent.mjs",
-    "check:analytics": "node scripts/check-analytics.mjs"
+    "check:analytics": "node scripts/check-analytics.mjs",
+    "check:email": "node scripts/check-email.mjs",
+    "preview:email": "node scripts/preview-email.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

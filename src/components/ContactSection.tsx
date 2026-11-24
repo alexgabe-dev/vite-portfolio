@@ -4,8 +4,7 @@ import { Icon } from './Icon';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 
 export type ContactIntent = { service: string; plan?: string; key: number };
-// The same public form endpoint used by the original Vizitor contact page.
-export const CONTACT_ENDPOINT = 'https://formspree.io/f/xvgkpzen';
+export const CONTACT_ENDPOINT = '/api/contact/';
 type Status = 'idle' | 'sending' | 'success' | 'error';
 type FieldErrors = { email?: string; message?: string };
 function MessageArtwork({ active, sent }: { active: boolean; sent: boolean }) {
@@ -113,19 +112,14 @@ export function ContactSection({ intent, standalone=false }: { intent?: ContactI
     setErrors(next);
     if(next.email||next.message){if(next.email)track('inquiry_validation',{form_id:'inquiry',error_type:email.trim()?'email_invalid':'email_required'});if(next.message)track('inquiry_validation',{form_id:'inquiry',error_type:'message_required'});(next.email?emailRef:messageRef).current?.focus();return;}
     const form=event.currentTarget;
-    const data=new FormData(form);
-    // Trim contact details; preserve the visitor's message and intentional line breaks.
-    data.set('name',name.trim());data.set('email',email.trim());data.set('message',message.trim());
-    data.set('service',service||'Egyeztetést kérek');
-    if(plan)data.set('package',plan);
-    data.set('_subject','Vizitor megkeresés — '+(service||'Új üzenet'));
-    data.set('_replyto',email.trim());
+    const fields=new FormData(form);
+    const data=JSON.stringify({name:name.trim(),email:email.trim(),message:message.trim(),service:service||'Egyeztetést kérek',package:plan,_gotcha:String(fields.get('_gotcha')||'')});
     track('inquiry_submit',{form_id:'inquiry',service_count:services.length,has_package:!!plan});
     busy.current=true;setStatus('sending');setFailure('');
     const controller=new AbortController();abort.current=controller;
     const timeout=window.setTimeout(()=>controller.abort(),20000);
     try {
-      const response=await fetch(CONTACT_ENDPOINT,{method:'POST',body:data,headers:{Accept:'application/json'},signal:controller.signal});
+      const response=await fetch(CONTACT_ENDPOINT,{method:'POST',body:data,headers:{Accept:'application/json','Content-Type':'application/json'},signal:controller.signal});
       const result=await response.json().catch(()=>null) as {ok?:boolean;errors?:{field?:string;message?:string}[]}|null;
       if(!response.ok||result?.ok!==true){
         track('inquiry_error',{form_id:'inquiry',error_type:response.status===429?'rate_limited':'server',http_status:response.status});

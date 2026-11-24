@@ -31,7 +31,7 @@ A build előrendereli a főoldalt, a projektarchívumot, a kilenc szolgáltatás
 - Megosztási kép: `public/og/vizitor-share-2026.png` (1200 × 630)
 - Szerkeszthető megosztási grafika: `public/og/vizitor.svg`; PNG-generálás: `node scripts/build-social-image.mjs` (Arial rendszerbetűkészletet használ).
 
-Az űrlapban az e-mail-cím és az üzenet kötelező. A Formspree-végpont a korábbi oldal beállítását követi; valódi tesztüzenet nem lett elküldve, a kézbesítés külön ellenőrzendő.
+Az űrlapban az e-mail-cím és az üzenet kötelező. A szerveroldali Resend-integráció az info@vizitor.hu címre továbbít, és visszaigazolást küld az érdeklődőnek. Beállítás és tesztelés: [docs/EMAIL.md](docs/EMAIL.md).
 
 ## Telepítés és indexelés
 

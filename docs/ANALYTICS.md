@@ -20,7 +20,7 @@
 | faq_open / faq_topic / process_step / card_swipe / project_filter | Tartalmi interakciók és mobilkártyák. |
 | inquiry_start / inquiry_field_complete / inquiry_interest | Valódi begépelés, kitöltött mező ténye, választott nyilvános szolgáltatáskategória. Nem mezőértékek. |
 | inquiry_validation / inquiry_submit / inquiry_error | Ellenőrzési hibatípus, érvényes küldési kísérlet, HTTP/kapcsolódási hiba. |
-| generate_lead | Csak Formspree HTTP-siker + `ok: true` válasz után. Nincs fiktív monetáris érték. |
+| generate_lead | Csak szerveroldali Resend-elfogadás és HTTP-siker + `ok: true` válasz után. Nincs fiktív monetáris érték. |
 | inquiry_exit | Elkezdett, de visszaigazolt lead nélkül elhagyott oldal. Nem bizonyítja, hogy egy folyamatban lévő szerverkérés végleg sikertelen lett. |
 | scroll_depth | 25/50/75/90/100%, küszöbönként egyszer. |
 | engagement_milestone / visit_summary | 15/30/60/120 aktív másodperc, elhagyáskori aktív idő és mélység. Rejtett lap és 30 mp inaktivitás nem növeli az aktív időt. |
@@ -63,7 +63,7 @@ A GTM-ben később Custom Event trigger: `vizitor_analytics`, Data Layer Variabl
 
 ## Tesztelés
 
-`npm run build:vercel`, `npm run check:consent`, `npm run check:analytics`. Böngészőben 4 engedélymátrix (semmi / csak GA4 / csak Clarity / mindkettő), visszavonás, normál UI-események, dummy űrlap-válaszok, nincs valódi Formspree-küldés. A QA során a mérési gyűjtővégpontok tiltva maradnak, hogy a riportokba ne kerüljön tesztforgalom; ezért a teszt a helyes küldési kísérletet és paramétereket igazolja, nem a szolgáltatói riportfeldolgozást.
+`npm run build:vercel`, `npm run check:consent`, `npm run check:analytics`. Böngészőben 4 engedélymátrix (semmi / csak GA4 / csak Clarity / mindkettő), visszavonás, normál UI-események, dummy űrlap-válaszok, nincs valódi e-mail-küldés. A QA során a mérési gyűjtővégpontok tiltva maradnak, hogy a riportokba ne kerüljön tesztforgalom; ezért a teszt a helyes küldési kísérletet és paramétereket igazolja, nem a szolgáltatói riportfeldolgozást.
 
 ## Források
 
