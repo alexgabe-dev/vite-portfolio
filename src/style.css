@@ -568,32 +568,32 @@ html,body,*{scrollbar-width:none;-ms-overflow-style:none}*::-webkit-scrollbar{wi
 .consent-category label{min-height:44px}
 
 .inquiry-send-error>button{display:inline-flex;align-items:center;gap:12px;border:0;background:transparent;padding:8px 0;color:inherit;font:inherit;text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
-.imprint-layout{padding-block:76px 90px}
-.imprint-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
-.imprint-card{position:relative;background:#e6e8e5;border:1px solid #d9ded9;border-radius:10px;padding:34px 34px 30px;min-width:0;transition:border-color .3s,background .3s}
-.imprint-card:hover{border-color:#c4cdc5;background:#e9ebe8}
-.imprint-card header{position:relative;padding-right:56px;margin-bottom:22px}
-.imprint-card .eyebrow{color:#6b7479;margin-bottom:12px}
-.imprint-card h2{font-size:clamp(1.6rem,2.4vw,2.1rem);letter-spacing:-.045em;line-height:1.15;color:#18272f}
-.imprint-index{position:absolute;top:0;right:0;font-size:.75rem;letter-spacing:.08em;color:#e5502e}
-.imprint-note{font-size:.9375rem;line-height:1.8;color:#536168;margin-bottom:18px}
-.imprint-note a{color:#b23820;text-decoration:underline;text-underline-offset:4px}
-.imprint-note a:hover{color:#e34a27}
-.imprint-card dl{margin:0;border-top:1px solid #23323a1f}
-.imprint-card dl>div{display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;padding-block:13px;border-bottom:1px solid #23323a14}
-.imprint-card dt{font-size:.75rem;letter-spacing:.04em;color:#6b767c;line-height:1.7;padding-top:2px}
-.imprint-card dd{margin:0;font-size:.9375rem;line-height:1.65;color:#1d2b33;overflow-wrap:anywhere}
-.imprint-card dd a{color:#1d2b33;text-decoration:underline;text-decoration-color:#ff5c3580;text-underline-offset:4px;transition:color .2s}
-.imprint-card dd a:hover{color:#c33e20}
-.imprint-szolgaltato{background:#18272f;border-color:#18272f}
-.imprint-szolgaltato:hover{background:#1b2c35;border-color:#1b2c35}
-.imprint-szolgaltato h2,.imprint-szolgaltato dd{color:#f1f1ec}
-.imprint-szolgaltato .eyebrow,.imprint-szolgaltato dt{color:#93a0a7}
-.imprint-szolgaltato dl{border-color:#ffffff1f}
-.imprint-szolgaltato dl>div{border-color:#ffffff14}
-.imprint-copyright{display:flex;flex-direction:column}
-.imprint-copyright .imprint-note{max-width:860px}
-.imprint-legal{margin-top:34px;max-width:760px;font-size:.8125rem;line-height:1.8;color:#6b767c}
-@media(max-width:900px){.imprint-grid{grid-template-columns:1fr}.imprint-card dl>div{grid-template-columns:130px minmax(0,1fr)}}
-@media(max-width:600px){.imprint-layout{padding-block:40px 60px}.imprint-card{padding:26px 20px 22px}.imprint-card dl>div{grid-template-columns:1fr;gap:2px;padding-block:11px}.imprint-card dt{padding-top:0}}
-@media print{.imprint-card{break-inside:avoid;background:none!important;border-color:#ccc!important}.imprint-szolgaltato *{color:#111!important}}
+.imprint-page{background:#0c0e11}
+.imprint-wrap{max-width:1080px;padding-block:36px 84px}
+.imprint-head{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;padding-block:34px 30px;border-bottom:1px solid #ffffff1a}
+.imprint-head .eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.imprint-head h1{font-size:clamp(2.6rem,5vw,4rem);letter-spacing:-.06em;line-height:1}
+.imprint-head h1>span{color:var(--accent)}
+.imprint-head>p{font-size:.8125rem;line-height:1.7;color:#8a949b;text-align:right}
+.imprint-head time{color:#5f6a72}
+.imprint-row{display:grid;grid-template-columns:170px minmax(0,1fr);gap:28px;padding-block:24px;border-bottom:1px solid #ffffff12;position:relative}
+.imprint-row:before{content:'';position:absolute;left:0;top:-1px;width:0;height:1px;background:var(--accent);transition:width .45s ease}
+@media(hover:hover){.imprint-row:hover:before{width:170px}}
+.imprint-row h2{font-size:1rem;letter-spacing:-.01em;line-height:1.5;color:#eef1f2;display:flex;gap:12px;align-items:baseline}
+.imprint-row h2>span{font-size:.6875rem;letter-spacing:.08em;color:var(--accent);font-variant-numeric:tabular-nums}
+.imprint-body dl{margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px 28px}
+.imprint-body dl>div{min-width:0}
+.imprint-body dl>div.is-wide{grid-column:span 2}
+.imprint-body dt{font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:#69737a;margin-bottom:5px}
+.imprint-body dd{margin:0;font-size:.875rem;line-height:1.55;color:#d9dee1;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.imprint-body dd a{color:#d9dee1;border-bottom:1px solid #ff5c3566;transition:color .2s,border-color .2s}
+.imprint-body dd a:hover{color:var(--accent);border-color:var(--accent)}
+.imprint-note{margin-top:16px;font-size:.8125rem;line-height:1.65;color:#8a949b;padding-left:12px;border-left:1px solid #ff5c3580}
+.imprint-foot{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 40px;padding-top:24px;font-size:.75rem;line-height:1.7;color:#69737a}
+.imprint-foot p:first-child{max-width:620px}
+.imprint-foot a{color:#aab3b8;text-decoration:underline;text-underline-offset:3px}
+.imprint-foot a:hover{color:var(--accent)}
+@media(max-width:800px){.imprint-head{flex-direction:column;align-items:flex-start;gap:14px}.imprint-head>p{text-align:left}.imprint-row{grid-template-columns:1fr;gap:14px}.imprint-foot{grid-template-columns:1fr}}
+@media(max-width:600px){.imprint-wrap{padding-block:24px 56px}.imprint-body dl{grid-template-columns:1fr 1fr;gap:14px 18px}.imprint-body dl>div.is-wide{grid-column:1/-1}}
+@media(max-width:380px){.imprint-body dl{grid-template-columns:1fr}}
+@media print{.imprint-page,.imprint-page *{background:none!important;color:#111!important}}
