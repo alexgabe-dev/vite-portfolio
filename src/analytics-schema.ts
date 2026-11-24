@@ -28,7 +28,7 @@ const rules: Record<string, (value: unknown) => boolean> = {
  section_id: oneOf('hero', 'services', 'process', 'pricing', 'faq', 'contact', 'projects'),
  package_id: value => typeof value === 'string' && /^(web|marketing|care)_[012]$/.test(value),
  package_category: oneOf('web', 'marketing', 'care'), billing_period: oneOf('once', 'monthly', 'annual'),
- listed_price: integer(100000000), destination_path: value => typeof value === 'string' && canonicalRoutes.includes(value),
+ listed_price: integer(100000000), destination_path: value => typeof value === 'string' && (canonicalRoutes.includes(value) || BLOG_PATH.test(value)),
  service_id: oneOf('website', 'development', 'ai', 'automation', 'marketing', 'seo', 'analytics', 'maintenance', 'email'),
  location: oneOf('header', 'footer', 'hero', 'services', 'pricing', 'faq', 'contact', 'projects', 'other'),
  method: oneOf('email', 'phone', 'copy_email'),
@@ -52,10 +52,16 @@ export function cleanEvent(name: AnalyticsEvent, params: EventParams = {}): Even
  for (const key of eventSchemas[name]) if (rules[key]?.(params[key])) result[key] = params[key];
  return result;
 }
+// Static blog pages (built separately under /blog/) mark their document; their URLs are generated, not listed in routes.ts.
+const BLOG_PATH = /^\/blog\/(?:[a-z0-9-]+\/)*$/;
+export function isKnownPage(path: string) {
+ if (canonicalRoutes.includes(path)) return true;
+ return BLOG_PATH.test(path) && typeof document !== 'undefined' && document.documentElement.dataset.vizitorSection === 'blog';
+}
 export function safePageContext(href: string, referrer: string, title: string) {
  const url = new URL(href);
  const path = normalizePath(url.pathname);
- const pagePath = canonicalRoutes.includes(path) ? path : '/404/';
+ const pagePath = isKnownPage(path) ? path : '/404/';
  const clean = new URL(pagePath, url.origin);
  // Campaign slugs only. Never pass arbitrary query parameters, fragments or link bodies.
  for (const key of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_id', 'utm_content']) {
@@ -78,7 +84,7 @@ export const serviceIds: Record<string, string> = {
 export function canRecordPage(href: string, referrer = '') {
  try {
   const url = new URL(href);
-  if (!canonicalRoutes.includes(normalizePath(url.pathname)) || url.hash) return false;
+  if (!isKnownPage(normalizePath(url.pathname)) || url.hash) return false;
   const clean = new URL(safePageContext(href, '', '').page_location);
   for (const [key, value] of url.searchParams) {
    if (url.searchParams.getAll(key).length !== 1 || clean.searchParams.get(key) !== value) return false;

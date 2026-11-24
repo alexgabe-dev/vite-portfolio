@@ -1,0 +1,51 @@
+---
+import BlogLayout from '../layouts/BlogLayout.astro';
+import PostCard from './PostCard.astro';
+import { type Post, type Category, SITE, absolute, baseGraph, categoryUrl, listUrl, postUrl, usedCategories, CATEGORY_INDEX_MIN } from '../lib/data';
+interface Props { posts: Post[]; page: number; pages: number; total: number; category?: Category }
+const { posts, page, pages, total, category } = Astro.props;
+const url = (n: number) => (category ? categoryUrl(category, n) : listUrl(n));
+const path = url(page);
+const heading = category ? category.name : 'Blog';
+const intro = category?.description || 'Gyakorlati írások weboldalakról, keresőoptimalizálásról, mérésről és automatizálásról — vállalkozásoknak, érthetően.';
+const pageSuffix = page > 1 ? ` – ${page}. oldal` : '';
+const title = category ? `${category.name}${pageSuffix} | Vizitor blog` : `Blog${pageSuffix} – weboldal, SEO, marketing | Vizitor`;
+const description = (category?.description || intro).slice(0, 160);
+const index = !category || total >= CATEGORY_INDEX_MIN;
+const crumbs = [{ name: 'Főoldal', url: '/' }, { name: 'Blog', url: '/blog/' }, ...(category ? [{ name: category.name, url: categoryUrl(category) }] : [])];
+const jsonLd = { '@context': 'https://schema.org', '@graph': [
+  ...baseGraph,
+  { '@type': category ? 'CollectionPage' : 'Blog', '@id': absolute(path) + '#page', url: absolute(path), name: title, description, inLanguage: 'hu-HU', isPartOf: { '@id': SITE + '/#website' }, publisher: { '@id': SITE + '/#vizitor' } },
+  { '@type': 'BreadcrumbList', itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: absolute(c.url) })) },
+  { '@type': 'ItemList', itemListElement: posts.map((p, i) => ({ '@type': 'ListItem', position: (page - 1) * 12 + i + 1, url: absolute(postUrl(p)), name: p.title })) },
+] };
+---
+<BlogLayout title={title} description={description} path={path} jsonLd={jsonLd} index={index} prev={page > 1 ? url(page - 1) : undefined} next={page < pages ? url(page + 1) : undefined}>
+  <div class="blog-shell">
+    <nav class="page-breadcrumb blog-breadcrumb" aria-label="Morzsamenü">
+      {crumbs.map((c, i) => i < crumbs.length - 1 || page > 1 ? <><a href={c.url}>{c.name}</a><span aria-hidden="true">/</span></> : <span aria-current="page">{c.name}</span>)}
+      {page > 1 && <span aria-current="page">{page}. oldal</span>}
+    </nav>
+    <header class="blog-hero">
+      <p class="eyebrow"><span class="copper-rule"></span>{category ? 'Vizitor blog · Kategória' : 'Vizitor · Blog'}</p>
+      <h1>{heading}<span>.</span></h1>
+      <p class="blog-intro">{intro}</p>
+    </header>
+    {usedCategories.length > 1 && (
+      <nav class="blog-categories" aria-label="Kategóriák">
+        <a href="/blog/" aria-current={!category ? 'page' : undefined}>Összes</a>
+        {usedCategories.map(({ category: c, posts: list }) => <a href={categoryUrl(c)} aria-current={category && c.id === category.id ? 'page' : undefined}>{c.name} <span>{list.length}</span></a>)}
+      </nav>
+    )}
+    <div class="post-grid">
+      {posts.map((post, i) => <PostCard post={post} eager={page === 1 && i === 0} />)}
+    </div>
+    {pages > 1 && (
+      <nav class="blog-pagination" aria-label="Lapozás">
+        {page > 1 ? <a rel="prev" href={url(page - 1)}>← Újabb cikkek</a> : <span></span>}
+        <span class="blog-pagination-status">{page} / {pages}</span>
+        {page < pages ? <a rel="next" href={url(page + 1)}>Korábbi cikkek →</a> : <span></span>}
+      </nav>
+    )}
+  </div>
+</BlogLayout>

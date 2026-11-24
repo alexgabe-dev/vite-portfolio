@@ -1,0 +1,14 @@
+{
+  "name": "vizitor-blog",
+  "private": true,
+  "type": "module",
+  "description": "Static Astro blog served under /blog/ on vizitor.hu. Built from the CMS export at deploy time.",
+  "scripts": {
+    "build": "astro build"
+  },
+  "devDependencies": {
+    "astro": "7.4.13",
+    "sharp": "0.35.5",
+    "shiki": "4.6.0"
+  }
+}

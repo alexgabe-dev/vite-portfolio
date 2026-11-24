@@ -1,7 +1,7 @@
 import { onCLS, onINP, onLCP, onFCP, onTTFB, type Metric } from 'web-vitals';
 import { track, analyticsAllowed } from './analytics';
-import { serviceIds } from './analytics-schema';
-import { canonicalRoutes, normalizePath } from './routes';
+import { serviceIds, isKnownPage } from './analytics-schema';
+import { normalizePath } from './routes';
 
 let vitalsRegistered = false;
 export function startAnalytics() {
@@ -35,7 +35,7 @@ export function startAnalytics() {
   const path = normalizePath(url.pathname);
   if (path === '/kapcsolat/') track('inquiry_open', { location });
   else if (serviceIds[path]) track('service_select', { service_id: serviceIds[path], location });
-  else if (canonicalRoutes.includes(path) && !url.hash) track('navigation_click', { destination_path: path, location });
+  else if (isKnownPage(path) && !url.hash) track('navigation_click', { destination_path: path, location });
  }) as EventListener);
  listen(document, 'input', ((event: Event) => {
   if (!event.isTrusted) return;
@@ -117,7 +117,7 @@ export function startAnalytics() {
  }, { threshold: [.25] });
  for (const element of document.querySelectorAll('[data-track-package],#hero-title,#services-title,#process-title,#pricing-title,#faq-title,#contact-title')) observer.observe(element);
  cleanup.push(() => { observer.disconnect(); viewTimers.forEach(clearTimeout); });
- if (!canonicalRoutes.includes(normalizePath(location.pathname))) track('page_not_found');
+ if (!isKnownPage(normalizePath(location.pathname))) track('page_not_found');
  if (!vitalsRegistered) {
   vitalsRegistered = true;
   const report = (metric: Metric) => {

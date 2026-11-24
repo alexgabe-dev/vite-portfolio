@@ -6,6 +6,12 @@ const stages = [
   { label: 'Felület', title: 'Aztán a megvalósítás.', text: 'Először a dizájnt nézzük át, utána kipróbálhatod a működő oldalt. A visszajelzéseid alapján haladunk, az előre egyeztetett módosítási körökben.', caption: 'Dizájn és fejlesztés', note: 'Már készülés közben kipróbálhatod.' },
   { label: 'Indulás', title: 'Végül élesben.', text: 'Mobilon és asztali gépen is tesztelem az oldalt, az űrlapokat és a megbeszélt funkciókat. Élesítéskor megkapod a hozzáféréseket és a kezelési útmutatót.', caption: 'Ellenőrzés és átadás', note: 'Átadáskor a használatát is ismered.' },
 ];
+// Scroll position (0–1 across the pinned range) where each stage rests.
+const LEAD = .1, SPAN = 2 + LEAD * 2;
+const stageRaw = (index: number) => (index + LEAD) / SPAN;
+const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
+const smoother = (x: number) => { x = clamp01(x); return x * x * x * (x * (x * 6 - 15) + 10); };
+const ramp = (from: number, to: number, x: number) => smoother((x - from) / (to - from));
 function Blueprint() {
   return <div className="studio-blueprint" aria-hidden="true"><div className="blueprint-sheet sheet-behind"/><div className="blueprint-sheet sheet-front"><div className="blueprint-ruler"><span>OLDALVÁZLAT</span><span>VIZITOR / PÉLDA</span></div><div className="wire-nav"><img src="/vizitor-logo.svg" alt="" width="92" height="29"/><div><i/><i/><i/></div></div><div className="wire-hero"><span className="selection-corner corner-tl"/><span className="selection-corner corner-tr"/><span className="selection-corner corner-bl"/><span className="selection-corner corner-br"/><div className="wire-copy"><span className="wire-eyebrow"/><strong>A fő üzeneted.<br/>Egyértelműen.</strong><i/><i/><div className="wire-buttons"><b/><span/></div></div><div className="wire-visual"><span className="wire-orbit"/><span className="wire-orbit orbit-secondary"/><div className="wire-object"/></div><span className="wire-dimension">NYITÓKÉPERNYŐ</span></div><div className="wire-flow"><div><span/>Bemutatkozás</div><i/><div><span/>Szolgáltatások</div><i/><div><span/>Kapcsolat</div></div><div className="wire-footer"><i/><i/><span/></div></div><div className="studio-pointer"><svg viewBox="0 0 22 27" fill="none"><path d="M2 2l16 13-8 1-4 8L2 2Z" fill="#ff5c35" stroke="#fff" strokeWidth="1.5"/></svg><span>Előbb a felépítés.</span></div></div>;
 }
@@ -34,29 +40,69 @@ export function ProcessStudio({standalone=false}:{standalone?:boolean}) {
       progress.current = value;
       const root = track.current;
       if (!root) return;
-      root.style.setProperty('--journey', String(value / 2));
+      // Each stage rests for a while, then hands over along an eased curve.
+      const base = Math.min(1, Math.floor(value));
+      const local = value - base;
+      const eased = ramp(.14, .86, local);
+      const visual = base + eased;
+      root.style.setProperty('--journey', String(visual / 2));
+      const travel = compact.matches ? 18 : 26;
       for (let i = 0; i < 3; i++) {
-        const base = Math.floor(value);
-        const blend = Math.max(0, Math.min(1, ((value - base) - .2) / .6));
-        const visual = base + blend * blend * (3 - 2 * blend);
-        const distance = Math.max(-1, Math.min(1, visual - i));
-        const opacity = Math.max(0, 1 - Math.abs(distance));
-        const eased = opacity * opacity * (3 - 2 * opacity);
-        root.style.setProperty('--scene-' + i, String(eased));
-        root.style.setProperty('--text-' + i, String(Math.max(0, (eased - .5) * 2)));
-        root.style.setProperty('--shift-' + i, `${motion.matches ? 0 : -distance * 46}px`);
-        root.style.setProperty('--scale-' + i, String(motion.matches ? 1 : 1 - Math.abs(distance) * .055));
+        const d = visual - i;
+        let scene = 0, copy = 0, shift = 0, scale = 1;
+        if (d > -1 && d < 1) {
+          if (d >= 0) { // leaving (lower layer): stays solid until covered, recedes
+            scene = 1 - ramp(.42, .9, d); copy = 1 - ramp(0, .42, d);
+            shift = -d * travel * .6; scale = 1 - d * .045;
+          } else { // arriving (upper layer): becomes opaque early, rises into place
+            const e = 1 + d;
+            scene = ramp(.1, .62, e); copy = ramp(.58, 1, e);
+            shift = (1 - e) * travel; scale = .965 + e * .035;
+          }
+        }
+        if (motion.matches) { shift = 0; scale = 1; }
+        root.style.setProperty('--scene-' + i, scene.toFixed(4));
+        root.style.setProperty('--copy-' + i, copy.toFixed(4));
+        root.style.setProperty('--text-' + i, copy.toFixed(4));
+        root.style.setProperty('--shift-' + i, shift.toFixed(2) + 'px');
+        root.style.setProperty('--scale-' + i, scale.toFixed(4));
       }
-      setActive(Math.round(value));
+      setActive(Math.round(visual));
     };
     const tick = (now: number) => {
       const delta = previous ? Math.min(now - previous, 64) : 16;
       previous = now;
-      const next = progress.current + (target - progress.current) * (1 - Math.exp(-delta / (compact.matches ? 180 : 95)));
+      const next = progress.current + (target - progress.current) * (1 - Math.exp(-delta / (compact.matches ? 85 : 110)));
       paint(Math.abs(target - next) < .0003 ? target : next);
       if (Math.abs(target - progress.current) > .0003) frame = requestAnimationFrame(tick);
       else { frame = 0; previous = 0; }
     };
+    // When scrolling stops mid-handover, glide to the nearest stage instead of freezing half-blended.
+    let settleTimer = 0, touching = false, settling = false, heading = 0, lastTarget = 0;
+    const settle = () => {
+      settleTimer = 0;
+      if (!enabled || motion.matches || touching || !track.current) return;
+      const local = target - Math.floor(target);
+      if (target >= 2 || local < .14 || local > .86) { settling = false; return; }
+      if (settling) return;
+      const root = track.current;
+      const pin = root.firstElementChild as HTMLElement;
+      const range = root.offsetHeight - pin.offsetHeight;
+      const top = parseFloat(getComputedStyle(pin).top) || 0;
+      // Follow the visitor's direction once they are a third of the way through a handover.
+      const index = Math.floor(target) + (heading > 0 ? (local > .34 ? 1 : 0) : heading < 0 ? (local > .66 ? 1 : 0) : Math.round(local));
+      settling = true;
+      window.scrollTo({ top: window.scrollY + root.getBoundingClientRect().top - top + stageRaw(index) * range, behavior: 'smooth' });
+      window.setTimeout(() => { settling = false; }, 900);
+    };
+    const scheduleSettle = () => {
+      if (settling) return;
+      clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(settle, 520);
+    };
+    const onScrollEnd = () => { if (!settling) { clearTimeout(settleTimer); settleTimer = window.setTimeout(settle, 320); } };
+    const touchStart = () => { touching = true; clearTimeout(settleTimer); };
+    const touchEnd = () => { touching = false; };
     const measure = () => {
       if (!enabled || !track.current) return;
       const root = track.current;
@@ -64,7 +110,10 @@ export function ProcessStudio({standalone=false}:{standalone?:boolean}) {
       const range = root.offsetHeight - pin.offsetHeight;
       const top = parseFloat(getComputedStyle(pin).top) || 0;
       const raw = range > 0 ? (top - root.getBoundingClientRect().top) / range : 0;
-      target = Math.max(0, Math.min(2, compact.matches ? raw * 2 : raw * 2.6 - .3));
+      target = Math.max(0, Math.min(2, raw * SPAN - LEAD));
+      if (!settling && Math.abs(target - lastTarget) > .002) heading = Math.sign(target - lastTarget);
+      lastTarget = target;
+      scheduleSettle();
       if (motion.matches) paint(target);
       else if (!frame && Math.abs(target - progress.current) > .0003) frame = requestAnimationFrame(tick);
     };
@@ -99,6 +148,10 @@ export function ProcessStudio({standalone=false}:{standalone?:boolean}) {
     configure();
     void document.fonts.ready.then(()=>{if(!disposed)configure();});
     window.addEventListener('scroll', measure, { passive: true });
+    window.addEventListener('scrollend', onScrollEnd);
+    window.addEventListener('touchstart', touchStart, { passive: true });
+    window.addEventListener('touchend', touchEnd, { passive: true });
+    window.addEventListener('touchcancel', touchEnd, { passive: true });
     window.addEventListener('resize', configure);
     motion.addEventListener('change', configure);
     return () => {
@@ -106,6 +159,11 @@ export function ProcessStudio({standalone=false}:{standalone?:boolean}) {
       resizeObserver.disconnect();
       cancelAnimationFrame(frame);
       window.removeEventListener('scroll', measure);
+      window.removeEventListener('scrollend', onScrollEnd);
+      window.removeEventListener('touchstart', touchStart);
+      window.removeEventListener('touchend', touchEnd);
+      window.removeEventListener('touchcancel', touchEnd);
+      clearTimeout(settleTimer);
       window.removeEventListener('resize', configure);
       motion.removeEventListener('change', configure);
     };
@@ -116,7 +174,7 @@ export function ProcessStudio({standalone=false}:{standalone?:boolean}) {
       const root = track.current;
       const pin = root.firstElementChild as HTMLElement;
       const top = parseFloat(getComputedStyle(pin).top) || 0;
-      const fraction = index === 0 ? 0 : index === 2 ? 1 : .5;
+      const fraction = stageRaw(index);
       window.scrollTo({ top: window.scrollY + root.getBoundingClientRect().top - top + fraction * (root.offsetHeight - pin.offsetHeight), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
     } else {
       progress.current = index; setActive(index);
@@ -124,6 +182,7 @@ export function ProcessStudio({standalone=false}:{standalone?:boolean}) {
       for (let i = 0; i < 3; i++) {
         root?.style.setProperty('--scene-' + i, i === index ? '1' : '0');
         root?.style.setProperty('--text-' + i, i === index ? '1' : '0');
+        root?.style.setProperty('--copy-' + i, i === index ? '1' : '0');
         root?.style.setProperty('--shift-' + i, '0px');
         root?.style.setProperty('--scale-' + i, '1');
       }

@@ -1,0 +1,6 @@
+---
+import ListPage from '../components/ListPage.astro';
+import { posts, paginate } from '../lib/data';
+const first = paginate(posts)[0];
+---
+<ListPage posts={first.items} page={1} pages={first.pages} total={posts.length} />
