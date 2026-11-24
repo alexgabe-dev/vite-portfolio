@@ -1,5 +1,4 @@
 import { track } from '../analytics';
-import { serviceIds } from '../analytics-schema';
 import { Icon } from './Icon';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 
@@ -82,8 +81,7 @@ export function ContactSection({ intent, standalone=false }: { intent?: ContactI
   const [name,setName]=useState('');
   const [email,setEmail]=useState('');
   const [message,setMessage]=useState('');
-  const [services,setServices]=useState<string[]>([]);
-  const service=services.join(', ');
+  const [service,setService]=useState('');
   const [plan,setPlan]=useState('');
   const [status,setStatus]=useState<Status>('idle');
   const [errors,setErrors]=useState<FieldErrors>({});
@@ -95,7 +93,7 @@ export function ContactSection({ intent, standalone=false }: { intent?: ContactI
   const successRef=useRef<HTMLDivElement>(null);
   const busy=useRef(false);
   const abort=useRef<AbortController|null>(null);
-  useEffect(()=>{if(intent&&!busy.current){setServices(intent.service==='Más'?[]:[intent.service]);setPlan(intent.plan||'');setStatus('idle');setFailure('');}},[intent]);
+  useEffect(()=>{if(intent&&!busy.current){setService(intent.service==='Más'?'':intent.service);setPlan(intent.plan||'');setStatus('idle');setFailure('');}},[intent]);
   useEffect(()=>{if(status==='success')successRef.current?.focus({preventScroll:true});},[status]);
   useEffect(()=>()=>abort.current?.abort(),[]);
   function fieldError(field: 'email'|'message') {
@@ -114,7 +112,7 @@ export function ContactSection({ intent, standalone=false }: { intent?: ContactI
     const form=event.currentTarget;
     const fields=new FormData(form);
     const data=JSON.stringify({name:name.trim(),email:email.trim(),message:message.trim(),service:service||'Egyeztetést kérek',package:plan,_gotcha:String(fields.get('_gotcha')||'')});
-    track('inquiry_submit',{form_id:'inquiry',service_count:services.length,has_package:!!plan});
+    track('inquiry_submit',{form_id:'inquiry',service_count:service?1:0,has_package:!!plan});
     busy.current=true;setStatus('sending');setFailure('');
     const controller=new AbortController();abort.current=controller;
     const timeout=window.setTimeout(()=>controller.abort(),20000);
@@ -126,7 +124,7 @@ export function ContactSection({ intent, standalone=false }: { intent?: ContactI
         setFailure(response.status===429?'Most túl sok kérés érkezett. Próbáld újra később, vagy írj közvetlenül e-mailt.':'Az üzenet nem ment el. Az adataid megmaradtak; próbáld újra, vagy írj közvetlenül e-mailt.');
         setStatus('error');return;
       }
-      track('generate_lead',{form_id:'inquiry',service_count:services.length,has_package:!!plan,lead_source:'website_inquiry'});
+      track('generate_lead',{form_id:'inquiry',service_count:service?1:0,has_package:!!plan,lead_source:'website_inquiry'});
       setSubmittedEmail(email.trim());setStatus('success');setMessage('');setErrors({});
     } catch(error) {
       track('inquiry_error',{form_id:'inquiry',error_type:error instanceof DOMException&&error.name==='AbortError'?'timeout':'network'});
@@ -143,9 +141,8 @@ export function ContactSection({ intent, standalone=false }: { intent?: ContactI
         <div className="inquiry-form-heading"><Subheading>Miben segíthetek?</Subheading><p>Elég az e-mail-címed és néhány mondat.</p></div>
         {plan&&<div className="inquiry-context"><div><span>Erről érdeklődsz</span><p>{plan}</p></div><button type="button" disabled={pending} aria-label="Csomagválasztás törlése" onClick={()=>setPlan('')}><Icon name="close"/></button></div>}
         <div className="inquiry-field"><label htmlFor="inquiry-email">E-mail-címed</label><input ref={emailRef} id="inquiry-email" name="email" type="email" inputMode="email" autoComplete="email" autoCapitalize="none" spellCheck={false} required maxLength={254} placeholder="nev@pelda.hu" value={email} disabled={pending} aria-invalid={!!errors.email} aria-describedby={errors.email?'inquiry-email-error':undefined} onChange={event=>{setEmail(event.target.value);if(errors.email)setErrors(previous=>({...previous,email:undefined}));}} onBlur={()=>{if(email.trim())setErrors(previous=>({...previous,email:fieldError('email')}));}}/>{errors.email&&<p className="inquiry-field-error" id="inquiry-email-error" role="alert">{errors.email}</p>}</div>
-        <div className="inquiry-field"><label htmlFor="inquiry-name">Hogy szólíthatlak? <span>nem kötelező</span></label><input id="inquiry-name" name="name" autoComplete="name" maxLength={100} placeholder="Neved" value={name} disabled={pending} onChange={event=>setName(event.target.value)}/></div>
-        <fieldset className="inquiry-services" disabled={pending}><legend>Ez érdekel <span>nem kötelező</span></legend><div>{['Weboldal','Egyedi fejlesztés','AI és automatizálás','Marketing és mérés','Karbantartás','E-mail-rendszer'].map(item=><label key={item}><input type="checkbox" name="interest" value={item} checked={services.includes(item)} onChange={()=>{track('inquiry_interest',{service_id:serviceIds[item],selection:services.includes(item)?'removed':'selected'});setServices(previous=>previous.includes(item)?previous.filter(value=>value!==item):[...previous,item]);setPlan('');}}/><span>{item}</span></label>)}</div></fieldset>
         <div className="inquiry-field"><label htmlFor="inquiry-message">Mire van szükséged?</label><textarea ref={messageRef} id="inquiry-message" name="message" rows={4} maxLength={5000} required placeholder="Például: van már weboldalam, de több érdeklődőt szeretnék elérni." value={message} disabled={pending} aria-invalid={!!errors.message} aria-describedby={'inquiry-message-hint'+(errors.message?' inquiry-message-error':'')} onChange={event=>{setMessage(event.target.value);if(errors.message)setErrors(previous=>({...previous,message:undefined}));}}/>{errors.message&&<p className="inquiry-field-error" id="inquiry-message-error" role="alert">{errors.message}</p>}<p className="inquiry-field-hint" id="inquiry-message-hint">Ha van weboldalad, a linkjét is elküldheted.</p></div>
+        <div className="inquiry-field"><label htmlFor="inquiry-name">Hogy szólíthatlak? <span>nem kötelező</span></label><input id="inquiry-name" name="name" autoComplete="name" maxLength={100} placeholder="Neved" value={name} disabled={pending} onChange={event=>setName(event.target.value)}/></div>
         <div className="inquiry-trap" aria-hidden="true"><label htmlFor="inquiry-website">Ezt hagyd üresen</label><input id="inquiry-website" name="_gotcha" tabIndex={-1} autoComplete="off"/></div>
         {status==='error'&&<div className="inquiry-send-error" role="alert"><p>{failure}</p><button type="button" onClick={()=>{track('contact_click',{method:'email',location:'contact'});window.location.href='mailto:info@vizitor.hu?subject='+encodeURIComponent('Vizitor megkeresés')+'&body='+encodeURIComponent(fallbackBody);}}>Megnyitom e-mailben<span aria-hidden="true"><Icon name="arrow-up-right"/></span></button></div>}
         <button className="inquiry-submit" type="submit" disabled={pending}>{pending?<><span className="inquiry-spinner" aria-hidden="true"/>Küldés folyamatban…</>:<>Üzenet küldése<span className="inquiry-submit-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m4 11 16-7-7 16-2-7-7-2Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><path d="m11 13 9-9" stroke="currentColor" strokeWidth="1.4"/></svg></span></>}</button>
