@@ -6,6 +6,7 @@
 <script>
 window.dataLayer=window.dataLayer||[];
 window.gtag=function(){window.dataLayer.push(arguments);};
+try{if(!localStorage.getItem('vizitor.consent.v1'))document.documentElement.classList.add('consent-pending');}catch(e){document.documentElement.classList.add('consent-pending');}
 gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',personalization_storage:'denied',functionality_storage:'denied',security_storage:'granted'});
 </script>
 <meta name="theme-color" content="#0c0e11" />
@@ -15,7 +16,7 @@ gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user
 <meta property="og:title" content="vizitor.hu – Weboldal, marketing, fejlesztés" />
 <meta property="og:description" content="Egyedi weboldalkészítés, marketing és WordPress-karbantartás. Átlátható csomagok, közvetlen együttműködés." />
 <meta property="og:type" content="website" />
-<link rel="preload" href="/graphics/signature-clean.webp" as="image" media="(min-width: 601px)" />
+<link rel="preload" href="/graphics/signature-clean.webp" as="image" imagesrcset="/graphics/signature-clean-660.webp 660w, /graphics/signature-clean.webp 1320w" imagesizes="(max-width: 1100px) 500px, (max-width: 1599px) 660px, 730px" media="(min-width: 601px)" />
 <link rel="preload" href="/fonts/vizitor-regular.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 </head>

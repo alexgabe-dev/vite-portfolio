@@ -1,22 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
 import { getConsentManager } from '../consent';
+import { consentConfig } from '../consent-config';
+
+// Prerendered for first paint; the inline head script and CSS decide whether it is shown,
+// so first-time visitors see it immediately instead of after the JavaScript bundle runs.
+const configured = Boolean(consentConfig.analyticsId || consentConfig.clarityId);
+function markPending(pending: boolean) { document.documentElement.classList.toggle('consent-pending', pending); }
 
 function ConsentMark() {
  return <svg viewBox="0 0 36 36" fill="none" aria-hidden="true"><rect x="4.5" y="4.5" width="27" height="27" rx="8" stroke="currentColor"/><path d="M11 13h14m-14 10h14" stroke="currentColor" strokeLinecap="round"/><circle cx="15" cy="13" r="3" fill="#19232c" stroke="currentColor"/><circle cx="22" cy="23" r="3" fill="#19232c" stroke="currentColor"/></svg>;
 }
 export function ConsentBanner() {
- const [visible, setVisible] = useState(false);
+ const [visible, setVisible] = useState(true);
  const [settings, setSettings] = useState(false);
  const [analytics, setAnalytics] = useState(false);
  const [experience, setExperience] = useState(false);
- const [available, setAvailable] = useState(false);
+ const [available, setAvailable] = useState(configured);
  const [storageError, setStorageError] = useState(false);
  const dialog = useRef<HTMLDialogElement>(null);
  const opener = useRef<HTMLElement | null>(null);
  const settingsButton = useRef<HTMLButtonElement>(null);
  useEffect(() => {
   const manager = getConsentManager();
-  const sync = () => { setVisible(!manager.getChoice()); setAnalytics(Boolean(manager.getChoice()?.analytics)); setAvailable(manager.hasAnalytics || manager.hasExperience); setExperience(Boolean(manager.getChoice()?.experience)); };
+  const sync = () => { const pending = !manager.getChoice(); markPending(pending); setVisible(pending); setAnalytics(Boolean(manager.getChoice()?.analytics)); setAvailable(manager.hasAnalytics || manager.hasExperience); setExperience(Boolean(manager.getChoice()?.experience)); };
   const open = () => { opener.current = document.activeElement as HTMLElement; sync(); setSettings(true); };
   sync();
   window.addEventListener('vizitor:consent-change', sync);

@@ -21,6 +21,11 @@ function loadLogoMesh() {
     return { geometry, scale: header.getFloat32(12, true) };
   }).catch(error => { logoMesh = undefined; throw error; });
 }
+// Hand the main thread back between setup steps so no single task blocks input.
+const nextTask = () => new Promise<void>(resolve => {
+  if ('requestIdleCallback' in window) window.requestIdleCallback(() => resolve(), { timeout: 250 });
+  else setTimeout(resolve, 0);
+});
 function studioEnvironment() {
   const canvas = document.createElement('canvas'); canvas.width = 512; canvas.height = 256;
   const context = canvas.getContext('2d')!;
@@ -45,12 +50,18 @@ export async function createSculpture(host: HTMLDivElement, kind: SculptureKind,
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.25;
   renderer.domElement.setAttribute('aria-hidden', 'true');
-  host.appendChild(renderer.domElement);
+  await nextTask();
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(kind === 'signature' ? 32 : 35, 1, .1, 50);
   camera.position.set(0, .1, kind === 'signature' ? 9.6 : 8.3);
-  const environment = studioEnvironment();
+  // Prefilter the environment once, in its own task, instead of during the first frame.
+  const equirect = studioEnvironment();
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const environmentTarget = pmrem.fromEquirectangular(equirect);
+  pmrem.dispose(); equirect.dispose();
+  const environment = environmentTarget.texture;
   scene.environment = environment;
+  await nextTask();
   scene.environmentIntensity = 1.45;
   const orange = new THREE.MeshStandardMaterial({ color: '#ff5c35', metalness: .65, roughness: .28, envMapIntensity: .6, emissive: '#ff5c35', emissiveIntensity: .07 });
   const orangeFace = new THREE.MeshBasicMaterial({ color: '#ff5c35', toneMapped: false });
@@ -111,6 +122,11 @@ export async function createSculpture(host: HTMLDivElement, kind: SculptureKind,
     }
     mesh(new THREE.SphereGeometry(.3,32,24),orange,[.6,1.55,.2]);root.rotation.set(.1,-.3,-.08);
   }
+  await nextTask();
+  // Compile every shader before the canvas is shown; uses parallel compilation where supported.
+  try { await renderer.compileAsync(scene, camera); } catch { renderer.compile(scene, camera); }
+  await nextTask();
+  host.appendChild(renderer.domElement);
   const base = root.rotation.clone();
   const initialBounds = new THREE.Box3().setFromObject(root).getSize(new THREE.Vector3());
   const mobileLogo = root.children.find(child => child.userData.isLogo);
@@ -165,7 +181,7 @@ export async function createSculpture(host: HTMLDivElement, kind: SculptureKind,
   renderer.domElement.addEventListener('webglcontextrestored',contextRestored);
   document.addEventListener('visibilitychange',visibility);reduced.addEventListener('change',wake);
   resize();
-  return ()=>{stopped=true;cancelAnimationFrame(frame);observer.disconnect();sizeObserver.disconnect();host.removeEventListener('pointermove',move);host.removeEventListener('pointerleave',leave);host.removeEventListener('sculpture-pause',wake);document.removeEventListener('visibilitychange',visibility);reduced.removeEventListener('change',wake);renderer.domElement.removeEventListener('webglcontextlost',contextLost);renderer.domElement.removeEventListener('webglcontextrestored',contextRestored);root.traverse(o=>{if(o instanceof THREE.Mesh)o.geometry.dispose();});orange.dispose();orangeFace.dispose();platinum.dispose();graphite.dispose();extraMaterials.forEach(material=>material.dispose());environment.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();};
+  return ()=>{stopped=true;cancelAnimationFrame(frame);observer.disconnect();sizeObserver.disconnect();host.removeEventListener('pointermove',move);host.removeEventListener('pointerleave',leave);host.removeEventListener('sculpture-pause',wake);document.removeEventListener('visibilitychange',visibility);reduced.removeEventListener('change',wake);renderer.domElement.removeEventListener('webglcontextlost',contextLost);renderer.domElement.removeEventListener('webglcontextrestored',contextRestored);root.traverse(o=>{if(o instanceof THREE.Mesh)o.geometry.dispose();});orange.dispose();orangeFace.dispose();platinum.dispose();graphite.dispose();extraMaterials.forEach(material=>material.dispose());environmentTarget.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();};
 }
 
 
