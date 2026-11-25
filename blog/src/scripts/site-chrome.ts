@@ -163,3 +163,60 @@ if (layout && article) {
   addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(progress); }, { passive: true });
   progress();
 }
+
+/* Blog index: instant search across every published post (title, excerpt, topic), accent-insensitive. */
+const searchForm = document.querySelector<HTMLFormElement>('[data-blog-search]');
+const indexEl = document.getElementById('blog-search-index');
+if (searchForm && indexEl) {
+  type Hit = { t: string; e: string; c: string; u: string; d: string; m: number };
+  const items = JSON.parse(indexEl.textContent || '[]') as Hit[];
+  const input = searchForm.querySelector<HTMLInputElement>('input')!;
+  const results = document.querySelector<HTMLElement>('[data-blog-results]')!;
+  const fallback = document.querySelector<HTMLElement>('[data-blog-default]')!;
+  const status = document.querySelector<HTMLElement>('[data-blog-status]');
+  const hero = document.querySelector<HTMLElement>('.bl-hero');
+  const fold = (s: string) => s.toLocaleLowerCase('hu').normalize('NFD').replace(/\p{M}/gu, '');
+  const esc = (s: string) => s.replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch]!);
+  const prepared = items.map(it => ({ it, title: fold(it.t), body: fold(`${it.e} ${it.c}`) }));
+  // Wrap matches in <mark> using the folded text for positions (same length as the original after NFD folding of precomposed letters).
+  const mark = (text: string, words: string[]) => {
+    const folded = fold(text);
+    if (folded.length !== text.length) return esc(text);
+    const ranges: [number, number][] = [];
+    for (const w of words) { let i = folded.indexOf(w); while (i !== -1) { ranges.push([i, i + w.length]); i = folded.indexOf(w, i + w.length); } }
+    ranges.sort((a, b) => a[0] - b[0]);
+    let out = '', at = 0;
+    for (const [s, e] of ranges) { if (s < at) continue; out += esc(text.slice(at, s)) + '<mark>' + esc(text.slice(s, e)) + '</mark>'; at = e; }
+    return out + esc(text.slice(at));
+  };
+  const run = () => {
+    const q = input.value.trim();
+    const words = fold(q).split(/\s+/).filter(w => w.length > 1);
+    const url = new URL(location.href);
+    if (q) url.searchParams.set('q', q); else url.searchParams.delete('q');
+    history.replaceState(null, '', url);
+    hero?.classList.toggle('is-searching', words.length > 0);
+    if (!words.length) { results.hidden = true; fallback.hidden = false; if (status) status.textContent = ''; return; }
+    const hits = prepared
+      .filter(p => words.every(w => p.title.includes(w) || p.body.includes(w)))
+      .map(p => ({ ...p, score: words.reduce((s, w) => s + (p.title.includes(w) ? 3 : 1), 0) }))
+      .sort((a, b) => b.score - a.score);
+    fallback.hidden = true; results.hidden = false;
+    const label = `„${esc(q)}”`;
+    results.innerHTML = hits.length
+      ? `<p class="bl-results-head"><strong>${hits.length}</strong> találat erre: ${label}</p><ol class="bl-hits">${hits.map(({ it }) =>
+          `<li><a class="bl-hit" href="${esc(it.u)}"><span class="bl-eyebrow">${esc(it.c)} · ${esc(it.d)} · ${it.m} perc</span><strong>${mark(it.t, words)}</strong><span class="bl-hit-excerpt">${mark(it.e, words)}</span></a></li>`).join('')}</ol>`
+      : `<div class="bl-empty"><p class="bl-results-head">Erre nincs még cikk: ${label}</p><p>Lehet, hogy pont ebből lesz a következő. <a href="/kapcsolat/">Írd meg, mire vagy kíváncsi</a>, vagy nézz körül a témák között.</p></div>`;
+    if (status) status.textContent = hits.length ? `${hits.length} találat` : 'Nincs találat';
+  };
+  let t = 0;
+  input.addEventListener('input', () => { clearTimeout(t); t = window.setTimeout(run, 120); });
+  searchForm.addEventListener('submit', e => { e.preventDefault(); run(); });
+  input.addEventListener('keydown', e => { if (e.key === 'Escape' && input.value) { input.value = ''; run(); } });
+  addEventListener('keydown', e => {
+    const el = document.activeElement as HTMLElement | null;
+    if (e.key === '/' && !e.metaKey && !e.ctrlKey && !(el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)))) { e.preventDefault(); input.focus(); }
+  });
+  const initial = new URLSearchParams(location.search).get('q');
+  if (initial) { input.value = initial; run(); }
+}

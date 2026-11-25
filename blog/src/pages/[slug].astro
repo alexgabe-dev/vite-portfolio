@@ -108,8 +108,10 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
                 <a href={`mailto:?subject=${encodeURIComponent(post.title)}&body=${shareUrl}`} aria-label="Megosztás e-mailben" title="E-mail">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
                 </a>
+                <a class="blog-share-rss-icon" href="/blog/rss.xml" aria-label="Új írások RSS-csatornán" title="RSS">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><circle cx="6" cy="18" r="2"/><path d="M4 10.5a9.5 9.5 0 0 1 9.5 9.5h-2.4A7.1 7.1 0 0 0 4 12.9v-2.4Zm0-5.5a15 15 0 0 1 15 15h-2.4A12.6 12.6 0 0 0 4 7.4V5Z"/></svg>
+                </a>
               </nav>
-              <a class="blog-share-rss" href="/blog/rss.xml"><span>Új írások RSS-ben</span><span aria-hidden="true">+</span></a>
             </div>
           </div>
         </aside>
