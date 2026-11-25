@@ -23,6 +23,7 @@ const rendered = redirectTo ? null : await renderPost(post);
 const related = relatedTo(post);
 const service = post.services.find(s => serviceLabels[s]);
 const path = postUrl(post);
+const shareUrl = encodeURIComponent(absolute(path));
 const baseTitle = (post.metaTitle || post.title).trim();
 const title = /(?:vizitor\.hu|vizitor blog|\| vizitor)$/i.test(baseTitle) ? baseTitle : `${baseTitle} | vizitor.hu`;
 const description = post.metaDescription || post.excerpt;
@@ -79,6 +80,14 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
       <div class="blog-paper-art" aria-hidden="true"><svg viewBox="0 0 1440 1400" fill="none" preserveAspectRatio="xMidYMin slice"><g stroke="#ff5c35" stroke-width="1.3"><path d="M1530 120C1380 150 1350 330 1470 420C1590 510 1560 690 1410 720" opacity=".26"/><path d="M1555 140C1405 170 1375 350 1495 440C1615 530 1585 710 1435 740" opacity=".12"/><path d="M-120 980C20 900 150 990 100 1120C50 1250 210 1340 330 1260" opacity=".24"/><path d="M-104 1004C36 924 166 1014 116 1144C66 1274 226 1364 346 1284" opacity=".11"/><path d="M60 250C150 210 200 280 160 350" opacity=".2"/></g><circle cx="1452" cy="1060" r="150" fill="#ff5c35" opacity=".04"/><circle cx="1452" cy="1060" r="196" stroke="#ff5c35" stroke-width="1" opacity=".1"/><rect x="1320" y="90" width="18" height="18" rx="4" transform="rotate(24 1320 90)" fill="#ff5c35" opacity=".16"/><g stroke="#ff5c35" stroke-width="1.3" opacity=".45"><path d="M86 560v14m-7-7h14M1360 640v14m-7-7h14"/></g></svg></div>
       <div class="wrap blog-layout">
         <aside class="blog-rail blog-rail-left" aria-label="A cikkről">
+          {hasToc && (
+            <details class="blog-mobile-toc">
+              <summary>A cikkben</summary>
+              <nav aria-label="Tartalomjegyzék">
+                {rendered!.toc.map(e => <a href={'#' + e.id}>{e.text}</a>)}
+              </nav>
+            </details>
+          )}
           <div class="blog-rail-sticky">
             {hasToc && (
               <nav class="privacy-toc blog-toc" aria-label="Tartalomjegyzék">
@@ -88,19 +97,21 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
               </nav>
             )}
             <div class="blog-share">
-              <button type="button" class="blog-copy-link" data-copy-link={absolute(path)}><span>Link másolása</span><span aria-hidden="true">+</span></button>
-              <a href="/blog/rss.xml"><span>Új írások RSS-ben</span><span aria-hidden="true">+</span></a>
-              <p class="blog-copy-status" role="status" aria-live="polite"></p>
+              <p class="eyebrow">Megosztás</p>
+              <nav class="blog-share-links" aria-label="Cikk megosztása">
+                <a href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`} target="_blank" rel="noopener noreferrer" aria-label="Megosztás Facebookon (új lapon)" title="Facebook">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M13.7 22v-9h3.05l.5-3.5H13.7V7.2c0-1.05.3-1.7 1.8-1.7h1.85V2.35A23 23 0 0 0 14.65 2C12 2 10.2 3.6 10.2 6.45V9.5H7V13h3.2v9h3.5Z"/></svg>
+                </a>
+                <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`} target="_blank" rel="noopener noreferrer" aria-label="Megosztás LinkedInen (új lapon)" title="LinkedIn">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><circle cx="5.6" cy="5.4" r="1.8"/><path d="M4 8.8h3.3V20H4zm5.8 0H13v1.55c.75-1.15 1.85-1.85 3.5-1.85 3.2 0 4.5 2 4.5 5.5v6h-3.3v-5.55c0-1.8-.35-3.05-2.05-3.05-1.75 0-2.55 1.2-2.55 3.2V20H9.8V8.8Z"/></svg>
+                </a>
+                <a href={`mailto:?subject=${encodeURIComponent(post.title)}&body=${shareUrl}`} aria-label="Megosztás e-mailben" title="E-mail">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+                </a>
+              </nav>
+              <a class="blog-share-rss" href="/blog/rss.xml"><span>Új írások RSS-ben</span><span aria-hidden="true">+</span></a>
             </div>
           </div>
-          {hasToc && (
-            <details class="blog-mobile-toc">
-              <summary>A cikkben</summary>
-              <nav aria-label="Tartalomjegyzék">
-                {rendered!.toc.map(e => <a href={'#' + e.id}>{e.text}</a>)}
-              </nav>
-            </details>
-          )}
         </aside>
 
         <div class="blog-document" id="cikk">

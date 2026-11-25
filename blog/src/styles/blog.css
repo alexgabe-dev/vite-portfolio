@@ -62,11 +62,11 @@ a:hover>.blog-card-art{transform:scale(1.03)}
 
 @media(max-width:720px){
  .blog-masthead{padding-block:2px 20px}
- .blog-masthead-panel{grid-template-columns:minmax(0,1fr)}
- .blog-masthead-copy{padding:clamp(16px,4.6vw,30px)}
+ .blog-masthead-panel{grid-template-columns:minmax(0,1fr);gap:16px;overflow:visible;border:0;border-radius:0;background:none}
+ .blog-masthead-copy{padding:6px 0 0}
  .blog-masthead-copy h1{font-size:clamp(1.9rem,7.2vw,2.6rem);margin-top:8px;text-wrap:wrap}
  .blog-masthead-deck{margin-top:10px;font-size:.9375rem;line-height:1.5}
- .blog-masthead-byline{margin-top:15px;padding-top:10px;font-size:.75rem;column-gap:8px}
+ .blog-masthead-byline{margin-top:12px;padding:0;border:0;font-size:.75rem;column-gap:8px}
  .blog-masthead-byline>*+*{gap:8px}
  .blog-masthead-art{padding:0}
  .blog-masthead-art img{aspect-ratio:16 / 9;max-height:340px;object-fit:cover;border-radius:0}
@@ -81,18 +81,21 @@ a:hover>.blog-card-art{transform:scale(1.03)}
 .blog-rail{align-self:stretch}
 .blog-rail-sticky{position:sticky;top:110px;display:grid;gap:30px}
 
-/* Left rail: TOC with reading progress, facts, sharing */
+/* Left rail: TOC with reading progress and sharing */
 .blog-toc{position:relative;max-height:none;overflow:visible;padding:0 0 0 16px}
 .blog-toc>.eyebrow{margin-bottom:14px}
 .blog-progress{position:absolute;left:0;top:30px;bottom:4px;width:1px;background:#23323a22}
 .blog-progress>i{display:block;width:100%;height:calc(var(--read,0) * 100%);background:#ff5c35;transition:height .1s linear}
 .blog-toc>a{min-height:34px;padding:7px 0;border-bottom:0}
-.blog-share{display:grid}
-.blog-share>a,.blog-copy-link{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:42px;padding:0;border:0;border-bottom:1px solid #23323a1c;background:none;font:inherit;font-size:.8125rem;color:#2e3c43;cursor:pointer;text-align:left}
-.blog-share>a>span[aria-hidden],.blog-copy-link>span[aria-hidden]{color:#de4d2c;font-size:1.15rem;transition:transform .2s}
-.blog-share>a:hover,.blog-copy-link:hover{color:#b23820}
-.blog-share>a:hover>span[aria-hidden],.blog-copy-link:hover>span[aria-hidden]{transform:rotate(90deg)}
-.blog-copy-status{font-size:.75rem;color:#596267;min-height:1.2em;margin-top:6px}
+.blog-share>.eyebrow{color:#5c6469}
+.blog-share-links{display:flex}
+.blog-share-links a{display:grid;place-items:center;width:44px;height:44px;color:#2e3c43;border-radius:5px;transition:background-color .18s,color .18s}
+.blog-share-links a:hover,.blog-share-links a:focus-visible{background:#ff5c3514;color:#b23820}
+.blog-share-links a:focus-visible{outline-offset:-2px}
+.blog-share-links svg{width:18px;height:18px}
+.blog-share-rss{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:42px;border-top:1px solid #23323a1c;font-size:.8125rem;color:#2e3c43}
+.blog-share-rss:hover{color:#b23820}
+.blog-share-rss>span[aria-hidden]{color:#b23820;font-size:1.15rem}
 
 /* Right rail: the home page's service card + a compact contact block */
 .blog-service-card .capability-art{height:150px;background:#e8ebe8}
@@ -224,11 +227,12 @@ a:hover>.blog-card-art{transform:scale(1.03)}
 .blog-topics .blog-filters a[aria-current=page]{color:#fff}
 .blog-mobile-toc{display:none}
 @media(max-width:999px){
- .blog-rail-left{display:block;position:static;margin:0;padding:0;background:none;border:none;backdrop-filter:none;-webkit-backdrop-filter:none}
- .blog-rail-left:not(:has(.blog-mobile-toc)){display:none}
- .blog-mobile-toc{display:block;margin:16px 0 0;border-block:1px solid #24343c26;color:#273941}
+ .blog-rail-left{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;position:static;margin:16px auto 0;padding:0;max-width:700px;background:none;border:0;border-block:1px solid #24343c26;backdrop-filter:none;-webkit-backdrop-filter:none}
+ .blog-rail-left .blog-rail-sticky{display:block;position:static;grid-column:2}
+ .blog-rail-left .blog-toc,.blog-share>.eyebrow,.blog-share-rss{display:none}
+ .blog-mobile-toc{display:block;color:#273941}
  .blog-mobile-toc summary{font-size:.875rem;padding-inline:4px}
- .blog-mobile-toc nav{display:grid;padding:0 4px 6px}
+ .blog-mobile-toc nav{display:grid;padding:0 8px 6px 4px}
  .blog-mobile-toc nav a{display:flex;align-items:center;min-height:44px;font-size:.875rem;color:#8e2f1b}
  .blog-document{padding-top:24px}
  .post-prose :is(h2,h3){scroll-margin-top:90px}

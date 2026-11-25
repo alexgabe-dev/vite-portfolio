@@ -138,7 +138,7 @@ if (toc.length || jump) {
   });
 }
 
-/* Article: reading progress next to the TOC, and "copy link". */
+/* Article: reading progress next to the TOC. */
 const layout = document.querySelector<HTMLElement>('.blog-layout');
 const article = document.getElementById('cikk');
 if (layout && article) {
@@ -152,8 +152,3 @@ if (layout && article) {
   addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(progress); }, { passive: true });
   progress();
 }
-document.querySelectorAll<HTMLButtonElement>('[data-copy-link]').forEach(button => button.addEventListener('click', async () => {
-  const status = button.parentElement?.querySelector<HTMLElement>('.blog-copy-status');
-  try { await navigator.clipboard.writeText(button.dataset.copyLink || location.href); if (status) status.textContent = 'Link a vágólapra másolva.'; }
-  catch { if (status) status.textContent = 'A másolás nem sikerült. A címsorból kimásolható.'; }
-}));
