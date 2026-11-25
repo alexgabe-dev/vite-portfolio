@@ -137,3 +137,23 @@ if (toc.length || jump) {
     target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true });
   });
 }
+
+/* Article: reading progress next to the TOC, and "copy link". */
+const layout = document.querySelector<HTMLElement>('.blog-layout');
+const article = document.getElementById('cikk');
+if (layout && article) {
+  let raf = 0;
+  const progress = () => {
+    raf = 0;
+    const r = article.getBoundingClientRect();
+    const total = r.height - innerHeight * 0.6;
+    layout.style.setProperty('--read', String(Math.max(0, Math.min(1, (innerHeight * 0.4 - r.top) / Math.max(total, 1)))));
+  };
+  addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(progress); }, { passive: true });
+  progress();
+}
+document.querySelectorAll<HTMLButtonElement>('[data-copy-link]').forEach(button => button.addEventListener('click', async () => {
+  const status = button.parentElement?.querySelector<HTMLElement>('.blog-copy-status');
+  try { await navigator.clipboard.writeText(button.dataset.copyLink || location.href); if (status) status.textContent = 'Link a vágólapra másolva.'; }
+  catch { if (status) status.textContent = 'A másolás nem sikerült. A címsorból kimásolható.'; }
+}));

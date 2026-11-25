@@ -96,3 +96,14 @@ export function titleHtml(text: string) {
   const esc = (x: string) => x.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   return esc(text).replace(/\S*\w-\w\S*/g, w => `<span class="nowrap">${w}</span>`);
 }
+
+/** The service a post's side card points to: the editor's choice, otherwise inferred from the topic. */
+export function serviceFor(p: Post) {
+  const picked = siteServices.find(s => p.services.includes(s.path));
+  if (picked) return picked;
+  const art = artFor(p);
+  const c = categoryOf(p).slug;
+  const path = art === 'growth' ? (/seo|kereso/.test(c) ? '/keresooptimalizalas/' : /meres|analitik/.test(c) ? '/webanalitika-meres/' : '/online-marketing/')
+    : art === 'systems' ? '/egyedi-webfejlesztes/' : '/weboldalkeszites/';
+  return siteServices.find(s => s.path === path)!;
+}

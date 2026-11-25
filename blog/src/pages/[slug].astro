@@ -1,6 +1,6 @@
 ---
 import BlogLayout from '../layouts/BlogLayout.astro';
-import { type Post, SITE, absolute, titleHtml, artFor, artSrc, authorOf, baseGraph, categoryOf, categoryUrl, formatDate, mediaOf, modifiedAt, posts, postUrl, relatedTo, serviceLabels } from '../lib/data';
+import { type Post, SITE, absolute, titleHtml, serviceFor, artFor, artSrc, authorOf, baseGraph, categoryOf, categoryUrl, formatDate, mediaOf, modifiedAt, posts, postUrl, relatedTo, serviceLabels } from '../lib/data';
 import { renderPost } from '../lib/render';
 import { imageAttrs } from '../lib/images';
 
@@ -27,7 +27,8 @@ const title = `${post.metaTitle || post.title} | Vizitor blog`;
 const description = post.metaDescription || post.excerpt;
 const coverSizes = '(min-width: 1100px) 460px, (min-width: 801px) 38vw, calc(100vw - 32px)';
 const preload = cover ? { href: (cover.variants.find(v => v.width >= 800) || cover.variants[cover.variants.length - 1]).src, srcset: cover.variants.map(v => `${v.src} ${v.width}w`).join(', '), sizes: coverSizes } : undefined;
-const hasToc = (rendered?.toc.length || 0) >= 3;
+const hasToc = (rendered?.toc.length || 0) >= 2;
+const sideService = serviceFor(post);
 const authorNode = { '@type': 'Person', '@id': SITE + '/blog/#author-' + author.slug, name: author.name, ...(author.jobTitle ? { jobTitle: author.jobTitle } : {}), ...(author.sameAs.length ? { sameAs: author.sameAs } : {}), worksFor: { '@id': SITE + '/#vizitor' } };
 const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
   ...baseGraph,
@@ -70,21 +71,42 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
     </header>
 
     <div class="privacy-paper blog-paper">
-      <div class={'wrap privacy-layout blog-layout' + (hasToc ? '' : ' no-toc')}>
-        {hasToc && (
-          <aside class="privacy-sidebar" aria-label="A cikk fejezetei">
-            <nav class="privacy-toc" aria-label="Tartalomjegyzék">
-              <p class="eyebrow">A cikkben</p>
-              {rendered!.toc.map(e => <a class={e.level === 3 ? 'toc-sub' : undefined} href={'#' + e.id}>{e.text}<span aria-hidden="true">·</span></a>)}
-              <a class="privacy-toc-top" href="#top">Az oldal tetejére</a>
-            </nav>
+      <div class="blog-paper-art" aria-hidden="true"><svg viewBox="0 0 1440 1400" fill="none" preserveAspectRatio="xMidYMin slice"><g stroke="#ff5c35" stroke-width="1.3"><path d="M1530 120C1380 150 1350 330 1470 420C1590 510 1560 690 1410 720" opacity=".26"/><path d="M1555 140C1405 170 1375 350 1495 440C1615 530 1585 710 1435 740" opacity=".12"/><path d="M-120 980C20 900 150 990 100 1120C50 1250 210 1340 330 1260" opacity=".24"/><path d="M-104 1004C36 924 166 1014 116 1144C66 1274 226 1364 346 1284" opacity=".11"/><path d="M60 250C150 210 200 280 160 350" opacity=".2"/></g><circle cx="1452" cy="1060" r="150" fill="#ff5c35" opacity=".04"/><circle cx="1452" cy="1060" r="196" stroke="#ff5c35" stroke-width="1" opacity=".1"/><rect x="1320" y="90" width="18" height="18" rx="4" transform="rotate(24 1320 90)" fill="#ff5c35" opacity=".16"/><g stroke="#ff5c35" stroke-width="1.3" opacity=".45"><path d="M86 560v14m-7-7h14M1360 640v14m-7-7h14"/></g></svg></div>
+      <div class="wrap blog-layout">
+        <aside class="blog-rail blog-rail-left" aria-label="A cikkről">
+          <div class="blog-rail-sticky">
+            {hasToc && (
+              <nav class="privacy-toc blog-toc" aria-label="Tartalomjegyzék">
+                <p class="eyebrow">A cikkben</p>
+                <span class="blog-progress" aria-hidden="true"><i></i></span>
+                {rendered!.toc.map(e => <a class={e.level === 3 ? 'toc-sub' : undefined} href={'#' + e.id}>{e.text}<span aria-hidden="true">·</span></a>)}
+              </nav>
+            )}
+            <div class="blog-facts">
+              <p class="eyebrow" id="facts-title">Röviden</p>
+              <dl aria-labelledby="facts-title">
+              <div><dt>Olvasási idő</dt><dd>{rendered!.readingMinutes} perc</dd></div>
+              <div><dt>Publikálva</dt><dd><time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time></dd></div>
+              {modified && <div><dt>Frissítve</dt><dd><time datetime={modified}>{formatDate(modified)}</time></dd></div>}
+              <div><dt>Téma</dt><dd><a href={categoryUrl(category)}>{category.name}</a></dd></div>
+              <div><dt>Szerző</dt><dd><a href="#szerzo">{author.name}</a></dd></div>
+              </dl>
+            </div>
+            <div class="blog-share">
+              <button type="button" class="blog-copy-link" data-copy-link={absolute(path)}><span>Link másolása</span><span aria-hidden="true">+</span></button>
+              <a href="/blog/rss.xml"><span>Új írások RSS-ben</span><span aria-hidden="true">+</span></a>
+              <p class="blog-copy-status" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+          {hasToc && (
             <div class="privacy-mobile-jump">
               <label for="post-chapter">Ugrás a témához</label>
               <select id="post-chapter" data-toc-select>{rendered!.toc.map(e => <option value={e.id}>{e.level === 3 ? '– ' : ''}{e.text}</option>)}</select>
             </div>
-          </aside>
-        )}
-        <div class="privacy-document blog-document">
+          )}
+        </aside>
+
+        <div class="blog-document" id="cikk">
           {cover && (cover.caption || cover.credit) && <p class="blog-cover-credit">Borítókép: {[cover.caption, cover.credit].filter(Boolean).join(' · ')}</p>}
           <div class="post-prose" set:html={rendered!.html} />
           {post.sources.length > 0 && (
@@ -106,6 +128,26 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
             </div>
           </section>
         </div>
+
+        <aside class="blog-rail blog-rail-right" aria-label="Kapcsolódó szolgáltatás és elérhetőség">
+          <div class="blog-rail-sticky">
+            <article class="capability-card blog-service-card">
+              <div class="capability-art blog-service-art"><img src={artSrc(art)} alt="" width="410" height="236" loading="lazy" decoding="async" /></div>
+              <div class="capability-copy">
+                <p class="eyebrow">Ebben segíthetek</p>
+                <h2><a href={sideService.path}>{sideService.label}</a></h2>
+                <ul>{sideService.scope.slice(0, 3).map(item => <li>{item}</li>)}</ul>
+                <a class="capability-cta" href={sideService.path}>Részletek<span aria-hidden="true">+</span></a>
+              </div>
+            </article>
+            <div class="blog-contact">
+              <p class="eyebrow">Kérdésed van?</p>
+              <a class="blog-contact-email" href="mailto:info@vizitor.hu">info@vizitor.hu</a>
+              <a class="blog-contact-phone" href="tel:+36205180921">+36 20 518 0921</a>
+              <a class="blog-contact-cta" href="/kapcsolat/">Írok egy üzenetet<span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </aside>
       </div>
 
       {related.length > 0 && (
