@@ -89,7 +89,8 @@ a:hover>.blog-card-art{transform:scale(1.03)}
 .blog-layout{position:relative;z-index:1;display:grid;grid-template-columns:210px minmax(0,700px) 270px;justify-content:space-between;gap:48px;padding-block:52px 84px;align-items:start}
 .blog-document{min-width:0;max-width:700px}
 .blog-rail{align-self:stretch}
-.blog-rail-sticky{position:sticky;top:110px;display:grid;gap:30px}
+.blog-rail-sticky{position:sticky;top:110px;display:grid;gap:30px;transition:top .35s cubic-bezier(.22,1,.36,1)}
+.blog-rail-static{display:grid;gap:30px}
 
 /* Left rail: TOC with reading progress and sharing */
 .blog-toc{position:relative;max-height:none;overflow:visible;padding:0 0 0 16px}
@@ -116,12 +117,6 @@ a:hover>.blog-card-art{transform:scale(1.03)}
 .blog-service-card .capability-copy h2 a:hover{color:#c33e20}
 .blog-service-card .capability-copy ul{margin-top:14px;padding-top:12px}
 .blog-service-card .capability-copy li{align-items:flex-start;line-height:1.5;color:#4f585e}
-.blog-contact{display:grid;gap:6px;padding:20px;border-radius:10px;background:#18272f;color:#f1f1ec}
-.blog-contact .eyebrow{color:#9fb0ba;margin-bottom:6px}
-.blog-contact-email{font-size:1.25rem;letter-spacing:-.03em;overflow-wrap:anywhere}
-.blog-contact-phone{font-size:.875rem;color:#b7c1c7}
-.blog-contact-cta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:12px;border-top:1px solid #ffffff1f;font-size:.8125rem;color:#ff9b80}
-.blog-contact a:hover{color:var(--accent)}
 
 .blog-cover-credit{font-size:.75rem;color:#646d71;margin-bottom:26px}
 
@@ -142,9 +137,11 @@ a:hover>.blog-card-art{transform:scale(1.03)}
 .post-prose ul{list-style:disc}
 .post-prose ol{list-style:decimal}
 .post-prose li{line-height:1.7}.post-prose li+li{margin-top:.35em}
-.post-prose li::marker{color:#e5502e}
+.post-prose li::marker{color:#8a969c}
 .post-prose li.nested{list-style:none}
-.post-prose>blockquote{margin-block:1.8em;padding:6px 0 6px 24px;border-left:2px solid var(--accent);font-size:1.25rem;line-height:1.6;letter-spacing:-.015em;color:#1f2f37}
+.post-prose>blockquote{position:relative;margin-block:1.8em;padding:26px 30px 26px 64px;border:1px solid #23323a1c;border-radius:12px;background:#f8f9f6;box-shadow:0 18px 40px -32px #18272f66;font-size:1.1875rem;line-height:1.65;letter-spacing:-.012em;color:#1f2f37}
+.post-prose>blockquote::before{content:"\201E";position:absolute;left:22px;top:6px;font-size:3.4rem;line-height:1;color:#18272f2e;font-family:Georgia,serif}
+.post-prose>blockquote strong{color:#18272f}
 .post-prose>hr{border:0;border-top:1px solid #23323a25;margin-block:2.4em}
 .post-prose code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86em;background:#e1e4df;border:1px solid #23323a14;border-radius:5px;padding:.1em .35em;color:#1f2f37}
 .post-prose>.code-block{margin-block:1.7em}
@@ -294,3 +291,15 @@ a:hover>.blog-card-art{transform:scale(1.03)}
  .blog-related-card .capability-copy h3{font-size:1rem}
  .blog-related-card .capability-copy>p:not(.eyebrow){display:none}
 }
+
+/* Reading mode: the shared header slides away while scrolling down an article. */
+.navigation-header{transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.navigation-header.is-tucked{transform:translateY(-110%)}
+body:has(.navigation-header.is-tucked) .blog-rail-sticky{top:32px}
+@media(prefers-reduced-motion:reduce){.navigation-header,.blog-rail-sticky{transition:none}}
+/* Masthead: quiet line art fills the space above the cover. */
+@media(min-width:721px){
+ .blog-masthead-panel{position:relative}
+ .blog-masthead-panel::before{content:"";position:absolute;z-index:-1;right:-4%;top:-28px;width:58%;height:78%;pointer-events:none;background:no-repeat right top/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 360' fill='none' stroke='%23ff5c35'%3E%3Cpath d='M590 20C470 40 430 150 500 210S560 330 440 350' opacity='.28' stroke-width='1.3'/%3E%3Cpath d='M610 34C490 54 450 164 520 224S580 344 460 364' opacity='.12' stroke-width='1.3'/%3E%3Ccircle cx='150' cy='90' r='70' opacity='.12'/%3E%3Cpath d='M300 40v16m-8-8h16' opacity='.5' stroke-width='1.4'/%3E%3C/svg%3E")}
+}
+@media(max-width:720px){.post-prose>blockquote{padding:20px 18px 20px 46px;font-size:1.0625rem}.post-prose>blockquote::before{left:14px;font-size:2.8rem}}

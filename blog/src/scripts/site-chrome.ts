@@ -9,12 +9,23 @@ const $ = <T extends Element>(sel: string, root: ParentNode = document) => root.
 
 /* Header: scrolled state + navigation drawer */
 const header = $<HTMLElement>('.navigation-header');
-const onScroll = () => header?.classList.toggle('is-scrolled', scrollY > 36);
-addEventListener('scroll', onScroll, { passive: true }); onScroll();
+// On article pages the header steps aside while reading down and returns on any upward scroll.
+const reading = !!document.getElementById('cikk');
+let lastY = scrollY;
+const onScroll = () => {
+  const y = scrollY;
+  header?.classList.toggle('is-scrolled', y > 36);
+  if (reading && header && drawer?.dataset.state !== 'open' && !header.contains(document.activeElement)) {
+    if (y > 480 && y > lastY + 6) header.classList.add('is-tucked');
+    else if (y < lastY - 6 || y <= 480) header.classList.remove('is-tucked');
+  }
+  if (Math.abs(y - lastY) > 6) lastY = y;
+};
 
 const trigger = $<HTMLButtonElement>('.nav-menu-trigger');
 const drawer = $<HTMLDialogElement>('#navigation-dialog');
 let closing = 0;
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
 function openMenu() {
   if (!drawer || !trigger) return;
   drawer.dataset.state = 'open'; drawer.showModal(); document.body.style.overflow = 'hidden';

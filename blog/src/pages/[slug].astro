@@ -137,8 +137,8 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
           </section>
         </div>
 
-        <aside class="blog-rail blog-rail-right" aria-label="Kapcsolódó szolgáltatás és elérhetőség">
-          <div class="blog-rail-sticky">
+        <aside class="blog-rail blog-rail-right" aria-label="Kapcsolódó szolgáltatás">
+          <div class="blog-rail-static">
             <article class="capability-card blog-service-card">
               <div class="capability-art blog-service-art"><img src={artSrc(art)} alt="" width="410" height="236" loading="lazy" decoding="async" /></div>
               <div class="capability-copy">
@@ -148,12 +148,6 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
                 <a class="capability-cta" href={sideService.path}>Részletek<span aria-hidden="true">+</span></a>
               </div>
             </article>
-            <div class="blog-contact">
-              <p class="eyebrow">Kérdésed van?</p>
-              <a class="blog-contact-email" href="mailto:info@vizitor.hu">info@vizitor.hu</a>
-              <a class="blog-contact-phone" href="tel:+36205180921">+36 20 518 0921</a>
-              <a class="blog-contact-cta" href="/kapcsolat/">Írok egy üzenetet<span aria-hidden="true">↗</span></a>
-            </div>
           </div>
         </aside>
       </div>
