@@ -62,12 +62,12 @@ a:hover>.blog-card-art{transform:scale(1.03)}
 /* Desktop: no boxed card; the cover sits at the bottom of the dark band and overlaps into the article, tying the two together. */
 @media(min-width:721px){
  .blog-masthead{position:relative;z-index:2;padding-bottom:0}
- .blog-masthead-panel{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:clamp(28px,4vw,64px);align-items:end;overflow:visible;border:0;border-radius:0;background:none}
+ .blog-masthead-panel{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(28px,3.4vw,52px);align-items:end;overflow:visible;border:0;border-radius:0;background:none}
  .blog-masthead-copy{padding:clamp(14px,2vw,28px) 0 clamp(40px,4.5vw,64px)}
  .blog-masthead-copy h1{font-size:clamp(2.1rem,3.4vw,3.3rem)}
- .blog-masthead-art{align-self:end;padding:0;margin-bottom:-72px}
+ .blog-masthead-art{align-self:end;padding:0;margin-bottom:-88px}
  .blog-masthead-art img{max-height:none;border-radius:12px;box-shadow:0 30px 60px -28px #0b0e11cc,0 0 0 1px #ffffff14}
- .blog-masthead+.blog-paper .blog-layout{padding-top:124px}
+ .blog-masthead+.blog-paper .blog-layout{padding-top:140px}
 }
 
 @media(max-width:720px){
