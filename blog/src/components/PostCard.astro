@@ -1,10 +1,10 @@
 ---
 // Same anatomy as the site's project cards (/munkak/): tinted tile + framed visual, then meta, title, excerpt.
-import { type Post, ARTBG, titleHtml, artFor, artSrc, categoryOf, formatDate, mediaOf, postUrl, tone } from '../lib/data';
+import { type Post, ARTBG, coverOf, titleHtml, artFor, artSrc, categoryOf, formatDate, mediaOf, postUrl, tone } from '../lib/data';
 import { imageAttrs } from '../lib/images';
 interface Props { post: Post; eager?: boolean; headingLevel?: 2 | 3 }
 const { post, eager = false, headingLevel = 2 } = Astro.props;
-const cover = mediaOf(post.coverImage);
+const cover = coverOf(post);
 const art = artFor(post);
 const Heading = `h${headingLevel}`;
 ---

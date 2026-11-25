@@ -1,7 +1,7 @@
 ---
 import BlogLayout from '../layouts/BlogLayout.astro';
 import PostCard from './PostCard.astro';
-import { type Post, type Category, ARTBG, titleHtml, SITE, absolute, artFor, artSrc, authorOf, baseGraph, categoryOf, categoryUrl, formatDate, listUrl, mediaOf, postUrl, tone, usedCategories, CATEGORY_INDEX_MIN } from '../lib/data';
+import { type Post, type Category, ARTBG, coverOf, titleHtml, SITE, absolute, artFor, artSrc, authorOf, baseGraph, categoryOf, categoryUrl, formatDate, listUrl, mediaOf, postUrl, tone, usedCategories, CATEGORY_INDEX_MIN } from '../lib/data';
 import { imageAttrs } from '../lib/images';
 interface Props { posts: Post[]; page: number; pages: number; total: number; category?: Category }
 const { posts, page, pages, total, category } = Astro.props;
@@ -16,7 +16,7 @@ const index = !category || total >= CATEGORY_INDEX_MIN;
 const crumbs = [{ name: 'Főoldal', url: '/' }, { name: 'Blog', url: '/blog/' }, ...(category ? [{ name: category.name, url: categoryUrl(category) }] : [])];
 // The newest post leads the first page in a wide card; the rest follow in the project grid.
 const [feature, ...rest] = page === 1 ? posts : [undefined, ...posts];
-const featureCover = feature ? mediaOf(feature.coverImage) : undefined;
+const featureCover = feature ? coverOf(feature) : undefined;
 const featureArt = feature ? artFor(feature) : 'web';
 const jsonLd = { '@context': 'https://schema.org', '@graph': [
   ...baseGraph,

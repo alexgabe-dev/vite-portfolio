@@ -5,6 +5,9 @@ import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile, rm, access } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import path from 'node:path';
+import { build } from 'esbuild';
+import { pathToFileURL } from 'node:url';
+import { renderCover } from './covers.mjs';
 
 const root = path.resolve(import.meta.dirname, '../..');
 const out = path.join(root, 'blog/.generated');
@@ -124,6 +127,49 @@ async function extractChrome() {
   return { header: markCurrent(header), footer, consent, stylesheet, headScript, fontPreload };
 }
 
+/** Which of the site's 3D objects fits a post: its service, otherwise its topic. */
+async function artResolver() {
+  const out = path.join(root, '.cache/blog-services.mjs');
+  await build({ entryPoints: [path.join(root, 'src/content/services.ts')], outfile: out, bundle: true, platform: 'node', format: 'esm', logLevel: 'silent' });
+  const { services } = await import(pathToFileURL(out).href + '?t=' + Date.now());
+  return (post, category) => {
+    const service = services.find(s => (post.services || []).includes(s.path));
+    if (service) return service.art;
+    const c = category?.slug || '';
+    if (/seo|kereso|marketing|hirdet|meres|analitik/.test(c)) return 'growth';
+    if (/fejleszt|automat|chatbot|ai-|email|szerver|rendszer|integr/.test(c)) return 'systems';
+    if (/kulissz|hir|bejelent|vizitor|blog/.test(c)) return 'signature';
+    return 'web';
+  };
+}
+
+/** Generated, branded covers for posts without an uploaded image (cards, hero, social preview). */
+async function generateCovers(data, manifest) {
+  const artOf = await artResolver();
+  const categories = new Map(data.categories.map(c => [String(c.id), c]));
+  const publicMedia = path.join(out, 'public/media');
+  const version = createHash('sha256').update(await readFile(path.join(root, 'scripts/blog/covers.mjs'))).digest('hex').slice(0, 6);
+  for (const post of data.posts) {
+    const art = artOf(post, categories.get(String(post.category)));
+    const key = createHash('sha256').update(`${post.id}:${art}:${version}`).digest('hex').slice(0, 10);
+    const seed = `${post.id}:${post.slug}`;
+    manifest[`art:${post.id}`] = { art };
+    if (post.coverImage != null) continue;
+    const stem = `cover-${String(post.id).replace(/[^a-z0-9]/gi, '')}-${key}`;
+    const cached = path.join(cacheDir, `${stem}.png`);
+    if (!(await exists(cached))) await writeFile(cached, await renderCover({ seed, art, width: 1600, height: 1000 }));
+    const variants = [];
+    for (const w of WIDTHS) {
+      const file = `${stem}-${w}.webp`;
+      if (!(await exists(path.join(publicMedia, file)))) await sharp(cached).resize({ width: w }).webp({ quality: 80, effort: 5 }).toFile(path.join(publicMedia, file));
+      variants.push({ width: w, src: `/blog/media/${file}` });
+    }
+    const og = `${stem}-og.jpg`;
+    if (!(await exists(path.join(publicMedia, og)))) await sharp(await renderCover({ seed, art, width: 1200, height: 630 })).jpeg({ quality: 84, mozjpeg: true }).toFile(path.join(publicMedia, og));
+    manifest[`cover:${post.id}`] = { width: 1600, height: 1000, alt: '', caption: null, credit: null, variants, og: `/blog/media/${og}`, generated: true };
+  }
+}
+
 export async function prepareBlog({ cmsUrl, token }) {
   const data = await fetchExport(cmsUrl, token);
   validate(data);
@@ -131,6 +177,8 @@ export async function prepareBlog({ cmsUrl, token }) {
   await rm(out, { recursive: true, force: true });
   await mkdir(out, { recursive: true });
   const media = await processMedia(data, cmsUrl);
+  await mkdir(cacheDir, { recursive: true });
+  await generateCovers(data, media);
   await writeFile(path.join(out, 'content.json'), JSON.stringify(data));
   await writeFile(path.join(out, 'media.json'), JSON.stringify(media));
   return { enabled: true, posts: data.posts.length, fingerprint: data.fingerprint };

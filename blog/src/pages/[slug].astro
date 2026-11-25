@@ -1,6 +1,6 @@
 ---
 import BlogLayout from '../layouts/BlogLayout.astro';
-import { type Post, SITE, absolute, titleHtml, serviceFor, artFor, artSrc, authorOf, baseGraph, categoryOf, categoryUrl, formatDate, mediaOf, modifiedAt, posts, postUrl, relatedTo, serviceLabels } from '../lib/data';
+import { type Post, SITE, absolute, coverOf, titleHtml, serviceFor, artFor, artSrc, authorOf, baseGraph, categoryOf, categoryUrl, formatDate, mediaOf, modifiedAt, posts, postUrl, relatedTo, serviceLabels } from '../lib/data';
 import { renderPost } from '../lib/render';
 import { imageAttrs } from '../lib/images';
 
@@ -14,7 +14,7 @@ const { post, redirectTo } = Astro.props as { post: Post; redirectTo?: string };
 const target = redirectTo ? absolute(redirectTo) : '';
 const author = authorOf(post);
 const category = categoryOf(post);
-const cover = mediaOf(post.coverImage);
+const cover = coverOf(post);
 const share = mediaOf(post.shareImage) || cover;
 const photo = mediaOf(author.photo);
 const art = artFor(post);
@@ -47,7 +47,7 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
   <html lang="hu"><head><meta charset="utf-8" /><title>Átirányítás: {post.title}</title><meta name="robots" content="noindex, follow" /><link rel="canonical" href={target} /><meta http-equiv="refresh" content={`0; url=${redirectTo}`} /></head>
   <body><p>A cikk új címe: <a href={redirectTo}>{post.title}</a></p></body></html>
 ) : (
-<BlogLayout title={title} description={description} path={path} type="article" image={share?.og} imageAlt={share?.alt} jsonLd={jsonLd}
+<BlogLayout title={title} description={description} path={path} type="article" image={share?.og} imageAlt={share?.alt || post.title} jsonLd={jsonLd}
   article={{ published: post.publishedAt, modified, section: category.name, author: author.name }} preload={preload} mainClass="service-page blog-post">
   <article aria-labelledby="post-title">
     <header class="wrap service-page-hero blog-post-hero">
@@ -107,7 +107,7 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
         </aside>
 
         <div class="blog-document" id="cikk">
-          {cover && (cover.caption || cover.credit) && <p class="blog-cover-credit">Borítókép: {[cover.caption, cover.credit].filter(Boolean).join(' · ')}</p>}
+          {cover && !cover.generated && (cover.caption || cover.credit) && <p class="blog-cover-credit">Borítókép: {[cover.caption, cover.credit].filter(Boolean).join(' · ')}</p>}
           <div class="post-prose" set:html={rendered!.html} />
           {post.sources.length > 0 && (
             <section class="post-sources" aria-labelledby="sources-title">
@@ -155,7 +155,7 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
           <div class="blog-related-head"><p class="eyebrow">Olvasd tovább</p><h2 id="related-title">Kapcsolódó írások</h2></div>
           <div class="blog-related-grid">
             {related.map(p => {
-              const c = mediaOf(p.coverImage);
+              const c = coverOf(p);
               return (
                 <article class="capability-card blog-related-card">
                   <div class="capability-art blog-related-art">{c ? <Fragment set:html={`<img ${imageAttrs(c, { sizes: '(min-width: 1000px) 380px, calc(100vw - 32px)', eager: false })}>`} /> : <img src={artSrc(artFor(p))} alt="" width="410" height="236" loading="lazy" decoding="async" />}</div>

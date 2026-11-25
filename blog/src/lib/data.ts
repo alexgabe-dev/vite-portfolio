@@ -11,7 +11,7 @@ export type Post = {
 };
 export type Author = { id: Id; slug: string; name: string; jobTitle: string | null; bio: string | null; photo: Id | null; sameAs: string[] };
 export type Category = { id: Id; slug: string; name: string; description: string | null };
-export type MediaInfo = { width: number; height: number; alt: string; caption: string | null; credit: string | null; variants: { width: number; src: string }[]; og: string };
+export type MediaInfo = { width: number; height: number; alt: string; caption: string | null; credit: string | null; variants: { width: number; src: string }[]; og: string; generated?: boolean };
 type Export = { fingerprint: string; posts: Post[]; authors: Author[]; categories: Category[]; unpublishedLinkTargets: Id[] };
 export type Chrome = { header: string; footer: string; consent: string; stylesheet: string; headScript: string; fontPreload: string };
 
@@ -33,6 +33,8 @@ export const postsById = new Map(posts.map(p => [String(p.id), p]));
 export const authorOf = (p: Post) => authors.get(String(p.author))!;
 export const categoryOf = (p: Post) => categories.get(String(p.category))!;
 export const mediaOf = (id: Id | null | undefined) => (id == null ? undefined : media[String(id)]);
+/** The uploaded cover, or the branded cover generated at build time. */
+export const coverOf = (p: { id: Id; coverImage: Id | null }) => mediaOf(p.coverImage) || media[`cover:${p.id}`];
 
 export const postUrl = (p: Post) => `/blog/${p.slug}/`;
 export const categoryUrl = (c: Category, page = 1) => `/blog/kategoria/${c.slug}/${page > 1 ? `oldal/${page}/` : ''}`;
