@@ -7,7 +7,7 @@ interface Props { posts: Post[]; page: number; pages: number; total: number; cat
 const { posts, page, pages, total, category } = Astro.props;
 const url = (n: number) => (category ? categoryUrl(category, n) : listUrl(n));
 const path = url(page);
-const intro = category?.description || 'Gyakorlati útmutatók céges weboldalakról, keresésről, mérésről és AI-ról. Árakkal, egyenes válaszokkal, köntörfalazás nélkül.';
+const intro = category?.description || 'Weboldalak, SEO, webanalitika és AI. Gyakorlati útmutatók, konkrét példák és mérések.';
 const pageSuffix = page > 1 ? ` – ${page}. oldal` : '';
 const title = category ? `${category.name}${pageSuffix} | Vizitor blog` : `Blog${pageSuffix} – weboldal, SEO, marketing | Vizitor`;
 // Each category page needs its own description, even when the editor left it empty.
@@ -37,7 +37,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
       </nav>
       <div class="bl-hero-grid">
         <div class="bl-hero-copy">
-          <p class="bl-kicker">{category ? 'Téma' : 'Írások cégvezetőknek'}</p>
+          <p class="bl-kicker">{category ? 'Téma' : 'Web a gyakorlatban'}</p>
           <h1>{category?.name || 'Vizitor blog'}</h1>
           <p class="bl-deck">{category && !category.description ? `Ebben a témában ${total} írás olvasható. Keress rá bármire, vagy válts témát a szűrővel.` : intro}</p>
         </div>
