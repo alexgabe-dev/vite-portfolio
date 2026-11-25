@@ -29,7 +29,7 @@ const title = /(?:vizitor\.hu|vizitor blog|\| vizitor)$/i.test(baseTitle) ? base
 const description = post.metaDescription || post.excerpt;
 const coverSizes = '(min-width: 1392px) 550px, (min-width: 1101px) 39vw, (min-width: 721px) 40vw, (min-width: 601px) calc(100vw - 48px), calc(100vw - 40px)';
 const preload = cover ? { href: (cover.variants.find(v => v.width >= 800) || cover.variants[cover.variants.length - 1]).src, srcset: cover.variants.map(v => `${v.src} ${v.width}w`).join(', '), sizes: coverSizes } : undefined;
-const hasToc = (rendered?.toc.length || 0) >= 2;
+const hasToc = (rendered?.toc.filter(e => e.level === 2).length || 0) >= 2;
 const sideService = serviceFor(post);
 const authorNode = { '@type': 'Person', '@id': SITE + '/blog/#author-' + author.slug, name: author.name, ...(author.jobTitle ? { jobTitle: author.jobTitle } : {}), ...(author.sameAs.length ? { sameAs: author.sameAs } : {}), worksFor: { '@id': SITE + '/#vizitor' } };
 const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
@@ -84,7 +84,7 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
             <details class="blog-mobile-toc">
               <summary>A cikkben</summary>
               <nav aria-label="Tartalomjegyzék">
-                {rendered!.toc.map(e => <a href={'#' + e.id}>{e.text}</a>)}
+                {rendered!.toc.filter(e => e.level === 2).map(e => <a href={'#' + e.id}>{e.text}</a>)}
               </nav>
             </details>
           )}
@@ -93,7 +93,7 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
               <nav class="privacy-toc blog-toc" aria-label="Tartalomjegyzék">
                 <p class="eyebrow">A cikkben</p>
                 <span class="blog-progress" aria-hidden="true"><i></i></span>
-                {rendered!.toc.map(e => <a class={e.level === 3 ? 'toc-sub' : undefined} href={'#' + e.id}>{e.text}<span aria-hidden="true">·</span></a>)}
+                {rendered!.toc.filter(e => e.level === 2).map(e => <a href={'#' + e.id}>{e.text}<span aria-hidden="true">·</span></a>)}
               </nav>
             )}
             <div class="blog-share">

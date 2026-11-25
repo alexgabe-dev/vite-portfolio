@@ -4,6 +4,7 @@ import { imageAttrs } from './images';
 
 /** Renders Payload's Lexical JSON to static HTML at build time: no client JavaScript, no CMS requests. */
 export type TocEntry = { id: string; text: string; level: 2 | 3 };
+const AMOUNT = /\d{1,3}(?:[ \u00a0]\d{3})+(?:[ \u00a0]Ft(?:-\p{L}+)?)?|\d+[ \u00a0]Ft(?:-\p{L}+)?|\d+(?:,\d+)?[ \u00a0]?%/gu;
 const esc = (s: unknown) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const FORMATS: [number, string][] = [[16, 'code'], [1, 'strong'], [2, 'em'], [8, 'u'], [4, 's'], [32, 'sub'], [64, 'sup'], [128, 'mark']];
 const map: Record<string, string> = { á: 'a', é: 'e', í: 'i', ó: 'o', ö: 'o', ő: 'o', ú: 'u', ü: 'u', ű: 'u' };
@@ -39,7 +40,8 @@ export async function renderPost(post: Post) {
     switch (node.type) {
       case 'root': return children(node);
       case 'text': {
-        let html = esc(node.text).replace(/\n/g, '<br>');
+        // Keep amounts like „219 000 Ft-tól” or „20%” on one line (Hungarian number typography).
+        let html = esc(node.text).replace(AMOUNT, m => `<span class="nowrap">${m}</span>`).replace(/\n/g, '<br>');
         const format = Number(node.format || 0);
         for (const [bit, tag] of FORMATS) if (format & bit) html = `<${tag}>${html}</${tag}>`;
         return html;
