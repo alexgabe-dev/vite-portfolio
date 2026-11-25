@@ -26,7 +26,8 @@ export const services:ServiceDetail[] = [
     "detailTitle": "Mit tartalmaz az ár?",
     "details": [
       "A csomagok a tervezésre és a fejlesztésre vonatkoznak, a feltüntetett oldalszámmal és funkciókkal. A domain, a tárhely, a fizetős licencek, a fotózás és a szövegírás külön egyeztetendő tétel. Ha van már arculatod vagy használható tartalmad, abból indulunk.",
-      "Meglévő oldal újratervezésénél az URL-eket és a keresőben már megjelenő tartalmakat is át kell nézni. A megváltozó címekhez átirányítási terv készülhet, hogy a régi linkek ne vezessenek hibára."
+      "Meglévő oldal újratervezésénél az URL-eket és a keresőben már megjelenő tartalmakat is át kell nézni. A megváltozó címekhez átirányítási terv készülhet, hogy a régi linkek ne vezessenek hibára.",
+      "Nem kell egy összegben kifizetned. Ha neked kényelmesebb, a weboldal havi konstrukcióban is megoldható: megegyezés szerint havi részletekben fizeted a díjat, akár a karbantartással együtt, egyetlen havidíjban. A futamidőt és a havi összeget az ajánlatban előre rögzítjük, így pontosan tudod, mivel számolhatsz."
     ],
     "faq": [
       [
@@ -36,6 +37,10 @@ export const services:ServiceDetail[] = [
       [
         "Később én is tudom szerkeszteni?",
         "Ha rendszeresen frissítenéd a tartalmat, szerkeszthető tartalomkezelőt választunk. Az átadáskor megmutatom, mit és hogyan tudsz önállóan módosítani."
+      ],
+      [
+        "Fizethetem a weboldalt havi részletekben?",
+        "Igen, megegyezés szerint. Az egyszeri díj helyett havi konstrukciót is választhatsz, akár a karbantartással együtt egy havidíjban. A részletek számát és a havi összeget az ajánlatban rögzítjük."
       ],
       [
         "A karbantartás is benne van?",
