@@ -180,15 +180,15 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
       )}
     </div>
 
-    <aside class="wrap service-next blog-next" aria-labelledby="cta-title">
-      <div>
+    <aside class="blog-article-cta" aria-labelledby="cta-title">
+      <div class="wrap blog-article-cta-inner">
         <p class="eyebrow">{service ? 'Kapcsolódó szolgáltatás' : 'Beszéljük meg'}</p>
         <h2 id="cta-title">{service ? serviceLabels[service] : 'Van egy hasonló feladatod?'}</h2>
-        <p>{service ? 'Ha a cikk témája nálad is aktuális, nézd meg, hogyan dolgozom, vagy írd meg röviden, mire van szükséged.' : 'Írd meg röviden, mire van szükséged. Közvetlenül velem egyeztetsz, és még a munka előtt tudni fogod a díjat és a határidőt.'}</p>
-      </div>
-      <div class="blog-next-actions">
-        <a class="button orange" href="/kapcsolat/">Ajánlatot kérek</a>
-        {service && <a class="text-link" href={service}>{serviceLabels[service]} részletei</a>}
+        <p class="blog-article-cta-text">{service ? 'Ha a cikk témája nálad is aktuális, nézd meg, hogyan dolgozom, vagy írd meg röviden, mire van szükséged.' : 'Írd meg röviden, mire van szükséged. Közvetlenül velem egyeztetsz, és még a munka előtt tudni fogod a díjat és a határidőt.'}</p>
+        <div class="blog-article-cta-actions">
+          <a class="button orange" href="/kapcsolat/">Ajánlatot kérek</a>
+          {service && <a class="text-link" href={service}>{serviceLabels[service]} részletei</a>}
+        </div>
       </div>
     </aside>
   </article>

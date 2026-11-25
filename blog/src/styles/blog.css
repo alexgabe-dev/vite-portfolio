@@ -178,12 +178,17 @@ a:hover>.blog-card-art{transform:scale(1.03)}
 .blog-related-card .capability-copy>p:not(.eyebrow){min-height:0}
 .blog-related-card h3 a:hover{color:#c33e20}
 
-/* Closing CTA: the service pages' dark band */
-.blog-next-actions{display:flex;align-items:center;gap:26px;flex-wrap:wrap;flex-shrink:0}
+/* The rounded CTA overlaps the paper so its top corners reveal the reading area. */
+.blog-article-cta{--cta-radius:25px;position:relative;margin-top:calc(-1 * var(--cta-radius));border-radius:var(--cta-radius) var(--cta-radius) 0 0;background:var(--ink);padding-block:clamp(48px,6vw,84px) clamp(68px,7vw,100px);text-align:center}
+.blog-article-cta-inner>.eyebrow{color:#ffa18b;margin-bottom:12px}
+.blog-article-cta-inner>h2{font-size:clamp(2rem,4vw,3.5rem);text-wrap:balance}
+.blog-article-cta-text{max-width:54ch;margin:16px auto 0;color:#b7c1c8;text-wrap:pretty}
+.blog-article-cta-actions{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px 26px;margin-top:30px}
+.blog-article-cta-actions .text-link{display:inline-flex;align-items:center;min-height:44px}
 
 /* ---------- Responsive ---------- */
 @media(max-width:1000px){.blog-feature{grid-template-columns:1fr;gap:30px}.blog-feature-visual{height:340px}.blog-related-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:800px){.blog-next{flex-direction:column;align-items:flex-start}}
+@media(max-width:800px){.blog-next{flex-direction:column;align-items:flex-start}.blog-article-cta{--cta-radius:19px}}
 @media(max-width:600px){
  .blog-feature-visual{height:250px;padding:24px 18px}
  .post-prose{font-size:1rem}
@@ -191,7 +196,9 @@ a:hover>.blog-card-art{transform:scale(1.03)}
  .post-author{flex-direction:column;padding:22px}
  .blog-related-grid{grid-template-columns:1fr}
  .blog-pagination{grid-template-columns:1fr 1fr}.blog-pagination-status{display:none}
- .blog-next-actions{width:100%}.blog-next-actions .button{width:100%}
+ .blog-article-cta{--cta-radius:15px}
+ .blog-article-cta-actions{flex-direction:column;margin-top:28px}
+ .blog-article-cta-actions .button{width:min(100%,320px)}
 }
 @media(prefers-reduced-motion:reduce){.blog-card-frame,.blog-card-art,.blog-read-link span[aria-hidden]{transition:none}}
 .nowrap{white-space:nowrap}
