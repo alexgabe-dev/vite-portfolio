@@ -1,18 +1,23 @@
 ---
 import BlogLayout from '../layouts/BlogLayout.astro';
 import PostCard from './PostCard.astro';
-import { type Post, type Category, SITE, absolute, baseGraph, categoryUrl, listUrl, postUrl, usedCategories, CATEGORY_INDEX_MIN } from '../lib/data';
+import { type Post, type Category, ARTBG, titleHtml, SITE, absolute, artFor, artSrc, authorOf, baseGraph, categoryOf, categoryUrl, formatDate, listUrl, mediaOf, postUrl, tone, usedCategories, CATEGORY_INDEX_MIN } from '../lib/data';
+import { imageAttrs } from '../lib/images';
 interface Props { posts: Post[]; page: number; pages: number; total: number; category?: Category }
 const { posts, page, pages, total, category } = Astro.props;
 const url = (n: number) => (category ? categoryUrl(category, n) : listUrl(n));
 const path = url(page);
-const heading = category ? category.name : 'Blog';
-const intro = category?.description || 'Gyakorlati írások weboldalakról, keresőoptimalizálásról, mérésről és automatizálásról — vállalkozásoknak, érthetően.';
+const intro = category?.description || 'Gyakorlati írások weboldalakról, keresőoptimalizálásról, mérésről és automatizálásról. Vállalkozásoknak, érthetően, a saját munkáimból.';
 const pageSuffix = page > 1 ? ` – ${page}. oldal` : '';
 const title = category ? `${category.name}${pageSuffix} | Vizitor blog` : `Blog${pageSuffix} – weboldal, SEO, marketing | Vizitor`;
-const description = (category?.description || intro).slice(0, 160);
+// Each category page needs its own description, even when the editor left it empty.
+const description = (category ? (category.description || `${category.name}: gyakorlati írások a Vizitor blogján weboldalakról, marketingről és működésről, vállalkozásoknak.`) : intro).slice(0, 160);
 const index = !category || total >= CATEGORY_INDEX_MIN;
 const crumbs = [{ name: 'Főoldal', url: '/' }, { name: 'Blog', url: '/blog/' }, ...(category ? [{ name: category.name, url: categoryUrl(category) }] : [])];
+// The newest post leads the first page in a wide card; the rest follow in the project grid.
+const [feature, ...rest] = page === 1 ? posts : [undefined, ...posts];
+const featureCover = feature ? mediaOf(feature.coverImage) : undefined;
+const featureArt = feature ? artFor(feature) : 'web';
 const jsonLd = { '@context': 'https://schema.org', '@graph': [
   ...baseGraph,
   { '@type': category ? 'CollectionPage' : 'Blog', '@id': absolute(path) + '#page', url: absolute(path), name: title, description, inLanguage: 'hu-HU', isPartOf: { '@id': SITE + '/#website' }, publisher: { '@id': SITE + '/#vizitor' } },
@@ -20,32 +25,55 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'ItemList', itemListElement: posts.map((p, i) => ({ '@type': 'ListItem', position: (page - 1) * 12 + i + 1, url: absolute(postUrl(p)), name: p.title })) },
 ] };
 ---
-<BlogLayout title={title} description={description} path={path} jsonLd={jsonLd} index={index} prev={page > 1 ? url(page - 1) : undefined} next={page < pages ? url(page + 1) : undefined}>
-  <div class="blog-shell">
-    <nav class="page-breadcrumb blog-breadcrumb" aria-label="Morzsamenü">
-      {crumbs.map((c, i) => i < crumbs.length - 1 || page > 1 ? <><a href={c.url}>{c.name}</a><span aria-hidden="true">/</span></> : <span aria-current="page">{c.name}</span>)}
-      {page > 1 && <span aria-current="page">{page}. oldal</span>}
-    </nav>
-    <header class="blog-hero">
-      <p class="eyebrow"><span class="copper-rule"></span>{category ? 'Vizitor blog · Kategória' : 'Vizitor · Blog'}</p>
-      <h1>{heading}<span>.</span></h1>
-      <p class="blog-intro">{intro}</p>
-    </header>
-    {usedCategories.length > 1 && (
-      <nav class="blog-categories" aria-label="Kategóriák">
-        <a href="/blog/" aria-current={!category ? 'page' : undefined}>Összes</a>
-        {usedCategories.map(({ category: c, posts: list }) => <a href={categoryUrl(c)} aria-current={category && c.id === category.id ? 'page' : undefined}>{c.name} <span>{list.length}</span></a>)}
+<BlogLayout title={title} description={description} path={path} jsonLd={jsonLd} index={index} prev={page > 1 ? url(page - 1) : undefined} next={page < pages ? url(page + 1) : undefined} mainClass="archive-main blog-index">
+    <section class="archive-heading wrap">
+      <nav class="page-breadcrumb" aria-label="Morzsamenü">
+        {crumbs.map((c, i) => i < crumbs.length - 1 || page > 1 ? <><a href={c.url}>{c.name}</a><span aria-hidden="true">/</span></> : <span aria-current="page">{c.name}</span>)}
+        {page > 1 && <span aria-current="page">{page}. oldal</span>}
       </nav>
-    )}
-    <div class="post-grid">
-      {posts.map((post, i) => <PostCard post={post} eager={page === 1 && i === 0} />)}
-    </div>
-    {pages > 1 && (
-      <nav class="blog-pagination" aria-label="Lapozás">
-        {page > 1 ? <a rel="prev" href={url(page - 1)}>← Újabb cikkek</a> : <span></span>}
-        <span class="blog-pagination-status">{page} / {pages}</span>
-        {page < pages ? <a rel="next" href={url(page + 1)}>Korábbi cikkek →</a> : <span></span>}
-      </nav>
-    )}
-  </div>
+      <p class="eyebrow">{category ? 'Vizitor blog · Kategória' : 'Vizitor · Blog'}</p>
+      <h1>{category ? <>{category.name}.<br /><span>Írások a témában.</span></> : <>Írások.<br /><span>Weboldalról, érthetően.</span></>}</h1>
+      <div class="archive-intro">
+        <p>{intro}</p>
+        {usedCategories.length > 1 && (
+          <nav class="filters blog-filters" aria-label="Kategóriák">
+            <a href="/blog/" aria-current={!category ? 'page' : undefined}>Minden</a>
+            {usedCategories.map(({ category: c }) => <a href={categoryUrl(c)} aria-current={category && c.id === category.id ? 'page' : undefined}>{c.name}</a>)}
+          </nav>
+        )}
+      </div>
+    </section>
+
+    <section class="wrap archive-projects blog-posts" aria-label={category ? `${category.name} cikkek` : 'Cikkek'}>
+      {feature && (
+        <article class="blog-feature">
+          <a class="blog-feature-visual" href={postUrl(feature)} style={`background:${featureCover ? tone[featureArt] : ARTBG}`} tabindex="-1" aria-hidden="true">
+            {featureCover
+              ? <span class="blog-card-frame"><Fragment set:html={`<img ${imageAttrs(featureCover, { sizes: '(min-width: 1100px) 680px, calc(100vw - 48px)', eager: true })}>`} /></span>
+              : <img class="blog-card-art" src={artSrc(featureArt)} alt="" width="410" height="236" fetchpriority="high" decoding="async" />}
+          </a>
+          <div class="blog-feature-copy">
+            <p class="eyebrow">Legfrissebb · {categoryOf(feature).name}</p>
+            <h2><a href={postUrl(feature)} set:html={titleHtml(feature.title)} /></h2>
+            <p class="blog-feature-excerpt">{feature.excerpt}</p>
+            <p class="blog-feature-meta">{authorOf(feature).name} · <time datetime={feature.publishedAt}>{formatDate(feature.publishedAt)}</time></p>
+            <a class="blog-read-link" href={postUrl(feature)}>Elolvasom<span aria-hidden="true">+</span><span class="sr-only">: {feature.title}</span></a>
+          </div>
+        </article>
+      )}
+      {rest.length > 0 && <div class="project-grid blog-grid">{rest.map(post => post && <PostCard post={post} />)}</div>}
+      {pages > 1 && (
+        <nav class="blog-pagination" aria-label="Lapozás">
+          {page > 1 ? <a rel="prev" href={url(page - 1)}>← Újabb írások</a> : <span></span>}
+          <span class="blog-pagination-status">{page} / {pages}</span>
+          {page < pages ? <a rel="next" href={url(page + 1)}>Korábbi írások →</a> : <span></span>}
+        </nav>
+      )}
+      <a class="github-link blog-rss-link" href="/blog/rss.xml">Új írások RSS-olvasóban<span aria-hidden="true">+</span></a>
+    </section>
+
+    <section class="wrap service-next blog-next">
+      <div><p class="eyebrow">Beszéljük meg</p><h2>Saját weboldalon gondolkodsz?</h2><p>Írd meg röviden, mire van szükséged. Közvetlenül velem egyeztetsz, és még a munka előtt tudni fogod a díjat és a határidőt.</p></div>
+      <a class="button orange" href="/kapcsolat/">Ajánlatot kérek</a>
+    </section>
 </BlogLayout>

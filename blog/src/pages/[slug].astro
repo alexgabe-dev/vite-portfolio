@@ -1,7 +1,6 @@
 ---
 import BlogLayout from '../layouts/BlogLayout.astro';
-import PostCard from '../components/PostCard.astro';
-import { type Post, SITE, absolute, baseGraph, authorOf, categoryOf, categoryUrl, formatDate, mediaOf, modifiedAt, posts, postUrl, relatedTo, serviceLabels } from '../lib/data';
+import { type Post, SITE, absolute, titleHtml, artFor, artSrc, authorOf, baseGraph, categoryOf, categoryUrl, formatDate, mediaOf, modifiedAt, posts, postUrl, relatedTo, serviceLabels } from '../lib/data';
 import { renderPost } from '../lib/render';
 import { imageAttrs } from '../lib/images';
 
@@ -18,15 +17,17 @@ const category = categoryOf(post);
 const cover = mediaOf(post.coverImage);
 const share = mediaOf(post.shareImage) || cover;
 const photo = mediaOf(author.photo);
+const art = artFor(post);
 const modified = modifiedAt(post);
 const rendered = redirectTo ? null : await renderPost(post);
 const related = relatedTo(post);
 const service = post.services.find(s => serviceLabels[s]);
 const path = postUrl(post);
-const coverSizes = '(min-width: 1200px) 1120px, calc(100vw - 32px)';
-const preload = cover ? { href: (cover.variants.find(v => v.width >= 800) || cover.variants[cover.variants.length - 1]).src, srcset: cover.variants.map(v => `${v.src} ${v.width}w`).join(', '), sizes: coverSizes } : undefined;
 const title = `${post.metaTitle || post.title} | Vizitor blog`;
 const description = post.metaDescription || post.excerpt;
+const coverSizes = '(min-width: 1100px) 460px, (min-width: 801px) 38vw, calc(100vw - 32px)';
+const preload = cover ? { href: (cover.variants.find(v => v.width >= 800) || cover.variants[cover.variants.length - 1]).src, srcset: cover.variants.map(v => `${v.src} ${v.width}w`).join(', '), sizes: coverSizes } : undefined;
+const hasToc = (rendered?.toc.length || 0) >= 3;
 const authorNode = { '@type': 'Person', '@id': SITE + '/blog/#author-' + author.slug, name: author.name, ...(author.jobTitle ? { jobTitle: author.jobTitle } : {}), ...(author.sameAs.length ? { sameAs: author.sameAs } : {}), worksFor: { '@id': SITE + '/#vizitor' } };
 const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
   ...baseGraph,
@@ -46,31 +47,46 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
   <body><p>A cikk új címe: <a href={redirectTo}>{post.title}</a></p></body></html>
 ) : (
 <BlogLayout title={title} description={description} path={path} type="article" image={share?.og} imageAlt={share?.alt} jsonLd={jsonLd}
-  article={{ published: post.publishedAt, modified, section: category.name, author: author.name }} preload={preload}>
-  <article class="post">
-    <div class="blog-shell">
-      <nav class="page-breadcrumb blog-breadcrumb" aria-label="Morzsamenü"><a href="/">Főoldal</a><span aria-hidden="true">/</span><a href="/blog/">Blog</a><span aria-hidden="true">/</span><a href={categoryUrl(category)}>{category.name}</a></nav>
-      <header class="post-header">
-        <p class="eyebrow"><span class="copper-rule"></span><a href={categoryUrl(category)}>{category.name}</a></p>
-        <h1>{post.title}</h1>
-        <p class="post-lead">{post.excerpt}</p>
-        <p class="post-meta">
-          <a href="#szerzo">{author.name}</a>
-          <span aria-hidden="true">·</span><span>Publikálva: <time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time></span>
-          {modified && <><span aria-hidden="true">·</span><span>Frissítve: <time datetime={modified}>{formatDate(modified)}</time></span></>}
-          <span aria-hidden="true">·</span><span>{rendered!.readingMinutes} perc olvasás</span>
-        </p>
-      </header>
-      {cover && <figure class="post-cover"><Fragment set:html={`<img ${imageAttrs(cover, { sizes: coverSizes, eager: true })}>`} />{(cover.caption || cover.credit) && <figcaption>{[cover.caption, cover.credit].filter(Boolean).join(' · ')}</figcaption>}</figure>}
-      <div class={'post-layout' + (rendered!.toc.length >= 3 ? ' has-toc' : '')}>
-        {rendered!.toc.length >= 3 && (
-          <nav class="post-toc" aria-labelledby="toc-title">
-            <p id="toc-title" class="eyebrow">Tartalom</p>
-            <ol>{rendered!.toc.map(e => <li class={'toc-' + e.level}><a href={'#' + e.id}>{e.text}</a></li>)}</ol>
-          </nav>
+  article={{ published: post.publishedAt, modified, section: category.name, author: author.name }} preload={preload} mainClass="service-page blog-post">
+  <article aria-labelledby="post-title">
+    <header class="wrap service-page-hero blog-post-hero">
+      <nav class="page-breadcrumb" aria-label="Morzsamenü"><a href="/">Főoldal</a><span aria-hidden="true">/</span><a href="/blog/">Blog</a><span aria-hidden="true">/</span><a href={categoryUrl(category)}>{category.name}</a></nav>
+      <div class="service-page-hero-grid">
+        <div>
+          <p class="eyebrow"><span class="copper-rule"></span>Vizitor blog · <a href={categoryUrl(category)}>{category.name}</a></p>
+          <h1 id="post-title" set:html={titleHtml(post.title)} />
+          <p class="service-page-lead">{post.excerpt}</p>
+        </div>
+        <div class={'service-page-art blog-post-art' + (cover ? ' has-cover' : '')} style={cover ? undefined : 'background:#e8ebe8'}>
+          {cover
+            ? <Fragment set:html={`<img ${imageAttrs(cover, { sizes: coverSizes, eager: true })}>`} />
+            : <img src={artSrc(art)} alt="" width="410" height="236" decoding="async" />}
+        </div>
+      </div>
+      <div class="privacy-meta blog-post-meta">
+        <span><a href="#szerzo">{author.name}</a><i aria-hidden="true">·</i>Publikálva <time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time>{modified && <><i aria-hidden="true">·</i>Frissítve <time datetime={modified}>{formatDate(modified)}</time></>}</span>
+        <span>{rendered!.readingMinutes} perc olvasás</span>
+      </div>
+    </header>
+
+    <div class="privacy-paper blog-paper">
+      <div class={'wrap privacy-layout blog-layout' + (hasToc ? '' : ' no-toc')}>
+        {hasToc && (
+          <aside class="privacy-sidebar" aria-label="A cikk fejezetei">
+            <nav class="privacy-toc" aria-label="Tartalomjegyzék">
+              <p class="eyebrow">A cikkben</p>
+              {rendered!.toc.map(e => <a class={e.level === 3 ? 'toc-sub' : undefined} href={'#' + e.id}>{e.text}<span aria-hidden="true">·</span></a>)}
+              <a class="privacy-toc-top" href="#top">Az oldal tetejére</a>
+            </nav>
+            <div class="privacy-mobile-jump">
+              <label for="post-chapter">Ugrás a témához</label>
+              <select id="post-chapter" data-toc-select>{rendered!.toc.map(e => <option value={e.id}>{e.level === 3 ? '– ' : ''}{e.text}</option>)}</select>
+            </div>
+          </aside>
         )}
-        <div class="post-body">
-          <div class="prose" set:html={rendered!.html} />
+        <div class="privacy-document blog-document">
+          {cover && (cover.caption || cover.credit) && <p class="blog-cover-credit">Borítókép: {[cover.caption, cover.credit].filter(Boolean).join(' · ')}</p>}
+          <div class="post-prose" set:html={rendered!.html} />
           {post.sources.length > 0 && (
             <section class="post-sources" aria-labelledby="sources-title">
               <h2 id="sources-title">Források</h2>
@@ -78,7 +94,9 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
             </section>
           )}
           <section class="post-author" id="szerzo" aria-labelledby="author-title">
-            {photo && <Fragment set:html={`<img class="post-author-photo" ${imageAttrs(photo, { sizes: '96px', eager: false })}>`} />}
+            {photo
+              ? <Fragment set:html={`<img class="post-author-photo" ${imageAttrs(photo, { sizes: '88px', eager: false })}>`} />
+              : <span class="post-author-mark" aria-hidden="true">{author.name.split(/\s+/).map(w => w[0]).join('').slice(0, 2)}</span>}
             <div>
               <p class="eyebrow">A szerzőről</p>
               <h2 id="author-title">{author.name}</h2>
@@ -87,26 +105,42 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
               {author.sameAs.length > 0 && <p class="post-author-links">{author.sameAs.map(u => <a href={u} rel="noopener me">{new URL(u).hostname.replace(/^www\./, '')}</a>)}</p>}
             </div>
           </section>
-          <aside class="post-cta" aria-labelledby="cta-title">
-            <p class="eyebrow">{service ? 'Kapcsolódó szolgáltatás' : 'Beszéljünk'}</p>
-            <h2 id="cta-title">{service ? serviceLabels[service] : 'Van egy hasonló feladatod?'}</h2>
-            <p>{service ? 'Ha a cikk témája nálad is aktuális, nézd meg, hogyan dolgozom, vagy írd meg röviden, mire van szükséged.' : 'Írd meg röviden, mire van szükséged. Közvetlenül velem egyeztetsz, és még a munka előtt tudni fogod a díjat és a határidőt.'}</p>
-            <div class="post-cta-actions">
-              <a class="button orange" href="/kapcsolat/">Ajánlatot kérek</a>
-              {service && <a class="text-link" href={service}>{serviceLabels[service]} részletei</a>}
-            </div>
-          </aside>
         </div>
       </div>
+
+      {related.length > 0 && (
+        <section class="wrap blog-related" aria-labelledby="related-title">
+          <div class="blog-related-head"><p class="eyebrow">Olvasd tovább</p><h2 id="related-title">Kapcsolódó írások</h2></div>
+          <div class="blog-related-grid">
+            {related.map(p => {
+              const c = mediaOf(p.coverImage);
+              return (
+                <article class="capability-card blog-related-card">
+                  <div class="capability-art blog-related-art">{c ? <Fragment set:html={`<img ${imageAttrs(c, { sizes: '(min-width: 1000px) 380px, calc(100vw - 32px)', eager: false })}>`} /> : <img src={artSrc(artFor(p))} alt="" width="410" height="236" loading="lazy" decoding="async" />}</div>
+                  <div class="capability-copy">
+                    <p class="eyebrow">{categoryOf(p).name}</p>
+                    <h3><a href={postUrl(p)}>{p.title}</a></h3>
+                    <p>{p.excerpt}</p>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      )}
     </div>
-    {related.length > 0 && (
-      <section class="post-related" aria-labelledby="related-title">
-        <div class="blog-shell">
-          <h2 id="related-title">Kapcsolódó cikkek</h2>
-          <div class="post-grid">{related.map(p => <PostCard post={p} headingLevel={3} />)}</div>
-        </div>
-      </section>
-    )}
+
+    <aside class="wrap service-next blog-next" aria-labelledby="cta-title">
+      <div>
+        <p class="eyebrow">{service ? 'Kapcsolódó szolgáltatás' : 'Beszéljük meg'}</p>
+        <h2 id="cta-title">{service ? serviceLabels[service] : 'Van egy hasonló feladatod?'}</h2>
+        <p>{service ? 'Ha a cikk témája nálad is aktuális, nézd meg, hogyan dolgozom, vagy írd meg röviden, mire van szükséged.' : 'Írd meg röviden, mire van szükséged. Közvetlenül velem egyeztetsz, és még a munka előtt tudni fogod a díjat és a határidőt.'}</p>
+      </div>
+      <div class="blog-next-actions">
+        <a class="button orange" href="/kapcsolat/">Ajánlatot kérek</a>
+        {service && <a class="text-link" href={service}>{serviceLabels[service]} részletei</a>}
+      </div>
+    </aside>
   </article>
 </BlogLayout>
 )}

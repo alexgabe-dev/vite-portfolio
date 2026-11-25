@@ -74,3 +74,25 @@ export const baseGraph = [
   { '@type': 'Organization', '@id': SITE + '/#vizitor', name: 'Vizitor', url: SITE + '/', logo: { '@type': 'ImageObject', url: SITE + '/vizitor-logo-orange.svg', width: 328, height: 103 }, email: 'info@vizitor.hu', sameAs: ['https://www.facebook.com/vizitor.hu'] },
   { '@type': 'WebSite', '@id': SITE + '/#website', name: 'Vizitor', url: SITE + '/', inLanguage: 'hu-HU', publisher: { '@id': SITE + '/#vizitor' } },
 ];
+
+/** The site's own 3D renders (public/graphics), so a post without a cover still looks like Vizitor. */
+import { services as siteServices } from '../../../src/content/services';
+export type Art = 'web' | 'systems' | 'growth';
+export function artFor(p: Post): Art {
+  const service = siteServices.find(s => p.services.includes(s.path));
+  if (service) return service.art;
+  const c = categoryOf(p).slug;
+  if (/seo|kereso|marketing|hirdet|meres|analitik|growth/.test(c)) return 'growth';
+  if (/fejleszt|automat|chatbot|ai-|email|szerver|rendszer|integr/.test(c)) return 'systems';
+  return 'web';
+}
+export const artSrc = (art: Art) => `/graphics/${art}.webp`;
+export const tone: Record<Art, string> = { web: '#c5c9c2', systems: '#b9bbc9', growth: '#cdc3bf' };
+/** Background of the 3D renders themselves, so their tiles show no visible image edge. */
+export const ARTBG = '#e8ebe8';
+
+/** Title HTML where hyphenated words ("2026-ban", "e-mail") never break at the hyphen. */
+export function titleHtml(text: string) {
+  const esc = (x: string) => x.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return esc(text).replace(/\S*\w-\w\S*/g, w => `<span class="nowrap">${w}</span>`);
+}

@@ -16,8 +16,10 @@ interface Props {
   article?: { published: string; modified?: string | null; section: string; author: string };
   /** Above-the-fold image to preload (the LCP candidate). */
   preload?: { srcset: string; sizes: string; href: string };
+  /** Class of <main>, so pages reuse the site's own page styles (archive-main, service-page …). */
+  mainClass?: string;
 }
-const { title, description, path, image = '/og/vizitor-share-2026.png', imageAlt = 'Vizitor — Weboldal. Rád tervezve.', type = 'website', jsonLd, index = true, prev, next, article, preload } = Astro.props;
+const { title, description, path, image = '/og/vizitor-share-2026.png', imageAlt = 'Vizitor — Weboldal. Rád tervezve.', type = 'website', jsonLd, index = true, prev, next, article, preload, mainClass = '' } = Astro.props;
 const canonical = absolute(path);
 const socialImage = new URL(image, socialOrigin).href;
 const robots = indexable && index ? 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' : 'noindex, follow';
@@ -65,7 +67,7 @@ const ld = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : '';
 <body>
 <a href="#main" class="skip-link">Ugrás a tartalomhoz</a>
 <Fragment set:html={chrome.header} />
-<main id="main" class="blog-main"><slot /></main>
+<main id="main" class={`blog-main ${mainClass}`}><slot /></main>
 <Fragment set:html={chrome.footer} />
 <Fragment set:html={chrome.consent} />
 <script>

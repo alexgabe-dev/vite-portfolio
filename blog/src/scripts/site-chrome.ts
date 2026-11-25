@@ -111,3 +111,29 @@ if (dialog) {
 $<HTMLButtonElement>('.footer-consent')?.addEventListener('click', e => openSettings(e.currentTarget as HTMLElement));
 addEventListener('vizitor:consent-change', sync);
 sync();
+
+/* Article table of contents: current-section marker and the mobile "jump to" select. */
+const toc = document.querySelectorAll<HTMLAnchorElement>('.privacy-toc a[href^="#"]:not(.privacy-toc-top)');
+const jump = document.querySelector<HTMLSelectElement>('[data-toc-select]');
+if (toc.length || jump) {
+  const headings = [...document.querySelectorAll<HTMLElement>('.post-prose h2[id], .post-prose h3[id]')];
+  const mark = (id: string) => {
+    toc.forEach(a => (a.getAttribute('href') === '#' + id ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
+    if (jump && [...jump.options].some(o => o.value === id)) jump.value = id;
+  };
+  let frame = 0;
+  const update = () => {
+    frame = 0;
+    let current = headings[0]?.id;
+    for (const h of headings) if (h.getBoundingClientRect().top < innerHeight * 0.3) current = h.id;
+    if (current) mark(current);
+  };
+  addEventListener('scroll', () => { if (!frame) frame = requestAnimationFrame(update); }, { passive: true });
+  update();
+  jump?.addEventListener('change', () => {
+    const target = document.getElementById(jump.value);
+    if (!target) return;
+    target.scrollIntoView({ behavior: reduced() ? 'instant' : 'smooth', block: 'start' });
+    target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true });
+  });
+}
