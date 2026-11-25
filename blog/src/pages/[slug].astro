@@ -26,7 +26,7 @@ const path = postUrl(post);
 const baseTitle = (post.metaTitle || post.title).trim();
 const title = /(?:vizitor\.hu|vizitor blog|\| vizitor)$/i.test(baseTitle) ? baseTitle : `${baseTitle} | vizitor.hu`;
 const description = post.metaDescription || post.excerpt;
-const coverSizes = '(min-width: 1100px) 460px, (min-width: 801px) 38vw, calc(100vw - 32px)';
+const coverSizes = '(min-width: 1392px) 550px, (min-width: 1101px) 39vw, (min-width: 721px) 40vw, (min-width: 601px) calc(100vw - 48px), calc(100vw - 40px)';
 const preload = cover ? { href: (cover.variants.find(v => v.width >= 800) || cover.variants[cover.variants.length - 1]).src, srcset: cover.variants.map(v => `${v.src} ${v.width}w`).join(', '), sizes: coverSizes } : undefined;
 const hasToc = (rendered?.toc.length || 0) >= 2;
 const sideService = serviceFor(post);
@@ -51,19 +51,23 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
 <BlogLayout title={title} description={description} path={path} type="article" image={share?.og} imageAlt={share?.alt || post.title} jsonLd={jsonLd}
   article={{ published: post.publishedAt, modified, section: category.name, author: author.name }} preload={preload} mainClass="service-page blog-post">
   <article aria-labelledby="post-title">
-    <header class="wrap service-page-hero blog-post-hero">
-      <nav class="page-breadcrumb" aria-label="Morzsamenü"><a href="/">Főoldal</a><span aria-hidden="true">/</span><a href="/blog/">Blog</a><span aria-hidden="true">/</span><a href={categoryUrl(category)}>{category.name}</a></nav>
-      <div class="service-page-hero-grid">
-        <div>
-          <p class="eyebrow"><span class="copper-rule"></span>Vizitor blog · <a href={categoryUrl(category)}>{category.name}</a></p>
+    <header class="wrap blog-masthead">
+      <nav class="blog-masthead-trail" aria-label="Morzsamenü">
+        <a href="/">Főoldal</a><span aria-hidden="true">/</span><a href="/blog/">Blog</a>
+      </nav>
+      <div class="blog-masthead-panel">
+        <div class="blog-masthead-copy">
+          <a class="blog-masthead-category" href={categoryUrl(category)}>{category.name}</a>
           <h1 id="post-title" set:html={titleHtml(post.title)} />
-          <p class="service-page-lead">{post.excerpt}</p>
-          <div class="privacy-meta blog-post-meta">
-            <span><a href="#szerzo">{author.name}</a><i aria-hidden="true">·</i>Publikálva <time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time>{modified && <><i aria-hidden="true">·</i>Frissítve <time datetime={modified}>{formatDate(modified)}</time></>}</span>
+          <p class="blog-masthead-deck">{post.excerpt}</p>
+          <div class="blog-masthead-byline">
+            <a href="#szerzo">{author.name}</a>
+            <time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
             <span>{rendered!.readingMinutes} perc olvasás</span>
           </div>
+          {modified && <p class="blog-masthead-updated">Frissítve <time datetime={modified}>{formatDate(modified)}</time></p>}
         </div>
-        <div class={'service-page-art blog-post-art' + (cover ? ' has-cover' : '')} style={cover ? undefined : 'background:#e8ebe8'}>
+        <div class="blog-masthead-art">
           {cover
             ? <Fragment set:html={`<img ${imageAttrs(cover, { sizes: coverSizes, eager: true })}>`} />
             : <img src={artSrc(art)} alt="" width="410" height="236" decoding="async" />}
