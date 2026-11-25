@@ -100,8 +100,9 @@ cd ~/vizitor/cms && cp .env.example .env && nano .env
 ./deploy/update.sh
 ```
 
-Az `update.sh` a következőket csinálja:
+Az `update.sh` csak a `main` ágról telepít (más ágon megáll, hacsak nincs `ALLOW_BRANCH=<ág>`), és a következőket csinálja:
 - `git pull`;
+- gépszintű `docker image prune`-t szándékosan nem futtat, mert a VPS megosztott; a régi Vizitor-image-ek kézzel törölhetők (`docker image ls vizitor-cms`);
 - frissítés előtt mentést készít;
 - újraépíti az image-et;
 - újraindítja a CMS-t, és megvárja az egészséges állapotot.
