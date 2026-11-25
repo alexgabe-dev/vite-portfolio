@@ -1,28 +1,31 @@
 ---
 import BlogLayout from '../layouts/BlogLayout.astro';
 import PostCard from './PostCard.astro';
-import { type Post, type Category, ARTBG, coverOf, titleHtml, SITE, absolute, artFor, artSrc, authorOf, baseGraph, categoryOf, categoryUrl, formatDate, listUrl, mediaOf, postUrl, tone, usedCategories, CATEGORY_INDEX_MIN } from '../lib/data';
+import { type Post, type Category, ARTBG, coverOf, titleHtml, SITE, absolute, artFor, artSrc, authorOf, baseGraph, categoryOf, categoryUrl, formatDate, listUrl, postUrl, tone, usedCategories, CATEGORY_INDEX_MIN } from '../lib/data';
 import { imageAttrs } from '../lib/images';
+import { readingMinutesOf } from '../lib/render';
 interface Props { posts: Post[]; page: number; pages: number; total: number; category?: Category }
 const { posts, page, pages, total, category } = Astro.props;
 const url = (n: number) => (category ? categoryUrl(category, n) : listUrl(n));
 const path = url(page);
-const intro = category?.description || 'Gyakorlati írások weboldalakról, keresőoptimalizálásról, mérésről és automatizálásról. Vállalkozásoknak, érthetően, a saját munkáimból.';
+const intro = category?.description || 'Gyakorlati útmutatók céges weboldalakról, SEO-ról, mérésről és automatizálásról.';
 const pageSuffix = page > 1 ? ` – ${page}. oldal` : '';
 const title = category ? `${category.name}${pageSuffix} | Vizitor blog` : `Blog${pageSuffix} – weboldal, SEO, marketing | Vizitor`;
 // Each category page needs its own description, even when the editor left it empty.
 const description = (category ? (category.description || `${category.name}: gyakorlati írások a Vizitor blogján weboldalakról, marketingről és működésről, vállalkozásoknak.`) : intro).slice(0, 160);
 const index = !category || total >= CATEGORY_INDEX_MIN;
 const crumbs = [{ name: 'Főoldal', url: '/' }, { name: 'Blog', url: '/blog/' }, ...(category ? [{ name: category.name, url: categoryUrl(category) }] : [])];
-// The newest post leads the first page in a wide card; the rest follow in the project grid.
-const [feature, ...rest] = page === 1 ? posts : [undefined, ...posts];
+const editorPick = !category && posts.find(post => post.slug === 'mennyibe-kerul-egy-ceges-weboldal');
+const feature = page === 1 ? (editorPick || posts[0]) : undefined;
+const rest = posts.filter(post => post !== feature);
+const ordered = feature ? [feature, ...rest] : rest;
 const featureCover = feature ? coverOf(feature) : undefined;
 const featureArt = feature ? artFor(feature) : 'web';
 const jsonLd = { '@context': 'https://schema.org', '@graph': [
   ...baseGraph,
   { '@type': category ? 'CollectionPage' : 'Blog', '@id': absolute(path) + '#page', url: absolute(path), name: title, description, inLanguage: 'hu-HU', isPartOf: { '@id': SITE + '/#website' }, publisher: { '@id': SITE + '/#vizitor' } },
   { '@type': 'BreadcrumbList', itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: absolute(c.url) })) },
-  { '@type': 'ItemList', itemListElement: posts.map((p, i) => ({ '@type': 'ListItem', position: (page - 1) * 12 + i + 1, url: absolute(postUrl(p)), name: p.title })) },
+  { '@type': 'ItemList', itemListElement: ordered.map((p, i) => ({ '@type': 'ListItem', position: (page - 1) * 12 + i + 1, url: absolute(postUrl(p)), name: p.title })) },
 ] };
 ---
 <BlogLayout title={title} description={description} path={path} jsonLd={jsonLd} index={index} prev={page > 1 ? url(page - 1) : undefined} next={page < pages ? url(page + 1) : undefined} mainClass="archive-main blog-index">
@@ -31,15 +34,17 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
         {crumbs.map((c, i) => i < crumbs.length - 1 || page > 1 ? <><a href={c.url}>{c.name}</a><span aria-hidden="true">/</span></> : <span aria-current="page">{c.name}</span>)}
         {page > 1 && <span aria-current="page">{page}. oldal</span>}
       </nav>
-      <p class="eyebrow">{category ? 'Vizitor blog · Kategória' : 'Vizitor · Blog'}</p>
-      <h1>{category ? <>{category.name}.<br /><span>Írások a témában.</span></> : <>Írások.<br /><span>Weboldalról, érthetően.</span></>}</h1>
+      <h1>{category?.name || 'Vizitor blog'}</h1>
       <div class="archive-intro">
         <p>{intro}</p>
         {usedCategories.length > 1 && (
-          <nav class="filters blog-filters" aria-label="Kategóriák">
+          <details class="blog-topics">
+            <summary>Témák{category ? ` · ${category.name}` : ''}</summary>
+            <nav class="blog-filters" aria-label="Kategóriák">
             <a href="/blog/" aria-current={!category ? 'page' : undefined}>Minden</a>
             {usedCategories.map(({ category: c }) => <a href={categoryUrl(c)} aria-current={category && c.id === category.id ? 'page' : undefined}>{c.name}</a>)}
-          </nav>
+            </nav>
+          </details>
         )}
       </div>
     </section>
@@ -53,10 +58,10 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
               : <img class="blog-card-art" src={artSrc(featureArt)} alt="" width="410" height="236" fetchpriority="high" decoding="async" />}
           </a>
           <div class="blog-feature-copy">
-            <p class="eyebrow">Legfrissebb · {categoryOf(feature).name}</p>
+            <p class="eyebrow">{editorPick ? 'Ajánlott' : 'Legfrissebb'} · {categoryOf(feature).name}</p>
             <h2><a href={postUrl(feature)} set:html={titleHtml(feature.title)} /></h2>
             <p class="blog-feature-excerpt">{feature.excerpt}</p>
-            <p class="blog-feature-meta">{authorOf(feature).name} · <time datetime={feature.publishedAt}>{formatDate(feature.publishedAt)}</time></p>
+            <p class="blog-feature-meta">{authorOf(feature).name} · <time datetime={feature.publishedAt}>{formatDate(feature.publishedAt)}</time> · {readingMinutesOf(feature)} perc olvasás</p>
             <a class="blog-read-link" href={postUrl(feature)}>Elolvasom<span aria-hidden="true">+</span><span class="sr-only">: {feature.title}</span></a>
           </div>
         </article>

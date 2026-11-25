@@ -181,7 +181,15 @@ export async function prepareBlog({ cmsUrl, token }) {
   await generateCovers(data, media);
   await writeFile(path.join(out, 'content.json'), JSON.stringify(data));
   await writeFile(path.join(out, 'media.json'), JSON.stringify(media));
-  return { enabled: true, posts: data.posts.length, fingerprint: data.fingerprint };
+  const serviceArticles = Object.create(null);
+  const sortedPosts = [...data.posts].sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
+  for (const post of sortedPosts) {
+    for (const service of new Set(post.services || [])) {
+      const articles = serviceArticles[service] ||= [];
+      if (articles.length < 3) articles.push({ href: `/blog/${post.slug}/`, title: post.title, excerpt: post.excerpt });
+    }
+  }
+  return { enabled: true, posts: data.posts.length, fingerprint: data.fingerprint, serviceArticles };
 }
 export async function writeChrome() {
   await writeFile(path.join(out, 'chrome.json'), JSON.stringify(await extractChrome()));

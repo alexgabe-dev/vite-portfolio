@@ -19,6 +19,7 @@ if (cmsUrl) {
   blog = await prepareBlog({ cmsUrl, token: process.env.BLOG_EXPORT_TOKEN });
 }
 env.VIZITOR_BLOG = String(blog.enabled);
+env.VIZITOR_SERVICE_ARTICLES = JSON.stringify(blog.serviceArticles || {});
 
 run(['node_modules/typescript/bin/tsc', '--noEmit']);
 run(['node_modules/vite/bin/vite.js', 'build']);

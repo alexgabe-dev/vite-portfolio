@@ -23,7 +23,8 @@ const rendered = redirectTo ? null : await renderPost(post);
 const related = relatedTo(post);
 const service = post.services.find(s => serviceLabels[s]);
 const path = postUrl(post);
-const title = `${post.metaTitle || post.title} | Vizitor blog`;
+const baseTitle = (post.metaTitle || post.title).trim();
+const title = /(?:vizitor\.hu|vizitor blog|\| vizitor)$/i.test(baseTitle) ? baseTitle : `${baseTitle} | vizitor.hu`;
 const description = post.metaDescription || post.excerpt;
 const coverSizes = '(min-width: 1100px) 460px, (min-width: 801px) 38vw, calc(100vw - 32px)';
 const preload = cover ? { href: (cover.variants.find(v => v.width >= 800) || cover.variants[cover.variants.length - 1]).src, srcset: cover.variants.map(v => `${v.src} ${v.width}w`).join(', '), sizes: coverSizes } : undefined;
@@ -57,16 +58,16 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
           <p class="eyebrow"><span class="copper-rule"></span>Vizitor blog · <a href={categoryUrl(category)}>{category.name}</a></p>
           <h1 id="post-title" set:html={titleHtml(post.title)} />
           <p class="service-page-lead">{post.excerpt}</p>
+          <div class="privacy-meta blog-post-meta">
+            <span><a href="#szerzo">{author.name}</a><i aria-hidden="true">·</i>Publikálva <time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time>{modified && <><i aria-hidden="true">·</i>Frissítve <time datetime={modified}>{formatDate(modified)}</time></>}</span>
+            <span>{rendered!.readingMinutes} perc olvasás</span>
+          </div>
         </div>
         <div class={'service-page-art blog-post-art' + (cover ? ' has-cover' : '')} style={cover ? undefined : 'background:#e8ebe8'}>
           {cover
             ? <Fragment set:html={`<img ${imageAttrs(cover, { sizes: coverSizes, eager: true })}>`} />
             : <img src={artSrc(art)} alt="" width="410" height="236" decoding="async" />}
         </div>
-      </div>
-      <div class="privacy-meta blog-post-meta">
-        <span><a href="#szerzo">{author.name}</a><i aria-hidden="true">·</i>Publikálva <time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time>{modified && <><i aria-hidden="true">·</i>Frissítve <time datetime={modified}>{formatDate(modified)}</time></>}</span>
-        <span>{rendered!.readingMinutes} perc olvasás</span>
       </div>
     </header>
 
@@ -82,16 +83,6 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
                 {rendered!.toc.map(e => <a class={e.level === 3 ? 'toc-sub' : undefined} href={'#' + e.id}>{e.text}<span aria-hidden="true">·</span></a>)}
               </nav>
             )}
-            <div class="blog-facts">
-              <p class="eyebrow" id="facts-title">Röviden</p>
-              <dl aria-labelledby="facts-title">
-              <div><dt>Olvasási idő</dt><dd>{rendered!.readingMinutes} perc</dd></div>
-              <div><dt>Publikálva</dt><dd><time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time></dd></div>
-              {modified && <div><dt>Frissítve</dt><dd><time datetime={modified}>{formatDate(modified)}</time></dd></div>}
-              <div><dt>Téma</dt><dd><a href={categoryUrl(category)}>{category.name}</a></dd></div>
-              <div><dt>Szerző</dt><dd><a href="#szerzo">{author.name}</a></dd></div>
-              </dl>
-            </div>
             <div class="blog-share">
               <button type="button" class="blog-copy-link" data-copy-link={absolute(path)}><span>Link másolása</span><span aria-hidden="true">+</span></button>
               <a href="/blog/rss.xml"><span>Új írások RSS-ben</span><span aria-hidden="true">+</span></a>
@@ -99,10 +90,12 @@ const jsonLd = rendered && { '@context': 'https://schema.org', '@graph': [
             </div>
           </div>
           {hasToc && (
-            <div class="privacy-mobile-jump">
-              <label for="post-chapter">Ugrás a témához</label>
-              <select id="post-chapter" data-toc-select>{rendered!.toc.map(e => <option value={e.id}>{e.level === 3 ? '– ' : ''}{e.text}</option>)}</select>
-            </div>
+            <details class="blog-mobile-toc">
+              <summary>A cikkben</summary>
+              <nav aria-label="Tartalomjegyzék">
+                {rendered!.toc.map(e => <a href={'#' + e.id}>{e.text}</a>)}
+              </nav>
+            </details>
           )}
         </aside>
 

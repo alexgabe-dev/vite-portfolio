@@ -23,6 +23,13 @@ function safeHref(url: string) {
   return null;
 }
 
+function wordCount(post: Post) {
+  return (plainText(post.content.root).match(/[\p{L}\p{N}]+/gu) || []).length;
+}
+
+const minutesFromWords = (words: number) => Math.max(1, Math.round(words / 200));
+export const readingMinutesOf = (post: Post) => minutesFromWords(wordCount(post));
+
 export async function renderPost(post: Post) {
   const toc: TocEntry[] = [];
   const used = new Set<string>();
@@ -105,7 +112,6 @@ export async function renderPost(post: Post) {
     }
   }
   const html = await render(post.content.root);
-  const text = plainText(post.content.root);
-  const words = (text.match(/[\p{L}\p{N}]+/gu) || []).length;
-  return { html, toc, words, readingMinutes: Math.max(1, Math.round(words / 200)), images };
+  const words = wordCount(post);
+  return { html, toc, words, readingMinutes: minutesFromWords(words), images };
 }
