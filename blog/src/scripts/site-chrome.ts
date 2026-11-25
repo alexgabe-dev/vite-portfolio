@@ -220,3 +220,22 @@ if (searchForm && indexEl) {
   const initial = new URLSearchParams(location.search).get('q');
   if (initial) { input.value = initial; run(); }
 }
+
+/* Blog index: topic filters tuck behind an icon; open state is remembered only for this visit. */
+const filterToggle = document.querySelector<HTMLButtonElement>('[data-filter-toggle]');
+const filterPanel = document.querySelector<HTMLElement>('[data-filter-panel]');
+if (filterToggle && filterPanel) {
+  const set = (open: boolean) => { filterPanel.dataset.state = open ? 'open' : 'closed'; filterToggle.setAttribute('aria-expanded', String(open)); };
+  let remembered = false;
+  try { remembered = sessionStorage.getItem('vz-filters') === 'open'; } catch { /* storage blocked */ }
+  filterPanel.style.transition = 'none';
+  set(remembered);
+  void filterPanel.offsetHeight;
+  filterPanel.style.transition = '';
+  filterToggle.addEventListener('click', () => {
+    const open = filterPanel.dataset.state !== 'open';
+    set(open);
+    try { sessionStorage.setItem('vz-filters', open ? 'open' : 'closed'); } catch { /* storage blocked */ }
+  });
+  filterPanel.addEventListener('keydown', e => { if (e.key === 'Escape') { set(false); filterToggle.focus(); } });
+}

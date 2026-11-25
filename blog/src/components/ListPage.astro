@@ -39,7 +39,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
         <div class="bl-hero-copy">
           <p class="bl-kicker">{category ? 'Téma' : 'Írások cégvezetőknek'}</p>
           <h1>{category?.name || 'Vizitor blog'}</h1>
-          <p class="bl-deck">{category && !category.description ? `Ebben a témában ${total} írás olvasható. Keress rá bármire, vagy válts témát lent.` : intro}</p>
+          <p class="bl-deck">{category && !category.description ? `Ebben a témában ${total} írás olvasható. Keress rá bármire, vagy válts témát a szűrővel.` : intro}</p>
         </div>
         <form class="bl-search" role="search" action="/blog/" method="get" data-blog-search>
           <label class="sr-only" for="bl-q">Keresés a cikkek között</label>
@@ -47,13 +47,23 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
           <input id="bl-q" name="q" type="search" placeholder="Keresés: árak, GA4, chatbot…" autocomplete="off" enterkeyhint="search" />
           <kbd aria-hidden="true">/</kbd>
         </form>
+        {usedCategories.length > 1 && (
+          <button class:list={['bl-filter-toggle', { 'is-filtered': !!category }]} type="button" aria-expanded="true" aria-controls="bl-filters" data-filter-toggle title={category ? `Téma: ${category.name}` : 'Témák'}>
+            <span class="sr-only">{category ? `Témák szűrése (most: ${category.name})` : 'Témák szűrése'}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+          </button>
+        )}
       </div>
       {usedCategories.length > 1 && (
+        <div class="bl-filter-panel" id="bl-filters" data-filter-panel>
+        <div class="bl-filter-inner">
         <nav class="bl-chips" aria-label="Témák">
           <a href="/blog/" aria-current={!category ? 'page' : undefined}>Minden<span>{allPosts.length}</span></a>
           {usedCategories.map(({ category: c, posts: list }) => <a href={categoryUrl(c)} aria-current={category && c.id === category.id ? 'page' : undefined}>{c.name}<span>{list.length}</span></a>)}
           <a class="bl-rss-icon" href="/blog/rss.xml" aria-label="Új írások RSS-csatornán" title="RSS"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><circle cx="6" cy="18" r="2"/><path d="M4 10.5a9.5 9.5 0 0 1 9.5 9.5h-2.4A7.1 7.1 0 0 0 4 12.9v-2.4Zm0-5.5a15 15 0 0 1 15 15h-2.4A12.6 12.6 0 0 0 4 7.4V5Z"/></svg></a>
         </nav>
+        </div>
+        </div>
       )}
     </div>
   </section>
