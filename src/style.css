@@ -615,3 +615,4 @@ html:not(.consent-pending) .consent-banner{display:none}
 .service-articles svg{width:20px;height:20px}
 
 @media(min-width:601px){.brand-hero{display:flex;flex-direction:column;min-height:calc(100vh - 86px);min-height:calc(100svh - 86px)}.brand-hero>.hero-story-track{flex:1;display:flex;flex-direction:column}.brand-hero>.hero-story-track>.brand-hero-grid{flex:1}}@media(min-width:601px) and (max-width:800px){.brand-hero{min-height:calc(100vh - 80px);min-height:calc(100svh - 80px)}}
+.consent-banner,.consent-dialog,.consent-choice,.consent-icon-button,.consent-banner-icon,.consent-actions>button,.consent-close,.consent-storage-message{border-radius:4px}
